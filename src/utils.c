@@ -9,10 +9,10 @@ void *map_file_into_memory(int fd)
 	size_t file_size;
 
 	file_size = get_size_of_file(fd);
-	ptr = mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd, 0)
+	ptr = mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
 	if (ptr == MAP_FAILED)
 	{
-		ft_error_str_exit("mmap error");
+		ft_error_str_exit("mmap error\n");
 	}
 	return ptr;
 }
@@ -29,7 +29,7 @@ void release_memory(void *ptr, int fd)
 	result = munmap(ptr, file_size);
 	if (result < 0)
 	{
-		ft_error_str_exit("munmap error");
+		ft_error_str_exit("munmap error\n");
 	}
 }
 
@@ -40,8 +40,8 @@ size_t get_size_of_file(int fd)
 {
 	struct stat s_stat;
 
-	s_stat = get_stat_of_file(fd)
-	return s_stat.st_size
+	s_stat = get_stat_of_file(fd);
+	return s_stat.st_size;
 }
 
 /*
@@ -53,7 +53,7 @@ struct stat get_stat_of_file(int fd)
 
 	if (fstat(fd, &buf) < 0)
 	{
-		ft_error_str_exit("fstat error");
+		ft_error_str_exit("fstat error\n");
 	}
 	return buf;
 }
@@ -65,10 +65,10 @@ int open_file(char *name)
 {
 	int fd;
 
-	fd = open(name, RD_ONLY);
+	fd = open(name, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_error_str_exit("open error");
+		ft_error_str_exit("open error\n");
 	}
 	return fd;
 }

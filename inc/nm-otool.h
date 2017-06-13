@@ -23,20 +23,38 @@
 
 #include "libft.h"
 
+enum	file_format
+{
+	MACHO_32,
+	MACHO_64,
+	UNKNOWN
+}	typedef e_file_format;
+
 /*
 ** File: utils.c
 ** Description: Utilities to open and map file into memory
 */
 
-void			*map_file_into_memory(int fd, size_t size);
-void			release_memory(void *ptr, size_t size);
+void			*map_file_into_memory(int fd);
+void			release_memory(void *ptr, int fd);
 size_t			get_size_of_file(int fd);
 struct stat	get_stat_of_file(int fd);
 int					open_file(char *name);
 
 /*
-** File:
-** Description:
+** File: display.c
+** Description: Functions to display on the standard output
 */
+
+void	display_symbol(char *str);
+void	display_mach_header_32(struct mach_header *header);
+void	display_mach_header_64(struct mach_header_64 *header);
+
+/*
+** File: format_information.c
+** Description: Get the information from the right file type
+*/
+int	get_magic_number(void *ptr);
+
 
 #endif
