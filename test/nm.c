@@ -36,6 +36,9 @@ void handle_64(char *ptr)
 	ncmds = header->ncmds;
 	i = 0;
 	lc = (void*)ptr + sizeof(*header);
+	// printf("sizeof(*header): %zu\n", sizeof(*header));
+	// printf("(*header).ncmds: %d\n", (*header).ncmds);
+	// printf("ncmds: %d\n", ncmds);
 	while (i < ncmds)
 	{
 		if (lc->cmd == LC_SYMTAB)

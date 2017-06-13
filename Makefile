@@ -41,6 +41,7 @@ SRC =	nm.c \
 			utils.c \
 			display.c \
 			format_information.c \
+			handler.c \
 
 
 OBJ = $(addprefix $(PATH_SRC), $(SRC:.c=.o))
