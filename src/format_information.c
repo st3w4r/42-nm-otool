@@ -8,8 +8,8 @@ e_file_format	get_file_format(void *ptr)
 
 	if (magic == MH_MAGIC || magic == MH_CIGAM)
 		return (MACHO_32);
-	else if (magic == MH_MAGIC_64)
-		return (MACHO_64 || magic == MH_CIGAM_64);
+	else if (magic == MH_MAGIC_64 || magic == MH_CIGAM_64)
+		return (MACHO_64);
 	else
 		return (UNKNOWN);
 }
@@ -38,4 +38,26 @@ void *get_string_table(struct symtab_command *sym, void *ptr)
 char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol)
 {
 	return (string_table + symbol_table[num_symbol].n_un.n_strx);
+}
+
+struct section_64 *get_section_command(struct segment_command_64 *seg, uint32_t index_section)
+{
+	return (void*)seg +
+					sizeof(struct segment_command_64) +
+					(index_section * sizeof(struct section_64));
+}
+
+uint64_t get_section_type(struct section_64 *sec)
+{
+	return sec->flags & SECTION_TYPE;
+}
+
+uint64_t get_section_attributes(struct section_64 *sec)
+{
+	return sec->flags & SECTION_ATTRIBUTES;
+}
+
+uint8_t get_symbol_type(uint8_t n_type)
+{
+	return  n_type & N_TYPE;
 }

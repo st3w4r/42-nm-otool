@@ -13,7 +13,7 @@ void handle_nlist_64(uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
 	else if (n_type == N_EXT)
 		ft_putstr("N_EXT ");
 
-	uint8_t type = N_TYPE & n_type;
+	uint8_t type = get_symbol_type(n_type);
 
 	if (type == N_UNDF)
 		ft_putstr("N_UNDF ");
@@ -326,6 +326,63 @@ void handle_load_command_type(uint32_t cmd)
 	ft_putstr("\n");
 }
 
+void handle_cpu_type(cpu_type_t cputype, cpu_subtype_t cpusubtype)
+{
+	cpu_type_t type;
+	cpu_subtype_t subtype;
+
+	type = cputype;// & CPU_ARCH_MASK;
+
+	ft_putstr("CPU Type: ");
+	if (type == CPU_TYPE_ANY)
+		ft_putstr("CPU_TYPE_ANY");
+	else if (type == CPU_TYPE_VAX)
+		ft_putstr("CPU_TYPE_VAX");
+	else if (type == CPU_TYPE_MC680x0)
+		ft_putstr("CPU_TYPE_MC680x0");
+	else if (type == CPU_TYPE_X86)
+		ft_putstr("CPU_TYPE_X86");
+	else if (type == CPU_TYPE_I386)
+		ft_putstr("CPU_TYPE_I386");
+	else if (type == CPU_TYPE_X86_64)
+		ft_putstr("CPU_TYPE_X86_64");
+	else if (type == CPU_TYPE_MC98000)
+		ft_putstr("CPU_TYPE_MC98000");
+	else if (type == CPU_TYPE_HPPA)
+		ft_putstr("CPU_TYPE_HPPA");
+	else if (type == CPU_TYPE_ARM)
+		ft_putstr("CPU_TYPE_ARM");
+	else if (type == CPU_TYPE_ARM64)
+		ft_putstr("CPU_TYPE_ARM64");
+	else if (type == CPU_TYPE_MC88000)
+		ft_putstr("CPU_TYPE_MC88000");
+	else if (type == CPU_TYPE_SPARC)
+		ft_putstr("CPU_TYPE_SPARC");
+	else if (type == CPU_TYPE_I860)
+		ft_putstr("CPU_TYPE_I860");
+	else if (type == CPU_TYPE_POWERPC)
+		ft_putstr("CPU_TYPE_POWERPC");
+	else if (type == CPU_TYPE_POWERPC64)
+		ft_putstr("CPU_TYPE_POWERPC64");
+	else
+		ft_putstr("UNKNOWN");
+	ft_putstr("\n");
+
+	subtype = cpusubtype;// & CPU_SUBTYPE_MASK;
+
+	ft_putstr("CPU Subtype: ");
+	if (subtype == CPU_SUBTYPE_MULTIPLE)
+		ft_putstr("CPU_SUBTYPE_MULTIPLE");
+	else if (subtype == CPU_SUBTYPE_LITTLE_ENDIAN)
+		ft_putstr("CPU_SUBTYPE_LITTLE_ENDIAN");
+	else if (subtype == CPU_SUBTYPE_BIG_ENDIAN)
+		ft_putstr("CPU_SUBTYPE_BIG_ENDIAN");
+	else
+		ft_putstr("UNKNOWN");
+	ft_putstr("\n");
+
+}
+
 void handle_symtab_command(struct symtab_command *sym, void *ptr)
 {
 	uint32_t				i;
@@ -349,12 +406,6 @@ void handle_symtab_command(struct symtab_command *sym, void *ptr)
 	}
 }
 
-void handle_segment_command(struct segment_command_64 *seg, void *ptr)
-{
-	ft_putstr("Segment name: ");
-	ft_putstr(seg->segname);
-	ft_putstr("\n");
-}
 
 void handle_section_command(struct section_64 *sec, void *ptr)
 {
@@ -363,7 +414,7 @@ void handle_section_command(struct section_64 *sec, void *ptr)
 	ft_putstr(" Section name: ");
 	ft_putstr(sec->sectname);
 
-	uint64_t sectype = sec->flags & SECTION_TYPE;
+	uint64_t sectype = get_section_type(sec);
 
 	ft_putstr(" Section type: ");
 	if (sectype == S_REGULAR)
@@ -414,7 +465,7 @@ void handle_section_command(struct section_64 *sec, void *ptr)
 		ft_putstr("UNKNOWN");
 
 
-	uint64_t secattr = sec->flags & SECTION_ATTRIBUTES;
+	uint64_t secattr = get_section_attributes(sec);
 	ft_putstr(" Section attribute: ");
 	if (secattr == SECTION_ATTRIBUTES_USR)
 		ft_putstr("SECTION_ATTRIBUTES_USR");
@@ -442,8 +493,26 @@ void handle_section_command(struct section_64 *sec, void *ptr)
 		ft_putstr("S_ATTR_LOC_RELOC");
 	else
 		ft_putstr("UNKNOWN");
-
 	ft_putstr("\n");
+}
+
+void handle_segment_command(struct segment_command_64 *seg, void *ptr)
+{
+	uint32_t i;
+	struct section_64 *sec;
+
+	ft_putstr("Segment name: ");
+	ft_putstr(seg->segname);
+	ft_putstr(" number of section: ");
+	ft_putnbr(seg->nsects);
+	ft_putstr("\n");
+	i = 0;
+	while (i < seg->nsects)
+	{
+		sec = get_section_command(seg, i);
+		handle_section_command(sec, ptr);
+		i++;
+	}
 }
 
 /*
@@ -464,7 +533,7 @@ void handle_load_command(struct load_command *lc, void *ptr)
 	{
 		seg = (struct segment_command_64 *)lc;
 		handle_segment_command(seg, ptr);
-		handle_section_command((void*)lc + sizeof(struct segment_command_64), ptr);
+		// handle_section_command((void*)seg + sizeof(struct segment_command_64), ptr);
 	}
 }
 
@@ -481,6 +550,7 @@ void	handle_macho_64(void *ptr)
 	header = (struct mach_header_64*)ptr;
 	display_mach_header_64(header);
 	handle_file_type(header->filetype);
+	handle_cpu_type(header->cputype, header->cpusubtype);
 	i = 0;
 	ncmds = header->ncmds;
 	lc = get_first_load_command(header);

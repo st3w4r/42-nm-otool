@@ -21,6 +21,7 @@
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
 #include <mach-o/stab.h>
+#include <mach/machine.h>
 
 #include "libft.h"
 
@@ -33,23 +34,50 @@
 /*
 ** All file format supported by the program
 */
-enum	file_format
+typedef enum	file_format
 {
 	MACHO_32,
 	MACHO_64,
 	UNKNOWN
-}	typedef e_file_format;
+}	 						e_file_format;
 
 /*
 ** Structure to store all data use by the program
 */
 
-struct nm {
+typedef struct section_lsit
+{
+	void *ptr_section;
+	void *prev;
+	void *next;
+	struct nlist *symbol_table;
+	struct nlist_64 *symbol_table_64;
+}							s_section_list;
+
+typedef struct segment_list
+{
+	void *ptr_segment;
+	void *prev;
+	void *next;
+	s_section_list	*section_list;
+}							 s_segment_list;
+
+typedef struct lc_list
+{
+	void *ptr_lc;
+	void *prev;
+	void *next;
+	s_segment_list	*segment_list;
+}							s_lc_list;
+
+typedef struct fromat
+{
 	e_file_format	file_format;
 	void *ptr_header;
-	//segment list
-	//section list
-}	typedef s_nm;
+	void *string_table;
+	void *symbol_table;
+	s_lc_list				*lc_list;
+}	 						s_format;
 
 /*
 ** File: utils.c
@@ -78,9 +106,13 @@ void	display_mach_header_64(struct mach_header_64 *header);
 e_file_format	get_file_format(void *ptr);
 struct load_command	*get_first_load_command(struct mach_header_64 *header);
 struct load_command	*get_next_load_command(struct load_command *lc);
-struct nlist_64 *get_symbol_table(struct symtab_command *sym, void *ptr);
-void *get_string_table(struct symtab_command *sym, void *ptr);
+struct nlist_64	*get_symbol_table(struct symtab_command *sym, void *ptr);
+void	*get_string_table(struct symtab_command *sym, void *ptr);
 char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol);
+struct section_64	*get_section_command(struct segment_command_64 *seg, uint32_t index_section);
+uint64_t	get_section_type(struct section_64 *sec);
+uint64_t	get_section_attributes(struct section_64 *sec);
+uint8_t		get_symbol_type(uint8_t n_type);
 
 /*
 ** File: handler.c
