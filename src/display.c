@@ -10,10 +10,73 @@ void display_file_format(e_file_format file_format)
 		ft_putstr("File format: UNKNOWN\n");
 }
 
-void	display_symbol(char *str)
+
+
+// void display_lc_list(s_lc_list *lc_list)
+// {
+// 	s_lc_list *lc_list_current;
+//
+// 	lc_list_current = lc_list;
+// 	while (lc_list_current != NULL)
+// 	{
+// 		display_load_command_type(lc_list_current->lc->cmd);
+// 		lc_list_current = lc_list_current->prev;
+// 	}
+// }
+//
+
+
+
+void display_section(s_section_list *section_list)
 {
-	ft_putstr(str);
+	ft_putstr("Segment name: ");
+	ft_putstr(section_list->section->segname);
+	ft_putstr(" Section name: ");
+	ft_putstr(section_list->section->sectname);
+	ft_putstr("\n");
 }
+
+void display_section_list(s_section_list *section_list)
+{
+	while (section_list)
+	{
+		display_section(section_list);
+		section_list = section_list->next;
+	}
+}
+
+void display_symbol(s_section_list *section_list, s_symbol_list *symbol_list)
+{
+	display_nlist_64(section_list,
+										symbol_list->symbol->n_un.n_strx,
+										symbol_list->symbol->n_type,
+										symbol_list->symbol->n_sect,
+										symbol_list->symbol->n_desc,
+										symbol_list->symbol->n_value);
+}
+
+void display_symbol_list(s_section_list *section_list, s_symbol_list *symbol_list)
+{
+	while (symbol_list)
+	{
+		display_symbol(section_list, symbol_list);
+		symbol_list = symbol_list->next;
+	}
+}
+
+void display_format(s_format *format)
+{
+	display_mach_header_64(format->ptr_header);
+	// display_lc_list(format.lc_list);
+	display_section_list(format->section_list);
+	// display_section(get_section_index(format->section_list, 8));
+	display_symbol_list(format->section_list, format->symbol_list);
+}
+
+// void	display_symbol(char *str)
+// {
+// 	ft_putstr(str);
+// }
 
 void	display_mach_header_32(struct mach_header *header)
 {
@@ -379,7 +442,8 @@ void display_file_type(uint32_t filetype)
 	ft_putstr("\n");
 }
 
-void display_nlist_64(uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
+void display_nlist_64(s_section_list *section_list,
+	uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
 	uint16_t n_desc, uint64_t n_value)
 {
 	// n_type
@@ -413,10 +477,17 @@ void display_nlist_64(uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
 	else if (n_type == MAX_SECT)
 		ft_putstr("MAX_SECT ");
 	else {
+		s_section_list *section_elem = get_section_index(section_list, n_sect);
+
 		ft_putstr("Section n: ");
 		ft_putnbr(n_sect);
-		ft_putstr(" ");
+		ft_putstr(" (");
+		ft_putstr(section_elem->section->segname);
+		ft_putstr(",");
+		ft_putstr(section_elem->section->sectname);
+		ft_putstr(") ");
 	}
+
 
 	// n_desc
 	ft_putstr(" ndesc: ");
@@ -513,4 +584,5 @@ void display_nlist_64(uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
 	ft_putstr(" ");
 	ft_puthexa_size(n_strx);
 	ft_putstr(" ");
+	ft_putstr("\n");
 }

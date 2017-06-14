@@ -42,6 +42,9 @@ SRC =	nm.c \
 			display.c \
 			format_information.c \
 			handler.c \
+			init_format.c \
+			section_list.c \
+			symbol_list.c \
 			ft_puthexa_size.c
 
 
