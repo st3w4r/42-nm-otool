@@ -20,6 +20,7 @@
 #include <fcntl.h>
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
+#include <mach-o/stab.h>
 
 #include "libft.h"
 
@@ -46,6 +47,8 @@ enum	file_format
 struct nm {
 	e_file_format	file_format;
 	void *ptr_header;
+	//segment list
+	//section list
 }	typedef s_nm;
 
 /*
@@ -86,5 +89,10 @@ char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint3
 void	handle_symtab_command(struct symtab_command *sym, void *ptr);
 void	handle_load_command(struct load_command *lc, void *ptr);
 void	handle_macho_64(void *ptr);
+
+/*
+** File: ft_puthexa_size.c
+*/
+void	ft_puthexa_size(uint64_t nb);
 
 #endif
