@@ -22,6 +22,7 @@
 #include <mach-o/nlist.h>
 #include <mach-o/stab.h>
 #include <mach/machine.h>
+#include <stdbool.h>
 
 #include "libft.h"
 
@@ -44,6 +45,16 @@ typedef enum	file_format
 /*
 ** Structure to store all data use by the program
 */
+typedef struct symbol
+{
+	void	*address;
+	char	*name;
+	char	*segment_name;
+	char	*section_name;
+	bool	is_external;
+	void	*prev;
+	void	*next;
+}								s_symbol_list;
 
 typedef struct section_lsit
 {
@@ -52,6 +63,7 @@ typedef struct section_lsit
 	void *next;
 	struct nlist *symbol_table;
 	struct nlist_64 *symbol_table_64;
+	s_symbol_list *symbol_list;
 }							s_section_list;
 
 typedef struct segment_list
@@ -73,6 +85,8 @@ typedef struct lc_list
 typedef struct fromat
 {
 	e_file_format	file_format;
+	bool	is_64;
+	bool	is_big_endian;
 	void *ptr_header;
 	void *string_table;
 	void *symbol_table;
@@ -99,6 +113,13 @@ void	display_symbol(char *str);
 void	display_mach_header_32(struct mach_header *header);
 void	display_mach_header_64(struct mach_header_64 *header);
 
+void display_load_command_type(uint32_t cmd);
+void display_section_command(struct section_64 *sec, void *ptr);
+void display_cpu_type(cpu_type_t cputype, cpu_subtype_t cpusubtype);
+void display_file_type(uint32_t filetype);
+void display_nlist_64(uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
+											uint16_t n_desc, uint64_t n_value);
+
 /*
 ** File: format_information.c
 ** Description: Get the information from the right file type
@@ -121,6 +142,7 @@ uint8_t		get_symbol_type(uint8_t n_type);
 void	handle_symtab_command(struct symtab_command *sym, void *ptr);
 void	handle_load_command(struct load_command *lc, void *ptr);
 void	handle_macho_64(void *ptr);
+void	handle_format(void *ptr);
 
 /*
 ** File: ft_puthexa_size.c

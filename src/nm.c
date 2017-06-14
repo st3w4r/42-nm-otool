@@ -7,7 +7,8 @@ void process_file(char *file_name)
 
 	fd = open_file(file_name);
 	ptr = map_file_into_memory(fd);
-	handle_macho_64(ptr);
+	handle_format(ptr);
+	// handle_macho_64(ptr);
 	// display_file_format(get_file_format(ptr));
 	// display_mach_header_32((struct mach_header*)ptr);
 }
