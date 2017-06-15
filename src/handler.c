@@ -9,6 +9,8 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 
 	symbol_table = get_symbol_table(sym, ptr);
 	string_table = get_string_table(sym, ptr);
+	format->symbol_table = symbol_table;
+	format->string_table = string_table;
 
 	i = 0;
 	while (i < sym->nsyms)

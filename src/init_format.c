@@ -47,6 +47,8 @@
 	// format.string_table = // Not the right place
 	// format.symbol_table = // Not the right placed
 	// format.lc_list = init_lc_list(ptr);
+	format->symbol_table = NULL;
+	format->string_table = NULL;
 	format->section_list = NULL;
 	format->symbol_list = NULL;
 	return format;

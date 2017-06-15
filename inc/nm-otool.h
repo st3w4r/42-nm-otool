@@ -105,8 +105,8 @@ typedef struct fromat
 	bool	is_64;
 	bool	is_big_endian;
 	void *ptr_header;
-	void *string_table;
 	void *symbol_table;
+	void *string_table;
 	// s_lc_list				*lc_list; //ptr on linked list of lc_list
 	s_section_list *section_list;
 	s_symbol_list *symbol_list;
@@ -166,8 +166,8 @@ void display_section_command(struct section_64 *sec, void *ptr);
 void display_cpu_type(cpu_type_t cputype, cpu_subtype_t cpusubtype);
 void display_file_type(uint32_t filetype);
 void display_nlist_64(s_section_list *section_list,
-	uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
-	uint16_t n_desc, uint64_t n_value);
+											uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
+											uint16_t n_desc, uint64_t n_value);
 
 /*
 ** File: format_information.c
@@ -176,9 +176,10 @@ void display_nlist_64(s_section_list *section_list,
 e_file_format	get_file_format(void *ptr);
 struct load_command	*get_first_load_command(struct mach_header_64 *header);
 struct load_command	*get_next_load_command(struct load_command *lc);
-struct nlist_64	*get_symbol_table(struct symtab_command *sym, void *ptr);
+void	*get_symbol_table(struct symtab_command *sym, void *ptr);
 void	*get_string_table(struct symtab_command *sym, void *ptr);
-char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol);
+// char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol);
+char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table);
 struct section_64	*get_section_command(struct segment_command_64 *seg, uint32_t index_section);
 uint64_t	get_section_type(struct section_64 *sec);
 uint64_t	get_section_attributes(struct section_64 *sec);
@@ -197,6 +198,6 @@ void	handle_format(void *ptr);
 /*
 ** File: ft_puthexa_size.c
 */
-void	ft_puthexa_size(uint64_t nb);
+void	ft_puthexa_size(uint64_t nb, size_t size);
 
 #endif

@@ -24,7 +24,11 @@ struct load_command *get_next_load_command(struct load_command *lc)
 	return ((void*)lc + lc->cmdsize);
 }
 
-struct nlist_64 *get_symbol_table(struct symtab_command *sym, void *ptr)
+/*
+** Get the symbol table from a command and the ptr on the beginning of the
+** mapped file. And return the ptr on the symbol tble (strcut nlist_64)
+*/
+void *get_symbol_table(struct symtab_command *sym, void *ptr)
 {
 	return (ptr + sym->symoff);
 }
@@ -35,9 +39,14 @@ void *get_string_table(struct symtab_command *sym, void *ptr)
 }
 
 
-char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol)
+// char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol)
+// {
+// 	return (string_table + symbol_table[num_symbol].n_un.n_strx);
+// }
+
+char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table)
 {
-	return (string_table + symbol_table[num_symbol].n_un.n_strx);
+	return (string_table + symbol_elem->symbol->n_un.n_strx);
 }
 
 struct section_64 *get_section_command(struct segment_command_64 *seg, uint32_t index_section)
