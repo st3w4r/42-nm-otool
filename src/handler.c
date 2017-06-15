@@ -13,6 +13,7 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	format->string_table = string_table;
 
 	i = 0;
+	ft_putstr("NSYMS: ");ft_putnbr(sym->nsyms); ft_putstr(" ");
 	while (i < sym->nsyms)
 	{
 			if (format->symbol_list == NULL)

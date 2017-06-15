@@ -48,6 +48,7 @@ void display_section_list(s_section_list *section_list)
 void display_symbol_hexa(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
 {
 	uint8_t n_type;
+	uint8_t type;
 	uint8_t n_sect;
 	// uint8_t type;
 	uint16_t n_desc;
@@ -61,16 +62,19 @@ void display_symbol_hexa(void *string_table, s_section_list *section_list, s_sym
 	n_value = symbol_elem->symbol->n_value;
 	n_desc = symbol_elem->symbol->n_desc;
 	n_strx = symbol_elem->symbol->n_un.n_strx;
-	// type = get_symbol_type(n_type);
-
-	ft_puthexa_size(n_value, sizeof(n_value) * 2); ft_putstr(" ");
-	ft_puthexa_size(n_type, sizeof(n_type) * 2); ft_putstr(" ");
-	ft_puthexa_size(n_sect, sizeof(n_sect) * 2); ft_putstr(" ");
-	ft_puthexa_size(n_desc, sizeof(n_desc) * 2); ft_putstr(" ");
-	ft_puthexa_size(n_strx, sizeof(n_strx) * 2); ft_putstr(" ");
+	type = get_symbol_type(n_type);
 	symbol_string = get_symbol_string(symbol_elem, string_table);
-	ft_putstr(symbol_string);
-	ft_putstr("\n");
+
+	if ((type == N_SECT || type == N_UNDF) && ft_strcmp(symbol_string, ""))
+	{
+		ft_puthexa_size(n_value, sizeof(n_value) * 2); ft_putstr(" ");
+		ft_puthexa_size(n_type, sizeof(n_type) * 2); ft_putstr(" ");
+		ft_puthexa_size(n_sect, sizeof(n_sect) * 2); ft_putstr(" ");
+		ft_puthexa_size(n_desc, sizeof(n_desc) * 2); ft_putstr(" ");
+		ft_puthexa_size(n_strx, sizeof(n_strx) * 2); ft_putstr(" ");
+		ft_putstr(symbol_string);
+		ft_putstr("\n");
+	}
 }
 
 // void display_symbol(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)

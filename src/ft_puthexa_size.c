@@ -19,8 +19,6 @@ void	ft_puthexa_size(uint64_t nb, size_t size)
 	int		hex[16];
 	int		i;
 
-	// ft_putnbr(nb);
-	// ft_putstr(" ");
 	ft_bzero(hex_revert, 16);
 	ft_bzero(hex, 16);
 	i = 0;
@@ -34,9 +32,9 @@ void	ft_puthexa_size(uint64_t nb, size_t size)
 		nb /= 16;
 		i++;
 	}
-	while (i >= 0)
+	while (i > 0)
 	{
-		ft_putchar(hex_revert[i]);
 		i--;
+		ft_putchar(hex_revert[i]);
 	}
 }
