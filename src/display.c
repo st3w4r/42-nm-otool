@@ -45,6 +45,11 @@ void display_section_list(s_section_list *section_list)
 	}
 }
 
+void display_symbol_short(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+{
+
+}
+
 void display_symbol_hexa(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
 {
 	uint8_t n_type;
@@ -77,113 +82,127 @@ void display_symbol_hexa(void *string_table, s_section_list *section_list, s_sym
 	}
 }
 
-// void display_symbol(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
-// {
-// 	// display_nlist_64(section_list,
-// 	// 									symbol_elem->symbol->n_un.n_strx,
-// 	// 									symbol_elem->symbol->n_type,
-// 	// 									symbol_elem->symbol->n_sect,
-// 	// 									symbol_elem->symbol->n_desc,
-// 	// 									symbol_elem->symbol->n_value);
-//
-// 	uint8_t n_type;
-// 	uint8_t n_sect;
-// 	uint8_t type;
-// 	uint16_t n_desc;
-// 	uint64_t n_value;
-// 	s_section_list *section_elem;
-// 	char *symbol_string;
-//
-// 	n_type = symbol_elem->symbol->n_type;
-// 	n_sect = symbol_elem->symbol->n_sect;
-// 	n_value = symbol_elem->symbol->n_value;
-// 	n_desc = symbol_elem->symbol->n_desc;
-// 	type = get_symbol_type(n_type);
-//
-// 	if (n_value)
-// 		ft_puthexa_size(n_value);
-// 	else
-// 		ft_putstr("         ");
-// 	ft_putstr(" ");
-//
-// 	if (type == N_UNDF)
-// 		ft_putstr("(undefined) ");
-// 	else if (type == N_ABS)
-// 		ft_putstr("(absolute) ");
-// 	else if (type == N_SECT)
-// 		ft_putstr("");
-// 	else if (type == N_PBUD)
-// 		ft_putstr("N_PBUD ");
-// 	else if (type == N_INDR)
-// 		ft_putstr("(indirect) ");
-// 	else if (type == N_UNDF && n_type == N_EXT && n_value)
-// 		ft_putstr("(common) ");
-//
-//
-// 	if (n_sect == NO_SECT)
-// 	{
-// 		ft_putstr("");
-// 		// ft_putstr("NO_SECT ");
-// 	}
-// 	else if (n_type == MAX_SECT)
-// 		ft_putstr("MAX_SECT ");
-// 	else
-// 	{
-// 		section_elem = get_section_index(section_list, n_sect);
-//
-// 		// ft_putstr("Section n: ");
-// 		// ft_putnbr(n_sect);
-// 		ft_putstr("(");
-// 		ft_putstr(section_elem->section->segname);
-// 		ft_putstr(",");
-// 		ft_putstr(section_elem->section->sectname);
-// 		ft_putstr(") ");
-// 	}
-//
-//
-//
-//
-// 	uint16_t desc_reference;
-// 	desc_reference = n_desc & REFERENCE_TYPE;
-// 	// if (n_desc == REFERENCE_FLAG_UNDEFINED_NON_LAZY)
-// 		// ft_putstr("REFERENCE_FLAG_UNDEFINED_NON_LAZY ");
-// 	if (n_desc == REFERENCE_FLAG_UNDEFINED_LAZY)
-// 		ft_putstr("REFERENCE_FLAG_UNDEFINED_LAZY ");
-// 	else if (n_desc == REFERENCE_FLAG_DEFINED)
-// 		ft_putstr("REFERENCE_FLAG_DEFINED ");
-// 	else if (n_desc == REFERENCE_FLAG_PRIVATE_DEFINED)
-// 		ft_putstr("REFERENCE_FLAG_PRIVATE_DEFINED ");
-// 	else if (n_desc == REFERENCE_FLAG_PRIVATE_UNDEFINED_NON_LAZY)
-// 		ft_putstr("REFERENCE_FLAG_PRIVATE_UNDEFINED_NON_LAZY ");
-// 	else if (n_desc == REFERENCE_FLAG_PRIVATE_UNDEFINED_LAZY)
-// 		ft_putstr("REFERENCE_FLAG_PRIVATE_UNDEFINED_LAZY ");
-// 	else if (n_desc == REFERENCED_DYNAMICALLY)
-// 		ft_putstr("[referenced dynamically] ");
-//
-// 	// if ((n_type & N_TYPE) == N_TYPE)
-// 	// 	ft_putstr("N_TYPE ");
-// 	if ((n_type & N_STAB) == N_STAB)
-// 		ft_putstr("N_STAB ");
-//
-// 	if ((n_type & N_PEXT) == N_PEXT)
-// 		ft_putstr("non-external ");
-// 	if ((n_type & N_EXT) == N_EXT)
-// 		ft_putstr("external ");
-//
-//
-// 	symbol_string = get_symbol_string(symbol_elem, string_table);
-// 	ft_putstr(symbol_string);
-//
-// 	ft_putstr("\n");
-//
-// }
+void display_symbol(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+{
+	// display_nlist_64(section_list,
+	// 									symbol_elem->symbol->n_un.n_strx,
+	// 									symbol_elem->symbol->n_type,
+	// 									symbol_elem->symbol->n_sect,
+	// 									symbol_elem->symbol->n_desc,
+	// 									symbol_elem->symbol->n_value);
+
+	uint8_t n_type;
+	uint8_t n_sect;
+	uint8_t type;
+	uint16_t n_desc;
+	uint64_t n_value;
+	s_section_list *section_elem;
+	char *symbol_string;
+
+	n_type = symbol_elem->symbol->n_type;
+	n_sect = symbol_elem->symbol->n_sect;
+	n_value = symbol_elem->symbol->n_value;
+	n_desc = symbol_elem->symbol->n_desc;
+	type = get_symbol_type(n_type);
+	symbol_string = get_symbol_string(symbol_elem, string_table);
+	section_elem = get_section_index(section_list, n_sect);
+
+
+	// if ((type != N_SECT && type != N_UNDF) || ft_strcmp(symbol_string, "") == 0)
+	// 	return ;
+	uint32_t secattr = get_section_attributes(section_elem);
+
+	// ft_putnbr(section_elem->section->flags);
+	// printf("\nFlags: %u\n", section_elem->section->flags & SECTION_ATTRIBUTES);
+
+	// ft_putstr(" Section attribute: ");
+	// ft_putnbr(section_elem->section->flags & 0x000000ff);
+	// ft_putstr(" ");
+	// if ((section_elem->section->flags & SECTION_TYPE)== S_ATTR_DEBUG)
+	// 	ft_putstr("S_ATTR_DEBUG");
+
+	if (n_value)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else
+		ft_putstr("                ");
+	ft_putstr(" ");
+
+	if (type == N_UNDF)
+		ft_putstr("(undefined) ");
+	else if (type == N_ABS)
+		ft_putstr("(absolute) ");
+	else if (type == N_SECT)
+		ft_putstr("");
+	else if (type == N_PBUD)
+		ft_putstr("N_PBUD ");
+	else if (type == N_INDR)
+		ft_putstr("(indirect) ");
+	else if (type == N_UNDF && n_type == N_EXT && n_value)
+		ft_putstr("(common) ");
+
+
+	if (n_sect == NO_SECT)
+	{
+		ft_putstr("");
+		// ft_putstr("NO_SECT ");
+	}
+	else if (n_type == MAX_SECT)
+		ft_putstr("MAX_SECT ");
+	else
+	{
+
+		// ft_putstr("Section n: ");
+		// ft_putnbr(n_sect);
+		ft_putstr("(");
+		ft_putstr(section_elem->section->segname);
+		ft_putstr(",");
+		ft_putstr(section_elem->section->sectname);
+		ft_putstr(") ");
+	}
+
+
+
+
+	uint16_t desc_reference;
+	desc_reference = n_desc & REFERENCE_TYPE;
+	// if (n_desc == REFERENCE_FLAG_UNDEFINED_NON_LAZY)
+		// ft_putstr("REFERENCE_FLAG_UNDEFINED_NON_LAZY ");
+	if (n_desc == REFERENCE_FLAG_UNDEFINED_LAZY)
+		ft_putstr("REFERENCE_FLAG_UNDEFINED_LAZY ");
+	else if (n_desc == REFERENCE_FLAG_DEFINED)
+		ft_putstr("REFERENCE_FLAG_DEFINED ");
+	else if (n_desc == REFERENCE_FLAG_PRIVATE_DEFINED)
+		ft_putstr("REFERENCE_FLAG_PRIVATE_DEFINED ");
+	else if (n_desc == REFERENCE_FLAG_PRIVATE_UNDEFINED_NON_LAZY)
+		ft_putstr("REFERENCE_FLAG_PRIVATE_UNDEFINED_NON_LAZY ");
+	else if (n_desc == REFERENCE_FLAG_PRIVATE_UNDEFINED_LAZY)
+		ft_putstr("REFERENCE_FLAG_PRIVATE_UNDEFINED_LAZY ");
+	else if (n_desc == REFERENCED_DYNAMICALLY)
+		ft_putstr("[referenced dynamically] ");
+
+	// if ((n_type & N_TYPE) == N_TYPE)
+	// 	ft_putstr("N_TYPE ");
+	if ((n_type & N_STAB) == N_STAB)
+		ft_putstr("N_STAB ");
+
+	if ((n_type & N_PEXT) == N_PEXT)
+		ft_putstr("non-external ");
+	if ((n_type & N_EXT) == N_EXT)
+		ft_putstr("external ");
+
+	ft_putstr(symbol_string);
+
+	ft_putstr("\n");
+
+}
 
 void display_symbol_list(void *string_table, s_section_list *section_list, s_symbol_list *symbol_list)
 {
 	while (symbol_list)
 	{
-		// display_symbol(string_table, section_list, symbol_list);
-		display_symbol_hexa(string_table, section_list, symbol_list);
+		display_symbol(string_table, section_list, symbol_list);
+		// display_symbol_hexa(string_table, section_list, symbol_list);
+		// display_section_command(section_list);
 		symbol_list = symbol_list->next;
 	}
 }
@@ -336,92 +355,92 @@ void display_load_command_type(uint32_t cmd)
 }
 
 
-void display_section_command(struct section_64 *sec, void *ptr)
+void display_section_command(s_section_list *section_elem)
 {
-	ft_putstr("Section: Segment name: ");
-	ft_putstr(sec->segname);
-	ft_putstr(" Section name: ");
-	ft_putstr(sec->sectname);
+	// ft_putstr("Section: Segment name: ");
+	// ft_putstr(section_elem->section->segname);
+	// ft_putstr(" Section name: ");
+	// ft_putstr(section_elem->section->sectname);
 
-	uint64_t sectype = get_section_type(sec);
+	uint32_t sectype = get_section_type(section_elem);
 
 	ft_putstr(" Section type: ");
 	if (sectype == S_REGULAR)
 		ft_putstr("S_REGULAR");
-	else if (sectype == S_ZEROFILL)
+	 if (sectype == S_ZEROFILL)
 		ft_putstr("S_ZEROFILL");
-	else if (sectype == S_CSTRING_LITERALS)
+	 if (sectype == S_CSTRING_LITERALS)
 		ft_putstr("S_CSTRING_LITERALS");
-	else if (sectype == S_4BYTE_LITERALS)
+	 if (sectype == S_4BYTE_LITERALS)
 		ft_putstr("S_4BYTE_LITERALS");
-	else if (sectype == S_8BYTE_LITERALS)
+	 if (sectype == S_8BYTE_LITERALS)
 		ft_putstr("S_8BYTE_LITERALS");
-	else if (sectype == S_LITERAL_POINTERS)
+	 if (sectype == S_LITERAL_POINTERS)
 		ft_putstr("S_LITERAL_POINTERS");
-	else if (sectype == S_NON_LAZY_SYMBOL_POINTERS)
+	 if (sectype == S_NON_LAZY_SYMBOL_POINTERS)
 		ft_putstr("S_NON_LAZY_SYMBOL_POINTERS");
-	else if (sectype == S_LAZY_SYMBOL_POINTERS)
+	 if (sectype == S_LAZY_SYMBOL_POINTERS)
 		ft_putstr("S_LAZY_SYMBOL_POINTERS");
-	else if (sectype == S_SYMBOL_STUBS)
+	 if (sectype == S_SYMBOL_STUBS)
 		ft_putstr("S_SYMBOL_STUBS");
-	else if (sectype == S_MOD_INIT_FUNC_POINTERS)
+	 if (sectype == S_MOD_INIT_FUNC_POINTERS)
 		ft_putstr("S_MOD_INIT_FUNC_POINTERS");
-	else if (sectype == S_MOD_TERM_FUNC_POINTERS)
+	 if (sectype == S_MOD_TERM_FUNC_POINTERS)
 		ft_putstr("S_MOD_TERM_FUNC_POINTERS");
-	else if (sectype == S_COALESCED)
+	 if (sectype == S_COALESCED)
 		ft_putstr("S_COALESCED");
-	else if (sectype == S_GB_ZEROFILL)
+	 if (sectype == S_GB_ZEROFILL)
 		ft_putstr("S_GB_ZEROFILL");
-	else if (sectype == S_INTERPOSING)
+	 if (sectype == S_INTERPOSING)
 		ft_putstr("S_INTERPOSING");
-	else if (sectype == S_16BYTE_LITERALS)
+	 if (sectype == S_16BYTE_LITERALS)
 		ft_putstr("S_16BYTE_LITERALS");
-	else if (sectype == S_DTRACE_DOF)
+	 if (sectype == S_DTRACE_DOF)
 		ft_putstr("S_DTRACE_DOF");
-	else if (sectype == S_LAZY_DYLIB_SYMBOL_POINTERS)
+	 if (sectype == S_LAZY_DYLIB_SYMBOL_POINTERS)
 		ft_putstr("S_LAZY_DYLIB_SYMBOL_POINTERS");
-	else if (sectype == S_THREAD_LOCAL_REGULAR)
+	 if (sectype == S_THREAD_LOCAL_REGULAR)
 		ft_putstr("S_THREAD_LOCAL_REGULAR");
-	else if (sectype == S_THREAD_LOCAL_ZEROFILL)
+	 if (sectype == S_THREAD_LOCAL_ZEROFILL)
 		ft_putstr("S_THREAD_LOCAL_ZEROFILL");
-	else if (sectype == S_THREAD_LOCAL_VARIABLES)
+	 if (sectype == S_THREAD_LOCAL_VARIABLES)
 		ft_putstr("S_THREAD_LOCAL_VARIABLES");
-	else if (sectype == S_THREAD_LOCAL_VARIABLE_POINTERS)
+	 if (sectype == S_THREAD_LOCAL_VARIABLE_POINTERS)
 		ft_putstr("S_THREAD_LOCAL_VARIABLE_POINTERS");
-	else if (sectype == S_THREAD_LOCAL_INIT_FUNCTION_POINTERS)
+	 if (sectype == S_THREAD_LOCAL_INIT_FUNCTION_POINTERS)
 		ft_putstr("S_THREAD_LOCAL_INIT_FUNCTION_POINTERS");
-	else
-		ft_putstr("UNKNOWN");
+	// else
+	// 	ft_putstr("UNKNOWN");
 
 
-	uint64_t secattr = get_section_attributes(sec);
+	uint32_t secattr = get_section_attributes(section_elem);
 	ft_putstr(" Section attribute: ");
 	if (secattr == SECTION_ATTRIBUTES_USR)
 		ft_putstr("SECTION_ATTRIBUTES_USR");
-	else if (secattr == S_ATTR_PURE_INSTRUCTIONS)
+	if (secattr == S_ATTR_PURE_INSTRUCTIONS)
 		ft_putstr("S_ATTR_PURE_INSTRUCTIONS");
-	else if (secattr == S_ATTR_NO_TOC)
+	if (secattr == S_ATTR_NO_TOC)
 		ft_putstr("S_ATTR_NO_TOC");
-	else if (secattr == S_ATTR_STRIP_STATIC_SYMS)
+	if (secattr == S_ATTR_STRIP_STATIC_SYMS)
 		ft_putstr("S_ATTR_STRIP_STATIC_SYMS");
-	else if (secattr == S_ATTR_NO_DEAD_STRIP)
+	if (secattr == S_ATTR_NO_DEAD_STRIP)
 		ft_putstr("S_ATTR_NO_DEAD_STRIP");
-	else if (secattr == S_ATTR_LIVE_SUPPORT)
+	if (secattr == S_ATTR_LIVE_SUPPORT)
 		ft_putstr("S_ATTR_LIVE_SUPPORT");
-	else if (secattr == S_ATTR_SELF_MODIFYING_CODE)
+	if (secattr == S_ATTR_SELF_MODIFYING_CODE)
 		ft_putstr("S_ATTR_SELF_MODIFYING_CODE");
-	else if (secattr == S_ATTR_DEBUG)
+	if (secattr == S_ATTR_DEBUG)
 		ft_putstr("S_ATTR_DEBUG");
-	else if (secattr == SECTION_ATTRIBUTES_SYS)
+	if (secattr == SECTION_ATTRIBUTES_SYS)
 		ft_putstr("SECTION_ATTRIBUTES_SYS");
-	else if (secattr == S_ATTR_SOME_INSTRUCTIONS)
+	if (secattr == S_ATTR_SOME_INSTRUCTIONS)
 		ft_putstr("S_ATTR_SOME_INSTRUCTIONS");
-	else if (secattr == S_ATTR_EXT_RELOC)
+	if (secattr == S_ATTR_EXT_RELOC)
 		ft_putstr("S_ATTR_EXT_RELOC");
-	else if (secattr == S_ATTR_LOC_RELOC)
+	if (secattr == S_ATTR_LOC_RELOC)
 		ft_putstr("S_ATTR_LOC_RELOC");
-	else
-		ft_putstr("UNKNOWN");
+	// else
+	// 	ft_putstr("UNKNOWN");
 	ft_putstr("\n");
 }
 

@@ -56,14 +56,14 @@ struct section_64 *get_section_command(struct segment_command_64 *seg, uint32_t 
 					(index_section * sizeof(struct section_64));
 }
 
-uint64_t get_section_type(struct section_64 *sec)
+uint32_t get_section_type(s_section_list *section_elem)
 {
-	return sec->flags & SECTION_TYPE;
+	return section_elem->section->flags & SECTION_TYPE;
 }
 
-uint64_t get_section_attributes(struct section_64 *sec)
+uint32_t get_section_attributes(s_section_list *section_elem)
 {
-	return sec->flags & SECTION_ATTRIBUTES;
+	return section_elem->section->flags & SECTION_ATTRIBUTES;
 }
 
 uint8_t get_symbol_type(uint8_t n_type)

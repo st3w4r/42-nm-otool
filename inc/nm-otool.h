@@ -162,7 +162,7 @@ void	display_mach_header_32(struct mach_header *header);
 void	display_mach_header_64(struct mach_header_64 *header);
 
 void display_load_command_type(uint32_t cmd);
-void display_section_command(struct section_64 *sec, void *ptr);
+void display_section_command(s_section_list *section_elem);
 void display_cpu_type(cpu_type_t cputype, cpu_subtype_t cpusubtype);
 void display_file_type(uint32_t filetype);
 void display_nlist_64(s_section_list *section_list,
@@ -181,8 +181,8 @@ void	*get_string_table(struct symtab_command *sym, void *ptr);
 // char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol);
 char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table);
 struct section_64	*get_section_command(struct segment_command_64 *seg, uint32_t index_section);
-uint64_t	get_section_type(struct section_64 *sec);
-uint64_t	get_section_attributes(struct section_64 *sec);
+uint32_t	get_section_type(s_section_list *section_elem);
+uint32_t	get_section_attributes(s_section_list *section_elem);
 uint8_t		get_symbol_type(uint8_t n_type);
 
 /*

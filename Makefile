@@ -29,7 +29,7 @@ ifeq ($(DEBUG),yes)
 	CFLAGS = $(INCLUDES) -g
 	LDFLAGS = -shared
 else
-	CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g
+	CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
 	LDFLAGS = -shared
 endif
 
