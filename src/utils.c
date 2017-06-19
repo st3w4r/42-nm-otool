@@ -10,6 +10,7 @@ void *map_file_into_memory(int fd)
 
 	file_size = get_size_of_file(fd);
 	ptr = mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
+	ft_putstr("File size: "); ft_putnbr(file_size); ft_putstr(" ");
 	if (ptr == MAP_FAILED)
 	{
 		ft_error_str_exit("mmap error\n");

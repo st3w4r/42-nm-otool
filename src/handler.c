@@ -102,7 +102,16 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr)
 // }
 
 /*
-** Handle the macho file format
+** Handle the macho file format for 32 bits
+*/
+void	handle_macho_32(s_format *format, void*ptr)
+{
+	struct mach_header *header;
+
+}
+
+/*
+** Handle the macho file format for 64 bits
 */
 void	handle_macho_64(s_format *format, void *ptr)
 {
@@ -112,7 +121,7 @@ void	handle_macho_64(s_format *format, void *ptr)
 	struct load_command *lc;
 
 	header = (struct mach_header_64*)ptr;
-	// display_mach_header_64(header);
+	display_mach_header_64(header);
 	// display_file_type(header->filetype);
 	// display_cpu_type(header->cputype, header->cpusubtype);
 	i = 0;
@@ -141,6 +150,12 @@ void	handle_format(void *ptr)
 	{
 		handle_macho_64(format, ptr);
 		display_format(format);
+	}
+	else if (format->file_format == MACHO_32)
+	{
+		ft_putstr("File macho 32\n");
+		handle_macho_32(format, ptr);
+		// display_format(format);
 	}
 	else
 	{

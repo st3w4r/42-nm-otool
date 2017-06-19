@@ -240,7 +240,7 @@ void	display_mach_header_64(struct mach_header_64 *header)
 	ft_putstr("cpusubtype: ");	ft_puthexa(header->cpusubtype);	ft_putstr("\n");
 	ft_putstr("filetype: ");		ft_puthexa(header->filetype);		ft_putstr("\n");
 	ft_putstr("ncmds: ");				ft_putnbr(header->ncmds);			ft_putstr("\n");
-	ft_putstr("sizeofcmds: ");	ft_puthexa(header->sizeofcmds);	ft_putstr("\n");
+	ft_putstr("sizeofcmds: ");	ft_putnbr(header->sizeofcmds);	ft_putstr("\n");
 	ft_putstr("flags: ");				ft_puthexa(header->flags);			ft_putstr("\n");
 	ft_putstr("reserved: ");		ft_puthexa(header->reserved);		ft_putstr("\n");
 	ft_putstr("\n");
