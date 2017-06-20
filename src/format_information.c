@@ -56,11 +56,23 @@ char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table)
 	return (string_table + symbol_elem->symbol_64->n_un.n_strx);
 }
 
-struct section_64 *get_section_command(struct segment_command_64 *seg, uint32_t index_section)
+/*
+** Send a struct segment_command witht an index and return a struct section
+*/
+void *get_section_command(void *seg, uint32_t index_section, bool is_64)
 {
-	return (void*)seg +
+	if (is_64 == TRUE)
+	{
+		return (void*)seg +
 					sizeof(struct segment_command_64) +
 					(index_section * sizeof(struct section_64));
+	}
+	else
+	{
+		return (void*)seg +
+					sizeof(struct segment_command) +
+					(index_section * sizeof(struct section));
+	}
 }
 
 uint32_t get_section_type(s_section_list *section_elem)

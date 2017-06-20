@@ -22,8 +22,9 @@ s_section_list *get_section_index(s_section_list *section_list, uint8_t index_se
 
 /*
 ** Add section to the section_list
+** Send a struct section and recevice a s_section_list
 */
-s_section_list *add_section_list(s_format *format, struct section_64 *sec)
+s_section_list *add_section_list(s_format *format, void *sec, bool is_64)
 {
 	s_section_list *section_list;
 
@@ -34,7 +35,17 @@ s_section_list *add_section_list(s_format *format, struct section_64 *sec)
 	}
 	if ((section_list->next = malloc(sizeof(s_section_list))) == NULL)
 		ft_malloc_error();
-	section_list->next->section_64 = sec;
+
+	if (is_64 == TRUE)
+	{
+		section_list->next->section_64 = sec;
+		section_list->next->section_32 = NULL;
+	}
+	else
+	{
+		section_list->next->section_32 = sec;
+		section_list->next->section_64 = NULL;
+	}
 	section_list->next->prev = section_list;
 	section_list->next->next = NULL;
 	return section_list->next;
@@ -42,14 +53,25 @@ s_section_list *add_section_list(s_format *format, struct section_64 *sec)
 
 /*
 ** Init the first section of the section_list
+** Send a struct section and recevice a s_section_list
 */
-s_section_list *init_section_list(s_format *format, struct section_64 *sec)
+s_section_list *init_section_list(s_format *format, void *sec, bool is_64)
 {
 	s_section_list *section_list;
 
 	if ((section_list = malloc(sizeof(s_section_list))) == NULL)
 		ft_malloc_error();
-	section_list->section_64 = sec;
+
+	if (is_64 == TRUE)
+	{
+		section_list->section_64 = sec;
+		section_list->section_32 = NULL;
+	}
+	else
+	{
+		section_list->section_32 = sec;
+		section_list->section_64 = NULL;
+	}
 	section_list->prev = NULL;
 	section_list->next = NULL;
 	format->section_list = section_list;
