@@ -21,10 +21,14 @@
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
 #include <mach-o/stab.h>
+#include <mach-o/fat.h>
 #include <mach/machine.h>
 #include <stdbool.h>
 
 #include "libft.h"
+
+# define IS_64 TRUE
+# define IS_32 FALSE
 
 /*
 ** All typedef to simplify function prototype and variable declaration
@@ -39,6 +43,8 @@ typedef enum	file_format
 {
 	MACHO_32,
 	MACHO_64,
+	FAT,
+	FAT_64,
 	UNKNOWN
 }	 						e_file_format;
 
@@ -86,7 +92,8 @@ typedef enum	file_format
 typedef struct section_list s_section_list;
 struct section_list
 {
-	struct section_64 *section;
+	struct section_64 *section_64;
+	struct section *section_32;
 	s_section_list *prev;
 	s_section_list *next;
 };
@@ -94,7 +101,8 @@ struct section_list
 typedef struct symbol_list s_symbol_list;
 struct symbol_list
 {
-	struct nlist_64 *symbol;
+	struct nlist_64 *symbol_64;
+	struct nlist *symbol_32;
 	s_symbol_list *prev;
 	s_symbol_list *next;
 };
@@ -174,7 +182,8 @@ void display_nlist_64(s_section_list *section_list,
 ** Description: Get the information from the right file type
 */
 e_file_format	get_file_format(void *ptr);
-struct load_command	*get_first_load_command(struct mach_header_64 *header);
+// struct load_command	*get_first_load_command(struct mach_header_64 *header);
+struct load_command *get_first_load_command(void *header, bool is_64);
 struct load_command	*get_next_load_command(struct load_command *lc);
 void	*get_symbol_table(struct symtab_command *sym, void *ptr);
 void	*get_string_table(struct symtab_command *sym, void *ptr);
@@ -191,8 +200,9 @@ uint8_t		get_symbol_type(uint8_t n_type);
 */
 void	handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr);
 void	handle_segment_command(s_format *format, struct segment_command_64 *seg, void *ptr);
+// void	handle_load_command(s_format *format, struct load_command *lc, void *ptr);
 void	handle_load_command(s_format *format, struct load_command *lc, void *ptr);
-void	handle_macho_64(s_format *format, void *ptr);
+void	handle_macho(s_format *format, void *ptr, bool is_64);
 void	handle_format(void *ptr);
 
 /*

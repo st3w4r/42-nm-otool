@@ -30,9 +30,9 @@ void display_file_format(e_file_format file_format)
 void display_section(s_section_list *section_list)
 {
 	ft_putstr("Segment name: ");
-	ft_putstr(section_list->section->segname);
+	ft_putstr(section_list->section_64->segname);
 	ft_putstr(" Section name: ");
-	ft_putstr(section_list->section->sectname);
+	ft_putstr(section_list->section_64->sectname);
 	ft_putstr("\n");
 }
 
@@ -62,11 +62,11 @@ void display_symbol_hexa(void *string_table, s_section_list *section_list, s_sym
 	// s_section_list *section_elem;
 	char *symbol_string;
 
-	n_type = symbol_elem->symbol->n_type;
-	n_sect = symbol_elem->symbol->n_sect;
-	n_value = symbol_elem->symbol->n_value;
-	n_desc = symbol_elem->symbol->n_desc;
-	n_strx = symbol_elem->symbol->n_un.n_strx;
+	n_type = symbol_elem->symbol_64->n_type;
+	n_sect = symbol_elem->symbol_64->n_sect;
+	n_value = symbol_elem->symbol_64->n_value;
+	n_desc = symbol_elem->symbol_64->n_desc;
+	n_strx = symbol_elem->symbol_64->n_un.n_strx;
 	type = get_symbol_type(n_type);
 	symbol_string = get_symbol_string(symbol_elem, string_table);
 
@@ -85,11 +85,11 @@ void display_symbol_hexa(void *string_table, s_section_list *section_list, s_sym
 void display_symbol(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
 {
 	// display_nlist_64(section_list,
-	// 									symbol_elem->symbol->n_un.n_strx,
-	// 									symbol_elem->symbol->n_type,
-	// 									symbol_elem->symbol->n_sect,
-	// 									symbol_elem->symbol->n_desc,
-	// 									symbol_elem->symbol->n_value);
+	// 									symbol_elem->symbol_64->n_un.n_strx,
+	// 									symbol_elem->symbol_64->n_type,
+	// 									symbol_elem->symbol_64->n_sect,
+	// 									symbol_elem->symbol_64->n_desc,
+	// 									symbol_elem->symbol_64->n_value);
 
 	uint8_t n_type;
 	uint8_t n_sect;
@@ -99,10 +99,10 @@ void display_symbol(void *string_table, s_section_list *section_list, s_symbol_l
 	s_section_list *section_elem;
 	char *symbol_string;
 
-	n_type = symbol_elem->symbol->n_type;
-	n_sect = symbol_elem->symbol->n_sect;
-	n_value = symbol_elem->symbol->n_value;
-	n_desc = symbol_elem->symbol->n_desc;
+	n_type = symbol_elem->symbol_64->n_type;
+	n_sect = symbol_elem->symbol_64->n_sect;
+	n_value = symbol_elem->symbol_64->n_value;
+	n_desc = symbol_elem->symbol_64->n_desc;
 	type = get_symbol_type(n_type);
 	symbol_string = get_symbol_string(symbol_elem, string_table);
 	section_elem = get_section_index(section_list, n_sect);
@@ -112,13 +112,13 @@ void display_symbol(void *string_table, s_section_list *section_list, s_symbol_l
 	// 	return ;
 	uint32_t secattr = get_section_attributes(section_elem);
 
-	// ft_putnbr(section_elem->section->flags);
-	// printf("\nFlags: %u\n", section_elem->section->flags & SECTION_ATTRIBUTES);
+	// ft_putnbr(section_elem->section_64->flags);
+	// printf("\nFlags: %u\n", section_elem->section_64->flags & SECTION_ATTRIBUTES);
 
 	// ft_putstr(" Section attribute: ");
-	// ft_putnbr(section_elem->section->flags & 0x000000ff);
+	// ft_putnbr(section_elem->section_64->flags & 0x000000ff);
 	// ft_putstr(" ");
-	// if ((section_elem->section->flags & SECTION_TYPE)== S_ATTR_DEBUG)
+	// if ((section_elem->section_64->flags & SECTION_TYPE)== S_ATTR_DEBUG)
 	// 	ft_putstr("S_ATTR_DEBUG");
 
 	if (n_value)
@@ -154,9 +154,9 @@ void display_symbol(void *string_table, s_section_list *section_list, s_symbol_l
 		// ft_putstr("Section n: ");
 		// ft_putnbr(n_sect);
 		ft_putstr("(");
-		ft_putstr(section_elem->section->segname);
+		ft_putstr(section_elem->section_64->segname);
 		ft_putstr(",");
-		ft_putstr(section_elem->section->sectname);
+		ft_putstr(section_elem->section_64->sectname);
 		ft_putstr(") ");
 	}
 
@@ -243,6 +243,8 @@ void	display_mach_header_64(struct mach_header_64 *header)
 	ft_putstr("sizeofcmds: ");	ft_putnbr(header->sizeofcmds);	ft_putstr("\n");
 	ft_putstr("flags: ");				ft_puthexa(header->flags);			ft_putstr("\n");
 	ft_putstr("reserved: ");		ft_puthexa(header->reserved);		ft_putstr("\n");
+
+	display_cpu_type(header->cputype, header->cpusubtype);
 	ft_putstr("\n");
 }
 
@@ -358,9 +360,9 @@ void display_load_command_type(uint32_t cmd)
 void display_section_command(s_section_list *section_elem)
 {
 	// ft_putstr("Section: Segment name: ");
-	// ft_putstr(section_elem->section->segname);
+	// ft_putstr(section_elem->section_64->segname);
 	// ft_putstr(" Section name: ");
-	// ft_putstr(section_elem->section->sectname);
+	// ft_putstr(section_elem->section_64->sectname);
 
 	uint32_t sectype = get_section_type(section_elem);
 
@@ -625,9 +627,9 @@ void display_file_type(uint32_t filetype)
 // 		ft_putstr("Section n: ");
 // 		ft_putnbr(n_sect);
 // 		ft_putstr(" (");
-// 		ft_putstr(section_elem->section->segname);
+// 		ft_putstr(section_elem->section_64->segname);
 // 		ft_putstr(",");
-// 		ft_putstr(section_elem->section->sectname);
+// 		ft_putstr(section_elem->section_64->sectname);
 // 		ft_putstr(") ");
 // 	}
 //

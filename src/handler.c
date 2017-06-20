@@ -13,24 +13,18 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	format->string_table = string_table;
 
 	i = 0;
-	ft_putstr("NSYMS: ");ft_putnbr(sym->nsyms); ft_putstr(" ");
 	while (i < sym->nsyms)
 	{
 			if (format->symbol_list == NULL)
 				init_symbol_list(format, symbol_table);
 			else
 				add_symbol_list(format, symbol_table);
-		// str = get_symbol_string(symbol_table, string_table, i);
-		// display_nlist_64(symbol_table[i].n_un.n_strx, symbol_table[i].n_type,
-			// symbol_table[i].n_sect, symbol_table[i].n_desc, symbol_table[i].n_value);
-		// ft_putstr(str);
-		// ft_putstr("\n");
 		symbol_table++;
 		i++;
 	}
 }
 
-void handle_segment_command(s_format *format, struct segment_command_64 *seg, void *ptr)
+void handle_segment_command(s_format *format, struct segment_command_64 *seg, void *ptr, bool is_64)
 {
 	uint32_t i;
 	struct section_64 *sec;
@@ -59,7 +53,7 @@ void handle_segment_command(s_format *format, struct segment_command_64 *seg, vo
 void handle_load_command(s_format *format, struct load_command *lc, void *ptr)
 {
 	struct symtab_command *sym;
-	struct segment_command_64 *seg;
+	void *seg;
 
 
 	if (lc->cmd == LC_SYMTAB)
@@ -70,6 +64,12 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr)
 	else if (lc->cmd == LC_SEGMENT_64)
 	{
 		seg = (struct segment_command_64 *)lc;
+		handle_segment_command(format, seg, ptr);
+		// handle_section_command((void*)seg + sizeof(struct segment_command_64), ptr);
+	}
+	else if (lc->cmd == LC_SEGMENT)
+	{
+		seg = (struct segment_command *)lc;
 		handle_segment_command(format, seg, ptr);
 		// handle_section_command((void*)seg + sizeof(struct segment_command_64), ptr);
 	}
@@ -104,16 +104,36 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr)
 /*
 ** Handle the macho file format for 32 bits
 */
-void	handle_macho_32(s_format *format, void*ptr)
+void	handle_macho(s_format *format, void *ptr, bool is_64)
 {
-	struct mach_header *header;
+	void *header;
+	uint32_t ncmds;
+	uint32_t i;
+	struct load_command *lc;
 
+	if (is_64 == TRUE)
+		header_64 = (struct mach_header_64*)header->ncmds;
+	else
+	 	header_32 = (struct mach_header*)header->ncmds;
+	// display_mach_header_64(header);
+	// display_file_type(header->filetype);
+	// display_cpu_type(header->cputype, header->cpusubtype);
+	i = 0;
+	// ncmds = header->ncmds;
+	lc = get_first_load_command(header);
+	while (i < ncmds)
+	{
+		// display_load_command_type(lc->cmd);
+		handle_load_command(format, lc, ptr);
+		lc = get_next_load_command(lc);
+		i++;
+	}
 }
 
 /*
 ** Handle the macho file format for 64 bits
 */
-void	handle_macho_64(s_format *format, void *ptr)
+void	handle_macho_64(s_format *format, void *ptr, bool is_64)
 {
 	struct mach_header_64 *header;
 	uint32_t ncmds;
@@ -148,14 +168,24 @@ void	handle_format(void *ptr)
 	// file_format = get_file_format(ptr);
 	if (format->file_format == MACHO_64)
 	{
-		handle_macho_64(format, ptr);
+		format->is_64 = TRUE;
+		handle_macho(format, ptr, format->is_64);
 		display_format(format);
 	}
 	else if (format->file_format == MACHO_32)
 	{
+		format->is_64 = FALSE;
 		ft_putstr("File macho 32\n");
-		handle_macho_32(format, ptr);
+		handle_macho(format, ptr, format->is_64);
 		// display_format(format);
+	}
+	else if (format->file_format == FAT)
+	{
+		ft_putstr("File FAT\n");
+	}
+	else if (format->file_format == FAT_64)
+	{
+		ft_putstr("File FAT 64\n");
 	}
 	else
 	{

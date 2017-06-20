@@ -10,13 +10,20 @@ e_file_format	get_file_format(void *ptr)
 		return (MACHO_32);
 	else if (magic == MH_MAGIC_64 || magic == MH_CIGAM_64)
 		return (MACHO_64);
+	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
+		return (FAT);
+	else if (magic == FAT_MAGIC_64 || magic == FAT_CIGAM_64)
+		return (FAT_64);
 	else
 		return (UNKNOWN);
 }
 
-struct load_command *get_first_load_command(struct mach_header_64 *header)
+struct load_command *get_first_load_command(void *header, bool is_64)
 {
-	return ((void*)header + sizeof(*header));
+	if (is_64 == TRUE)
+		return ((void*)header + sizeof(struct mach_header_64));
+	else
+		return ((void*)header + sizeof(struct mach_header));
 }
 
 struct load_command *get_next_load_command(struct load_command *lc)
@@ -46,7 +53,7 @@ void *get_string_table(struct symtab_command *sym, void *ptr)
 
 char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table)
 {
-	return (string_table + symbol_elem->symbol->n_un.n_strx);
+	return (string_table + symbol_elem->symbol_64->n_un.n_strx);
 }
 
 struct section_64 *get_section_command(struct segment_command_64 *seg, uint32_t index_section)
@@ -58,12 +65,12 @@ struct section_64 *get_section_command(struct segment_command_64 *seg, uint32_t 
 
 uint32_t get_section_type(s_section_list *section_elem)
 {
-	return section_elem->section->flags & SECTION_TYPE;
+	return section_elem->section_64->flags & SECTION_TYPE;
 }
 
 uint32_t get_section_attributes(s_section_list *section_elem)
 {
-	return section_elem->section->flags & SECTION_ATTRIBUTES;
+	return section_elem->section_64->flags & SECTION_ATTRIBUTES;
 }
 
 uint8_t get_symbol_type(uint8_t n_type)

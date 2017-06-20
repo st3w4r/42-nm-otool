@@ -34,7 +34,7 @@ s_section_list *add_section_list(s_format *format, struct section_64 *sec)
 	}
 	if ((section_list->next = malloc(sizeof(s_section_list))) == NULL)
 		ft_malloc_error();
-	section_list->next->section = sec;
+	section_list->next->section_64 = sec;
 	section_list->next->prev = section_list;
 	section_list->next->next = NULL;
 	return section_list->next;
@@ -49,7 +49,7 @@ s_section_list *init_section_list(s_format *format, struct section_64 *sec)
 
 	if ((section_list = malloc(sizeof(s_section_list))) == NULL)
 		ft_malloc_error();
-	section_list->section = sec;
+	section_list->section_64 = sec;
 	section_list->prev = NULL;
 	section_list->next = NULL;
 	format->section_list = section_list;
