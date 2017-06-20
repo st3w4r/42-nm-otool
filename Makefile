@@ -41,11 +41,13 @@ SRC =	nm.c \
 			utils.c \
 			display.c \
 			format_information.c \
-			handler.c \
 			init_format.c \
 			section_list.c \
 			symbol_list.c \
-			ft_puthexa_size.c
+			ft_puthexa_size.c \
+			handler.c \
+			format_32/handler_32.c \
+			format_64/handler_64.c
 
 
 OBJ = $(addprefix $(PATH_SRC), $(SRC:.c=.o))

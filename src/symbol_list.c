@@ -3,7 +3,7 @@
 /*
 ** Add symbol to the symbol_list
 */
-s_symbol_list *add_symbol_list(s_format *format, struct nlist_64 *symbol)
+s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64)
 {
 	s_symbol_list *symbol_list;
 
@@ -14,7 +14,16 @@ s_symbol_list *add_symbol_list(s_format *format, struct nlist_64 *symbol)
 	}
 	if ((symbol_list->next = malloc(sizeof(s_symbol_list))) == NULL)
 		ft_malloc_error();
-	symbol_list->next->symbol = symbol;
+	if (is_64 == TRUE)
+	{
+		symbol_list->symbol_64 = (struct nlist_64*)symbol;
+		symbol_list->symbol_32 = NULL;
+	}
+	else
+	{
+		symbol_list->symbol_32 = (struct nlist*)symbol;
+		symbol_list->symbol_64 = NULL;
+	}
 	symbol_list->next->prev = symbol_list;
 	symbol_list->next->next = NULL;
 	return symbol_list->next;
@@ -23,13 +32,22 @@ s_symbol_list *add_symbol_list(s_format *format, struct nlist_64 *symbol)
 /*
 ** Init the first symbol of the symbol_list
 */
-s_symbol_list *init_symbol_list(s_format *format, struct nlist_64 *symbol)
+s_symbol_list *init_symbol_list(s_format *format, void *symbol, bool is_64)
 {
 	s_symbol_list *symbol_list;
 
 	if ((symbol_list = malloc(sizeof(s_symbol_list))) == NULL)
 		ft_malloc_error();
-	symbol_list->symbol = symbol;
+	if (is_64 == TRUE)
+	{
+		symbol_list->symbol_64 = (struct nlist_64*)symbol;
+		symbol_list->symbol_32 = NULL;
+	}
+	else
+	{
+		symbol_list->symbol_32 = (struct nlist*)symbol;
+		symbol_list->symbol_64 = NULL;
+	}
 	symbol_list->prev = NULL;
 	symbol_list->next = NULL;
 	format->symbol_list = symbol_list;
