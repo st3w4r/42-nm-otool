@@ -135,8 +135,10 @@ s_section_list *init_section_list(s_format *format, void *sec, bool is_64);
 ** File: symbol_list.c
 ** Description: All functions to deal with the section_list
 */
-s_symbol_list *add_symbol_list(s_format *format, struct nlist_64 *symbol);
-s_symbol_list *init_symbol_list(s_format *format, struct nlist_64 *symbol);
+// s_symbol_list *add_symbol_list(s_format *format, struct nlist_64 *symbol);
+// s_symbol_list *init_symbol_list(s_format *format, struct nlist_64 *symbol);
+s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64);
+s_symbol_list *init_symbol_list(s_format *format, void *symbol, bool is_64);
 
 /*
 ** File: init_format.c
@@ -190,22 +192,26 @@ struct load_command	*get_next_load_command(struct load_command *lc);
 void	*get_symbol_table(struct symtab_command *sym, void *ptr);
 void	*get_string_table(struct symtab_command *sym, void *ptr);
 // char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol);
-char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table);
+// char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table);
+char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table, bool is_64);
 // struct section_64	*get_section_command(struct segment_command_64 *seg, uint32_t index_section);
 void *get_section_command(void *seg, uint32_t index_section, bool is_64);
-uint32_t	get_section_type(s_section_list *section_elem);
-uint32_t	get_section_attributes(s_section_list *section_elem);
+// uint32_t	get_section_type(s_section_list *section_elem);
+// uint32_t	get_section_attributes(s_section_list *section_elem);
+uint32_t	get_section_type(s_section_list *section_elem, bool is_64);
+uint32_t	get_section_attributes(s_section_list *section_elem, bool is_64);
 uint8_t		get_symbol_type(uint8_t n_type);
 
 /*
 ** File: handler.c
 ** Description: Function to handle each kind files with load command
 */
-void	handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr);
+// void	handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr);
+void	handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr, bool is_64);
 // void	handle_segment_command(s_format *format, struct segment_command_64 *seg, void *ptr);
 void	handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64);
 // void	handle_load_command(s_format *format, struct load_command *lc, void *ptr);
-void	handle_load_command(s_format *format, struct load_command *lc, void *ptr);
+void	handle_load_command(s_format *format, struct load_command *lc, void *ptr, bool is_64);
 void	handle_macho(s_format *format, void *ptr, bool is_64);
 void	handle_format(void *ptr);
 

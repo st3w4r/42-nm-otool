@@ -51,9 +51,16 @@ void *get_string_table(struct symtab_command *sym, void *ptr)
 // 	return (string_table + symbol_table[num_symbol].n_un.n_strx);
 // }
 
-char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table)
+char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table, bool is_64)
 {
-	return (string_table + symbol_elem->symbol_64->n_un.n_strx);
+	if (is_64 == TRUE)
+	{
+		return (string_table + symbol_elem->symbol_64->n_un.n_strx);
+	}
+	else
+	{
+		return (string_table + symbol_elem->symbol_32->n_un.n_strx);
+	}
 }
 
 /*
@@ -75,14 +82,20 @@ void *get_section_command(void *seg, uint32_t index_section, bool is_64)
 	}
 }
 
-uint32_t get_section_type(s_section_list *section_elem)
+uint32_t get_section_type(s_section_list *section_elem, bool is_64)
 {
-	return section_elem->section_64->flags & SECTION_TYPE;
+	if (is_64 == TRUE)
+		return section_elem->section_64->flags & SECTION_TYPE;
+	else
+		return section_elem->section_32->flags & SECTION_TYPE;
 }
 
-uint32_t get_section_attributes(s_section_list *section_elem)
+uint32_t get_section_attributes(s_section_list *section_elem, bool is_64)
 {
-	return section_elem->section_64->flags & SECTION_ATTRIBUTES;
+	if (is_64 == TRUE)
+		return section_elem->section_64->flags & SECTION_ATTRIBUTES;
+	else
+		return section_elem->section_32->flags & SECTION_ATTRIBUTES;
 }
 
 uint8_t get_symbol_type(uint8_t n_type)

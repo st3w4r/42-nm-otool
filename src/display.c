@@ -27,20 +27,31 @@ void display_file_format(e_file_format file_format)
 
 
 
-void display_section(s_section_list *section_list)
+void display_section(s_section_list *section_list, bool is_64)
 {
-	ft_putstr("Segment name: ");
-	ft_putstr(section_list->section_64->segname);
-	ft_putstr(" Section name: ");
-	ft_putstr(section_list->section_64->sectname);
-	ft_putstr("\n");
+	if (is_64 == TRUE)
+	{
+		ft_putstr("Segment name: ");
+		ft_putstr(section_list->section_64->segname);
+		ft_putstr(" Section name: ");
+		ft_putstr(section_list->section_64->sectname);
+		ft_putstr("\n");
+	}
+	else
+	{
+		ft_putstr("Segment name: ");
+		ft_putstr(section_list->section_32->segname);
+		ft_putstr(" Section name: ");
+		ft_putstr(section_list->section_32->sectname);
+		ft_putstr("\n");
+	}
 }
 
-void display_section_list(s_section_list *section_list)
+void display_section_list(s_section_list *section_list, bool is_64)
 {
 	while (section_list)
 	{
-		display_section(section_list);
+		display_section(section_list, is_64);
 		section_list = section_list->next;
 	}
 }
@@ -68,7 +79,7 @@ void display_symbol_hexa(void *string_table, s_section_list *section_list, s_sym
 	n_desc = symbol_elem->symbol_64->n_desc;
 	n_strx = symbol_elem->symbol_64->n_un.n_strx;
 	type = get_symbol_type(n_type);
-	symbol_string = get_symbol_string(symbol_elem, string_table);
+	symbol_string = get_symbol_string(symbol_elem, string_table, IS_64);
 
 	if ((type == N_SECT || type == N_UNDF) && ft_strcmp(symbol_string, ""))
 	{
@@ -82,7 +93,7 @@ void display_symbol_hexa(void *string_table, s_section_list *section_list, s_sym
 	}
 }
 
-void display_symbol(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+void display_symbol_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
 {
 	// display_nlist_64(section_list,
 	// 									symbol_elem->symbol_64->n_un.n_strx,
@@ -104,13 +115,13 @@ void display_symbol(void *string_table, s_section_list *section_list, s_symbol_l
 	n_value = symbol_elem->symbol_64->n_value;
 	n_desc = symbol_elem->symbol_64->n_desc;
 	type = get_symbol_type(n_type);
-	symbol_string = get_symbol_string(symbol_elem, string_table);
+	symbol_string = get_symbol_string(symbol_elem, string_table, IS_64);
 	section_elem = get_section_index(section_list, n_sect);
 
 
 	// if ((type != N_SECT && type != N_UNDF) || ft_strcmp(symbol_string, "") == 0)
 	// 	return ;
-	uint32_t secattr = get_section_attributes(section_elem);
+	uint32_t secattr = get_section_attributes(section_elem, IS_64);
 
 	// ft_putnbr(section_elem->section_64->flags);
 	// printf("\nFlags: %u\n", section_elem->section_64->flags & SECTION_ATTRIBUTES);
@@ -196,11 +207,128 @@ void display_symbol(void *string_table, s_section_list *section_list, s_symbol_l
 
 }
 
-void display_symbol_list(void *string_table, s_section_list *section_list, s_symbol_list *symbol_list)
+void display_symbol_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+{
+	// display_nlist_64(section_list,
+	// 									symbol_elem->symbol_64->n_un.n_strx,
+	// 									symbol_elem->symbol_64->n_type,
+	// 									symbol_elem->symbol_64->n_sect,
+	// 									symbol_elem->symbol_64->n_desc,
+	// 									symbol_elem->symbol_64->n_value);
+
+	uint8_t n_type;
+	uint8_t n_sect;
+	uint8_t type;
+	uint16_t n_desc;
+	uint32_t n_value;
+	s_section_list *section_elem;
+	char *symbol_string;
+
+	n_type = symbol_elem->symbol_32->n_type;
+	n_sect = symbol_elem->symbol_32->n_sect;
+	n_value = symbol_elem->symbol_32->n_value;
+	n_desc = symbol_elem->symbol_32->n_desc;
+	type = get_symbol_type(n_type);
+	symbol_string = get_symbol_string(symbol_elem, string_table, IS_32);
+	section_elem = get_section_index(section_list, n_sect);
+
+
+	// if ((type != N_SECT && type != N_UNDF) || ft_strcmp(symbol_string, "") == 0)
+	// 	return ;
+	uint32_t secattr = get_section_attributes(section_elem, IS_32);
+
+	// ft_putnbr(section_elem->section_64->flags);
+	// printf("\nFlags: %u\n", section_elem->section_64->flags & SECTION_ATTRIBUTES);
+
+	// ft_putstr(" Section attribute: ");
+	// ft_putnbr(section_elem->section_64->flags & 0x000000ff);
+	// ft_putstr(" ");
+	// if ((section_elem->section_64->flags & SECTION_TYPE)== S_ATTR_DEBUG)
+	// 	ft_putstr("S_ATTR_DEBUG");
+
+	if (n_value)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else
+		ft_putstr("                ");
+	ft_putstr(" ");
+
+	if (type == N_UNDF)
+		ft_putstr("(undefined) ");
+	else if (type == N_ABS)
+		ft_putstr("(absolute) ");
+	else if (type == N_SECT)
+		ft_putstr("");
+	else if (type == N_PBUD)
+		ft_putstr("N_PBUD ");
+	else if (type == N_INDR)
+		ft_putstr("(indirect) ");
+	else if (type == N_UNDF && n_type == N_EXT && n_value)
+		ft_putstr("(common) ");
+
+
+	if (n_sect == NO_SECT)
+	{
+		ft_putstr("");
+		// ft_putstr("NO_SECT ");
+	}
+	else if (n_type == MAX_SECT)
+		ft_putstr("MAX_SECT ");
+	else
+	{
+
+		// ft_putstr("Section n: ");
+		// ft_putnbr(n_sect);
+		ft_putstr("(");
+		ft_putstr(section_elem->section_32->segname);
+		ft_putstr(",");
+		ft_putstr(section_elem->section_32->sectname);
+		ft_putstr(") ");
+	}
+
+
+
+
+	uint16_t desc_reference;
+	desc_reference = n_desc & REFERENCE_TYPE;
+	// if (n_desc == REFERENCE_FLAG_UNDEFINED_NON_LAZY)
+		// ft_putstr("REFERENCE_FLAG_UNDEFINED_NON_LAZY ");
+	if (n_desc == REFERENCE_FLAG_UNDEFINED_LAZY)
+		ft_putstr("REFERENCE_FLAG_UNDEFINED_LAZY ");
+	else if (n_desc == REFERENCE_FLAG_DEFINED)
+		ft_putstr("REFERENCE_FLAG_DEFINED ");
+	else if (n_desc == REFERENCE_FLAG_PRIVATE_DEFINED)
+		ft_putstr("REFERENCE_FLAG_PRIVATE_DEFINED ");
+	else if (n_desc == REFERENCE_FLAG_PRIVATE_UNDEFINED_NON_LAZY)
+		ft_putstr("REFERENCE_FLAG_PRIVATE_UNDEFINED_NON_LAZY ");
+	else if (n_desc == REFERENCE_FLAG_PRIVATE_UNDEFINED_LAZY)
+		ft_putstr("REFERENCE_FLAG_PRIVATE_UNDEFINED_LAZY ");
+	else if (n_desc == REFERENCED_DYNAMICALLY)
+		ft_putstr("[referenced dynamically] ");
+
+	// if ((n_type & N_TYPE) == N_TYPE)
+	// 	ft_putstr("N_TYPE ");
+	if ((n_type & N_STAB) == N_STAB)
+		ft_putstr("N_STAB ");
+
+	if ((n_type & N_PEXT) == N_PEXT)
+		ft_putstr("non-external ");
+	if ((n_type & N_EXT) == N_EXT)
+		ft_putstr("external ");
+
+	ft_putstr(symbol_string);
+
+	ft_putstr("\n");
+
+}
+
+void display_symbol_list(void *string_table, s_section_list *section_list, s_symbol_list *symbol_list, bool is_64)
 {
 	while (symbol_list)
 	{
-		display_symbol(string_table, section_list, symbol_list);
+		if (is_64 == TRUE)
+			display_symbol_64(string_table, section_list, symbol_list);
+		else
+			display_symbol_32(string_table, section_list, symbol_list);
 		// display_symbol_hexa(string_table, section_list, symbol_list);
 		// display_section_command(section_list);
 		symbol_list = symbol_list->next;
@@ -209,11 +337,21 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 
 void display_format(s_format *format)
 {
-	display_mach_header_64(format->ptr_header);
-	// display_lc_list(format.lc_list);
-	display_section_list(format->section_list);
-	// display_section(get_section_index(format->section_list, 8));
-	display_symbol_list(format->string_table, format->section_list, format->symbol_list);
+	if (format->is_64 == TRUE)
+	{
+		display_mach_header_64(format->ptr_header);
+		// display_lc_list(format.lc_list);
+		display_section_list(format->section_list, format->is_64);
+		// display_section(get_section_index(format->section_list, 8));
+		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
+	}
+	else
+	{
+		display_mach_header_32(format->ptr_header);
+		display_section_list(format->section_list, format->is_64);
+		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
+
+	}
 }
 
 // void	display_symbol(char *str)
@@ -364,7 +502,7 @@ void display_section_command(s_section_list *section_elem)
 	// ft_putstr(" Section name: ");
 	// ft_putstr(section_elem->section_64->sectname);
 
-	uint32_t sectype = get_section_type(section_elem);
+	uint32_t sectype = get_section_type(section_elem, IS_64);
 
 	ft_putstr(" Section type: ");
 	if (sectype == S_REGULAR)
@@ -415,7 +553,7 @@ void display_section_command(s_section_list *section_elem)
 	// 	ft_putstr("UNKNOWN");
 
 
-	uint32_t secattr = get_section_attributes(section_elem);
+	uint32_t secattr = get_section_attributes(section_elem, IS_64);
 	ft_putstr(" Section attribute: ");
 	if (secattr == SECTION_ATTRIBUTES_USR)
 		ft_putstr("SECTION_ATTRIBUTES_USR");

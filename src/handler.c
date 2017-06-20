@@ -1,11 +1,11 @@
 #include "nm-otool.h"
 
-void handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr)
+void handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr, bool is_64)
 {
-	uint32_t				i;
-	char						*str;
-	void						*string_table;
-	struct nlist_64	*symbol_table;
+	uint32_t	i;
+	char			*str;
+	void			*string_table;
+	void			*symbol_table;
 
 	symbol_table = get_symbol_table(sym, ptr);
 	string_table = get_string_table(sym, ptr);
@@ -16,10 +16,13 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	while (i < sym->nsyms)
 	{
 			if (format->symbol_list == NULL)
-				init_symbol_list(format, symbol_table);
+				init_symbol_list(format, symbol_table, is_64);
 			else
-				add_symbol_list(format, symbol_table);
-		symbol_table++;
+				add_symbol_list(format, symbol_table, is_64);
+		if (is_64 == TRUE)
+			symbol_table = symbol_table + sizeof(struct nlist_64);
+		else
+			symbol_table = symbol_table + sizeof(struct nlist);
 		i++;
 	}
 }
@@ -56,7 +59,7 @@ void handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64)
 			init_section_list(format, sec, is_64);
 		else
 			add_section_list(format, sec, is_64);
-		// display_section_command(sec, ptr);
+		// display_section_command(sec);
 		i++;
 	}
 }
@@ -64,7 +67,7 @@ void handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64)
 /*
 ** Handle a load command to extract information
 */
-void handle_load_command(s_format *format, struct load_command *lc, void *ptr)
+void handle_load_command(s_format *format, struct load_command *lc, void *ptr, bool is_64)
 {
 	struct symtab_command *sym;
 	void *seg;
@@ -73,18 +76,18 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr)
 	if (lc->cmd == LC_SYMTAB)
 	{
 		sym = (struct symtab_command *)lc;
-		handle_symtab_command(format, sym, ptr);
+		handle_symtab_command(format, sym, ptr, is_64);
 	}
 	else if (lc->cmd == LC_SEGMENT_64)
 	{
 		seg = (struct segment_command_64 *)lc;
-		handle_segment_command(format, seg, ptr, IS_64);
+		handle_segment_command(format, seg, ptr, is_64);
 		// handle_section_command((void*)seg + sizeof(struct segment_command_64), ptr);
 	}
 	else if (lc->cmd == LC_SEGMENT)
 	{
 		seg = (struct segment_command *)lc;
-		handle_segment_command(format, seg, ptr, IS_32);
+		handle_segment_command(format, seg, ptr, is_64);
 		// handle_section_command((void*)seg + sizeof(struct segment_command_64), ptr);
 	}
 }
@@ -139,7 +142,7 @@ void	handle_macho(s_format *format, void *ptr, bool is_64)
 	while (i < ncmds)
 	{
 		// display_load_command_type(lc->cmd);
-		handle_load_command(format, lc, ptr);
+		handle_load_command(format, lc, ptr, is_64);
 		lc = get_next_load_command(lc);
 		i++;
 	}
@@ -183,6 +186,7 @@ void	handle_format(void *ptr)
 	// file_format = get_file_format(ptr);
 	if (format->file_format == MACHO_64)
 	{
+		ft_putstr("File macho 64\n");
 		format->is_64 = TRUE;
 		handle_macho(format, ptr, format->is_64);
 		display_format(format);
@@ -192,7 +196,7 @@ void	handle_format(void *ptr)
 		format->is_64 = FALSE;
 		ft_putstr("File macho 32\n");
 		handle_macho(format, ptr, format->is_64);
-		// display_format(format);
+		display_format(format);
 	}
 	else if (format->file_format == FAT)
 	{
