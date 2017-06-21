@@ -249,7 +249,7 @@ void display_symbol_32(void *string_table, s_section_list *section_list, s_symbo
 	if (n_value)
 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
 	else
-		ft_putstr("                ");
+		ft_putstr("        ");
 	ft_putstr(" ");
 
 	if (type == N_UNDF)
