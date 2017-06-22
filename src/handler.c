@@ -119,7 +119,7 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr, b
 // }
 
 /*
-** Handle the macho file format for 32 bits
+** Handle the macho file format for 32 bits and 64 bits
 */
 void	handle_macho(s_format *format, void *ptr, bool is_64)
 {
@@ -149,32 +149,6 @@ void	handle_macho(s_format *format, void *ptr, bool is_64)
 }
 
 /*
-** Handle the macho file format for 64 bits
-*/
-// void	handle_macho_64(s_format *format, void *ptr, bool is_64)
-// {
-// 	struct mach_header_64 *header;
-// 	uint32_t ncmds;
-// 	uint32_t i;
-// 	struct load_command *lc;
-//
-// 	header = (struct mach_header_64*)ptr;
-// 	display_mach_header_64(header);
-// 	// display_file_type(header->filetype);
-// 	// display_cpu_type(header->cputype, header->cpusubtype);
-// 	i = 0;
-// 	ncmds = header->ncmds;
-// 	lc = get_first_load_command(header);
-// 	while (i < ncmds)
-// 	{
-// 		// display_load_command_type(lc->cmd);
-// 		handle_load_command(format, lc, ptr);
-// 		lc = get_next_load_command(lc);
-// 		i++;
-// 	}
-// }
-
-/*
 ** Handle file and redirect to the correct file type
 */
 void	handle_format(void *ptr)
@@ -200,7 +174,9 @@ void	handle_format(void *ptr)
 	}
 	else if (format->file_format == FAT)
 	{
+		// format->is_64 = FALSE;
 		ft_putstr("File FAT\n");
+		// handle_fat(format, ptr, format->is_64)
 	}
 	else if (format->file_format == FAT_64)
 	{
