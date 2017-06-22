@@ -149,6 +149,43 @@ void	handle_macho(s_format *format, void *ptr, bool is_64)
 }
 
 /*
+** Handle the fat file
+*/
+void	handle_fat(s_format *format, void *ptr, bool is_64)
+{
+	uint32_t nfat_arch;
+
+	if (is_64 == TRUE)
+		nfat_arch = ((struct fat_header*)ptr)->nfat_arch; // Need cast to 64bit struct
+	else
+		nfat_arch = ((struct fat_header*)ptr)->nfat_arch;
+	ft_puthexa_size(nfat_arch, 8);
+	ft_putstr("\n");
+	printf("%d\n", nfat_arch);
+	printf("%lu\n", sizeof (uint32_t));
+	nfat_arch = ((nfat_arch << 8) & 0xFF00FF00) | ((nfat_arch >> 8) & 0xFF00FF);
+	nfat_arch = nfat_arch << 16 | nfat_arch >> 16;
+	// nfat_arch = nfat_arch << 24;
+	// 00000000 00000000 00000000 00000010 2
+	// 00000000 00000000 00000010 00000000 (nfat_arch << 8)
+	// 11111111 00000000 11111111 00000000 0xFF00FF00
+	// 00000000 00000000 00000010 00000000 &
+
+	// 00000000 00000000 00000000 00000000 nfat_arch >> 8
+	// 11111111 00000000 11111111 00000000 0xFF00FF
+	// 00000000 00000000 00000000 00000000 &
+	// 00000000 00000000 00000010 00000000 |
+
+	// 00000000 00000000 00000010 00000000
+	// 00000010 00000000 00000000 00000000 nfat_arch << 16
+	// 00000000 00000000 00000000 00000000 nfat_arch >> 16
+	// 00000010 00000000 00000000 00000000 |
+
+	print_mem(&nfat_arch, 4);
+	printf("%d\n", nfat_arch);
+}
+
+/*
 ** Handle file and redirect to the correct file type
 */
 void	handle_format(void *ptr)
@@ -174,9 +211,9 @@ void	handle_format(void *ptr)
 	}
 	else if (format->file_format == FAT)
 	{
-		// format->is_64 = FALSE;
+		format->is_64 = FALSE;
 		ft_putstr("File FAT\n");
-		// handle_fat(format, ptr, format->is_64)
+		handle_fat(format, ptr, format->is_64);
 	}
 	else if (format->file_format == FAT_64)
 	{

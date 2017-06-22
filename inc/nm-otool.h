@@ -219,5 +219,6 @@ void	handle_format(void *ptr);
 ** File: ft_puthexa_size.c
 */
 void	ft_puthexa_size(uint64_t nb, size_t size);
+void	print_mem(void *addr, int len);
 
 #endif
