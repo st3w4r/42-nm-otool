@@ -230,19 +230,92 @@ void	handle_ar(s_format *format, void *ptr, bool is_64)
 	ft_putnbr(ar_header->group_id);
 	ft_putstr("\n");
 
-	struct ranlib *ranlib;
-	ranlib = (void*)ar_header + sizeof(struct ar_header) + 20;
-	// print_mem(ranlib, 16);
-	ft_putnbr(ranlib->ran_un.ran_strx);
+
+	struct symdef *symdef;
+
+	symdef = (void*)ar_header + sizeof(struct ar_header);
+
+	ft_putendl(symdef->name);
+	// ft_putnbr((symdef->nranlibs));
+	// symdef->nranlibs = swap_uint32(symdef->nranlibs);
+	print_mem(&symdef->nranlibs, 4);
+
+	uint32_t nranlibs;
+	nranlibs = symdef->nranlibs / (sizeof(struct ranlib));
 	ft_putstr("\n");
-	ft_putnbr(ranlib->ran_off);
+	ft_putnbr(nranlibs);
 	ft_putstr("\n");
 
-	ft_putstr(ar_header + ranlib->ran_un.ran_strx);
+	size_t sranlib;
+	sranlib = sizeof(struct ranlib);
+	ft_putnbr(sranlib);
+	ft_putstr("\n");
+
+	ft_putendl("String table");
+	char *string_table = (void*)symdef
+											+ sizeof(struct symdef)
+											+ (nranlibs * sizeof(struct ranlib))
+											+ sizeof(uint32_t);
+
+		ft_putendl(string_table);
+
+	struct ranlib *ranlib;
+	// ranlib = (void*)symdef + sizeof(struct symdef) + sizeof(uint32_t);
+	// ft_putnbr(ranlib->ran_un.ran_strx);
+	ft_putstr("Ranlib: \n");
+	int iterator;
+	iterator = 0;
+	while (iterator < nranlibs)
+	{
+		ft_putstr("Index: ");
+		ranlib = (void*)symdef + sizeof(struct symdef) + (iterator * sizeof(struct ranlib));
+		ft_putnbr(ranlib->ran_un.ran_strx);
+		ft_putstr(" Offset: ");
+		ft_putnbr(ranlib->ran_off);
+		ft_putstr(" ");
+		ft_putendl(string_table + ranlib->ran_un.ran_strx);
+		print_mem(ptr + ranlib->ran_off + sizeof(struct ar_header) + 20, 4);
+		handle_format(ptr + ranlib->ran_off + sizeof(struct ar_header) + 20);
+
+		iterator++;
+	}
+
+	// char *str = (void*)symdef + ranlib_1->ran_un.ran_strx;
+	// ft_putendl(str);
+
+	// struct ranlib *ranlib;
+	// ranlib = (void*)ar_header + sizeof(struct ar_header) + 20;
+	// ranlib = (void*)ar_header + sizeof(struct ar_header) + 20;
+	// print_mem(ranlib, 16);
+	// ft_putnbr(ranlib->ran_un.ran_strx);
+	// ft_putstr("\n");
+	// ft_putnbr(ranlib->ran_off);
+	// ft_putstr("\n");
+
+	// ft_putstr(ar_header + ranlib->ran_un.ran_strx);
 	// ft_putstr(ar_header);
 
 	// struct ar_header *ar_header2;
 	// ar_header2 = (void*)ar_header + sizeof(struct ar_header);
+	// ar_header2 = ar_header;
+	// ar_header2++;
+	// ft_putendl(ar_header2->file_identifier);
+
+	// ar_header2++;
+
+	// struct ranlib *ranlib2;
+	// ranlib2 = ar_header2;
+	// // ranlib = (void*)ar_header + sizeof(struct ar_header) + 20;
+	// // print_mem(ranlib, 16);
+	// ft_putnbr(ranlib2->ran_un.ran_strx);
+	// ft_putstr("\n");
+	// ft_putnbr(ranlib2->ran_off);
+	// ft_putstr("\n");
+	//
+	// // char *str_table = ptr + ranlib2->ran_un.ran_strx;
+	// ft_putendl(str_table);
+
+
 	// ar_header2 = ar_header;
 	// ar_header2++;
 
@@ -262,8 +335,8 @@ void	handle_ar(s_format *format, void *ptr, bool is_64)
 
 		// printf("Number: %d\n", 0x7020);
 
-	char *name = (void*)ar_header + sizeof(struct ar_header);
-	ft_putendl(name);
+	// char *name = (void*)ar_header + sizeof(struct ar_header);
+	// ft_putendl(name);
 
 	// char *str_table = ptr + 0x00002070;
 	// ft_putendl(str_table);

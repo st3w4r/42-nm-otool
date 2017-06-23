@@ -55,6 +55,11 @@ struct ar_header
 	byte			end_char[2];
 };
 
+struct symdef
+{
+	byte			name[20];
+	uint32_t			nranlibs;
+};
 
 /*
 ** All typedef to simplify function prototype and variable declaration
