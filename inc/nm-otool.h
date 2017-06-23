@@ -30,6 +30,8 @@
 # define IS_64 TRUE
 # define IS_32 FALSE
 
+typedef unsigned char byte;
+
 /*
 ** All typedef to simplify function prototype and variable declaration
 */
@@ -185,7 +187,9 @@ void display_nlist_64(s_section_list *section_list,
 ** File: format_information.c
 ** Description: Get the information from the right file type
 */
+void	*get_object_file(void *ptr, uint32_t offset);
 e_file_format	get_file_format(void *ptr);
+void	*get_fat_ach(void *header, int index, bool is_64);
 // struct load_command	*get_first_load_command(struct mach_header_64 *header);
 struct load_command *get_first_load_command(void *header, bool is_64);
 struct load_command	*get_next_load_command(struct load_command *lc);
@@ -220,5 +224,13 @@ void	handle_format(void *ptr);
 */
 void	ft_puthexa_size(uint64_t nb, size_t size);
 void	print_mem(void *addr, int len);
+
+/*
+** File: swap.c
+** Description: Function to swap between little endian and big endian
+*/
+uint16_t	swap_uint16(uint16_t nb);
+uint32_t	swap_uint32(uint32_t nb);
+uint64_t	swap_uint64(uint64_t nb);
 
 #endif

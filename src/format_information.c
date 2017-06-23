@@ -18,6 +18,25 @@ e_file_format	get_file_format(void *ptr)
 		return (UNKNOWN);
 }
 
+void *get_object_file(void *ptr, uint32_t offset)
+{
+	return (ptr + offset);
+}
+
+void *get_fat_ach(void *header, int index, bool is_64)
+{
+	if (is_64 == TRUE)
+	{
+		return ((void*)header + sizeof(struct fat_header))
+					+ (index * sizeof(struct fat_arch_64));
+	}
+	else
+	{
+		return ((void*)header + sizeof(struct fat_header))
+					+ (index * sizeof(struct fat_arch));
+	}
+}
+
 struct load_command *get_first_load_command(void *header, bool is_64)
 {
 	if (is_64 == TRUE)

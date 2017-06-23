@@ -149,40 +149,50 @@ void	handle_macho(s_format *format, void *ptr, bool is_64)
 }
 
 /*
+** Handle fat architecture
+*/
+void	handle_fat_arch(s_format *format, void *ptr, void *fat_arch, bool is_64)
+{
+	cpu_type_t cpu_type;
+	cpu_subtype_t cpu_subtype;
+	uint32_t offset;
+	void *object_file;
+
+	cpu_type = swap_uint32(((struct fat_arch *)fat_arch)->cputype);
+	cpu_subtype = swap_uint32(((struct fat_arch *)fat_arch)->cpusubtype);
+	offset = swap_uint32(((struct fat_arch *)fat_arch)->offset);
+
+	display_cpu_type(cpu_type, cpu_subtype);
+
+	ft_putnbr(offset);
+	ft_putstr("\n");
+	object_file = get_object_file(ptr, offset);
+	handle_format(object_file);
+}
+
+/*
 ** Handle the fat file
 */
 void	handle_fat(s_format *format, void *ptr, bool is_64)
 {
-	uint32_t nfat_arch;
+	uint64_t nfat_arch;
+	uint64_t i;
+	void *fat_arch;
 
 	if (is_64 == TRUE)
 		nfat_arch = ((struct fat_header*)ptr)->nfat_arch; // Need cast to 64bit struct
 	else
 		nfat_arch = ((struct fat_header*)ptr)->nfat_arch;
-	ft_puthexa_size(nfat_arch, 8);
+	nfat_arch = swap_uint32(nfat_arch);
+	ft_putnbr(nfat_arch);
 	ft_putstr("\n");
-	printf("%d\n", nfat_arch);
-	printf("%lu\n", sizeof (uint32_t));
-	nfat_arch = ((nfat_arch << 8) & 0xFF00FF00) | ((nfat_arch >> 8) & 0xFF00FF);
-	nfat_arch = nfat_arch << 16 | nfat_arch >> 16;
-	// nfat_arch = nfat_arch << 24;
-	// 00000000 00000000 00000000 00000010 2
-	// 00000000 00000000 00000010 00000000 (nfat_arch << 8)
-	// 11111111 00000000 11111111 00000000 0xFF00FF00
-	// 00000000 00000000 00000010 00000000 &
-
-	// 00000000 00000000 00000000 00000000 nfat_arch >> 8
-	// 11111111 00000000 11111111 00000000 0xFF00FF
-	// 00000000 00000000 00000000 00000000 &
-	// 00000000 00000000 00000010 00000000 |
-
-	// 00000000 00000000 00000010 00000000
-	// 00000010 00000000 00000000 00000000 nfat_arch << 16
-	// 00000000 00000000 00000000 00000000 nfat_arch >> 16
-	// 00000010 00000000 00000000 00000000 |
-
-	print_mem(&nfat_arch, 4);
-	printf("%d\n", nfat_arch);
+	i = 0;
+	while (i < nfat_arch)
+	{
+		fat_arch = get_fat_ach(ptr, i, is_64);
+		handle_fat_arch(format, ptr, fat_arch, is_64);
+		i++;
+	}
 }
 
 /*

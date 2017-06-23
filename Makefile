@@ -45,7 +45,8 @@ SRC =	nm.c \
 			init_format.c \
 			section_list.c \
 			symbol_list.c \
-			ft_puthexa_size.c
+			ft_puthexa_size.c \
+			swap.c
 
 
 OBJ = $(addprefix $(PATH_SRC), $(SRC:.c=.o))
