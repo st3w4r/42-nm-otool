@@ -39,8 +39,8 @@ void	ft_puthexa_size(uint64_t nb, size_t size)
 	}
 }
 
-#include <stdio.h>
-void	print_mem(void *addr, int len)
+#include <stdio.h> // Need remove
+void	print_mem(void *addr, int len) // Need remove
 {
 	unsigned char *p = addr;
 	unsigned char buffer[16];

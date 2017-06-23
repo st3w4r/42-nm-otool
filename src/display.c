@@ -196,10 +196,17 @@ void display_symbol_64(void *string_table, s_section_list *section_list, s_symbo
 	if ((n_type & N_STAB) == N_STAB)
 		ft_putstr("N_STAB ");
 
-	if ((n_type & N_PEXT) == N_PEXT)
-		ft_putstr("non-external ");
-	if ((n_type & N_EXT) == N_EXT)
+	if (n_type & N_EXT)
 		ft_putstr("external ");
+	else if ((n_type & N_PEXT) == N_PEXT)
+		ft_putstr("non-external (was a private external) ");
+	else
+		ft_putstr("non-external ");
+
+	// if ((n_type & N_PEXT) == N_PEXT)
+	// 	ft_putstr("non-external ");
+	// if ((n_type & N_EXT) == N_EXT)
+	// 	ft_putstr("external ");
 
 	ft_putstr(symbol_string);
 
@@ -310,10 +317,12 @@ void display_symbol_32(void *string_table, s_section_list *section_list, s_symbo
 	if ((n_type & N_STAB) == N_STAB)
 		ft_putstr("N_STAB ");
 
-	if ((n_type & N_PEXT) == N_PEXT)
-		ft_putstr("non-external ");
-	if ((n_type & N_EXT) == N_EXT)
+	if (n_type & N_EXT)
 		ft_putstr("external ");
+	else if ((n_type & N_PEXT) == N_PEXT)
+		ft_putstr("non-external (was a private external) ");
+	else
+		ft_putstr("non-external ");
 
 	ft_putstr(symbol_string);
 
