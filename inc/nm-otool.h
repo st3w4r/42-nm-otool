@@ -13,24 +13,48 @@
 #ifndef NM_OTOOL_H
 # define NM_OTOOL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <mach-o/loader.h>
-#include <mach-o/nlist.h>
-#include <mach-o/stab.h>
-#include <mach-o/fat.h>
-#include <mach/machine.h>
-#include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/mman.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <mach-o/loader.h>
+# include <mach-o/nlist.h>
+# include <mach-o/stab.h>
+# include <mach-o/fat.h>
+# include <mach-o/ranlib.h>
+# include <mach/machine.h>
+# include <stdbool.h>
 
-#include "libft.h"
+# include "libft.h"
 
 # define IS_64 TRUE
 # define IS_32 FALSE
 
 typedef unsigned char byte;
+
+/*
+** Archive header
+*/
+# define AR_MAGIC 0x213c617263683e0a
+# define AR_CIGAM 0x0a3e686372613c21
+
+struct ar_magic
+{
+	byte			magic[8];
+};
+
+struct ar_header
+{
+	byte			file_identifier[16];
+	byte			file_modification_timestamp[12];
+	byte			owner_id[6];
+	byte			group_id[6];
+	byte			file_mode[8];
+	byte			file_size[10];
+	byte			end_char[2];
+};
+
 
 /*
 ** All typedef to simplify function prototype and variable declaration
@@ -47,6 +71,7 @@ typedef enum	file_format
 	MACHO_64,
 	FAT,
 	FAT_64,
+	ARCHIVE,
 	UNKNOWN
 }	 						e_file_format;
 

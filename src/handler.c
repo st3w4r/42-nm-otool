@@ -195,6 +195,81 @@ void	handle_fat(s_format *format, void *ptr, bool is_64)
 	}
 }
 
+
+/*
+** Handle archive file
+*/
+void	handle_ar(s_format *format, void *ptr, bool is_64)
+{
+	struct ar_header *ar_header;
+	struct ar_magic *ar_magic;
+	// uint64_t magic;
+	ar_magic = (struct ar_magic*)ptr;
+	ar_header = (struct ar_header *)((void*)ptr + sizeof(struct ar_magic));
+	ft_putnbr(sizeof(struct ar_header)); ft_putstr("\n");
+	// ft_putnbr(sizeof(uint64_t)); ft_putstr("\n");
+	// magic = (ar_header->magic);
+	// magic = (ar_header->magic);
+	// ft_puthexa_size(magic, 8);
+	// print_mem(&ar_header->magic, 8);
+	print_mem(&ar_header->file_identifier, 16);
+	print_mem(&ar_header->file_modification_timestamp, 12);
+	print_mem(&ar_header->owner_id, 6);
+	print_mem(&ar_header->group_id, 6);
+	print_mem(&ar_header->file_mode, 8);
+	print_mem(&ar_header->file_size, 10);
+	print_mem(&ar_header->end_char, 2);
+
+	int i = 0;
+	while (i < 16)
+		ft_putchar(ar_header->file_identifier[i++]);
+	// ft_putnbr(ar_header->file_size);
+	ft_putstr("\n");
+	ft_putnbr(ar_header->owner_id);
+	ft_putstr("\n");
+	ft_putnbr(ar_header->group_id);
+	ft_putstr("\n");
+
+	struct ranlib *ranlib;
+	ranlib = (void*)ar_header + sizeof(struct ar_header) + 20;
+	// print_mem(ranlib, 16);
+	ft_putnbr(ranlib->ran_un.ran_strx);
+	ft_putstr("\n");
+	ft_putnbr(ranlib->ran_off);
+	ft_putstr("\n");
+
+	ft_putstr(ar_header + ranlib->ran_un.ran_strx);
+	// ft_putstr(ar_header);
+
+	// struct ar_header *ar_header2;
+	// ar_header2 = (void*)ar_header + sizeof(struct ar_header);
+	// ar_header2 = ar_header;
+	// ar_header2++;
+
+	// i = 0;
+	// while (i < 16)
+	// 	ft_putchar(ar_header2->file_identifier[i++]);
+	//
+	// ft_putnbr(ar_header2->file_modification_timestamp);
+	//
+	// 	print_mem(&ar_header2->file_identifier, 16);
+	// 	print_mem(&ar_header2->file_modification_timestamp, 12);
+	// 	print_mem(&ar_header2->owner_id, 6);
+	// 	print_mem(&ar_header2->group_id, 6);
+	// 	print_mem(&ar_header2->file_mode, 8);
+	// 	print_mem(&ar_header2->file_size, 10);
+	// 	print_mem(&ar_header2->end_char, 2);
+
+		// printf("Number: %d\n", 0x7020);
+
+	char *name = (void*)ar_header + sizeof(struct ar_header);
+	ft_putendl(name);
+
+	// char *str_table = ptr + 0x00002070;
+	// ft_putendl(str_table);
+
+}
+
 /*
 ** Handle file and redirect to the correct file type
 */
@@ -228,6 +303,12 @@ void	handle_format(void *ptr)
 	else if (format->file_format == FAT_64)
 	{
 		ft_putstr("File FAT 64\n");
+	}
+	else if (format->file_format == ARCHIVE)
+	{
+		ft_putstr("File archive\n");
+		format->is_64 = FALSE;
+		handle_ar(format, ptr, format->is_64);
 	}
 	else
 	{

@@ -14,6 +14,8 @@ e_file_format	get_file_format(void *ptr)
 		return (FAT);
 //	else if (magic == FAT_MAGIC_64 || magic == FAT_CIGAM_64)
 //		return (FAT_64);
+	else if ((*(uint64_t *)ptr) == AR_MAGIC || (*(uint64_t *)ptr) == AR_CIGAM)
+		return (ARCHIVE);
 	else
 		return (UNKNOWN);
 }
