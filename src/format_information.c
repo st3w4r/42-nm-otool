@@ -20,6 +20,112 @@ e_file_format	get_file_format(void *ptr)
 		return (UNKNOWN);
 }
 
+/*
+** Functinos for archive
+*/
+void *get_ar_object(void *ptr, struct ranlib *ranlib, size_t size_name)
+{
+	void *object;
+
+	object = ptr
+					+ ranlib->ran_off
+					+ sizeof(struct ar_header)
+					+ size_name;
+	return (object);
+}
+
+void *get_ar_string_table(void *ranlib_arr, size_t nranlibs)
+{
+	void *string_table;
+
+	string_table = ranlib_arr
+								+ (nranlibs * sizeof(struct ranlib))
+								+ sizeof(uint32_t);
+	return (string_table);
+}
+
+char *get_ar_string_element(void *string_table, struct ranlib *ranlib)
+{
+	char *string_elem;
+
+	string_elem = string_table + ranlib->ran_un.ran_strx;
+	return string_elem;
+}
+
+struct ar_header *get_ar_header_element(void *ptr, struct ranlib *ranlib)
+{
+		struct ar_header *ar_header;
+
+		ar_header = ptr + ranlib->ran_off;
+		return (ar_header);
+}
+
+struct ranlib *get_ranlib_element(void *ranlib_arr, size_t index)
+{
+	struct ranlib *ranlib;
+
+	ranlib = (void*)ranlib_arr + (index * sizeof(struct ranlib));
+	return (ranlib);
+}
+
+void *get_ranlib_array(void *symdef)
+{
+	return ((void*)symdef + sizeof(uint32_t));
+}
+
+uint32_t get_nranlibs(void *symdef)
+{
+	uint32_t nranlibs;
+
+	nranlibs = *(uint32_t *)symdef;
+	nranlibs =  nranlibs / (sizeof(struct ranlib));
+	return (nranlibs);
+}
+
+void *get_symdef(struct ar_header *ar_header, size_t size_name)
+{
+	void *symdef;
+
+	symdef = (void*)ar_header
+					+ sizeof(struct ar_header)
+					+ size_name;
+	return (symdef);
+}
+
+char	*get_ar_header_name(struct ar_header *ar_header, size_t size_name)
+{
+	char *name;
+
+	name = (void*)ar_header
+				+ sizeof(struct ar_header);
+	return (name);
+}
+
+size_t	get_size_from_identifier(char *file_identifier)
+{
+	size_t size_name;
+	char *str_new;
+
+	str_new = ft_strnew(16);
+	str_new = ft_memcpy(str_new, file_identifier, 16);
+	size_name = ft_atoi(&(str_new[3]));
+	free(str_new);
+	return (size_name);
+}
+
+struct ar_magic *get_ar_magic(void *ptr)
+{
+	return (ptr);
+}
+
+struct ar_header *get_ar_header(void *ptr)
+{
+	return (ptr + sizeof(struct ar_magic));
+}
+
+/*
+** Get object file for fat haeder
+*/
 void *get_object_file(void *ptr, uint32_t offset)
 {
 	return (ptr + offset);

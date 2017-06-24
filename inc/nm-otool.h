@@ -213,6 +213,23 @@ void display_nlist_64(s_section_list *section_list,
 											uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
 											uint16_t n_desc, uint64_t n_value);
 
+
+/*
+** File: format_information.c
+** Description: Get the information for archive file
+*/
+void *get_ar_object(void *ptr, struct ranlib *ranlib, size_t size_name);
+void *get_ar_string_table(void *ranlib_arr, size_t nranlibs);
+char *get_ar_string_element(void *string_table, struct ranlib *ranlib);
+struct ar_header *get_ar_header_element(void *ptr, struct ranlib *ranlib);
+struct ranlib *get_ranlib_element(void *ranlib_arr, size_t index);
+void *get_ranlib_array(void *symdef);
+uint32_t get_nranlibs(void *symdef);
+void *get_symdef(struct ar_header *ar_header, size_t size_name);
+char	*get_ar_header_name(struct ar_header *ar_header, size_t size_name);
+size_t	get_size_from_identifier(char *file_identifier);
+struct ar_magic *get_ar_magic(void *ptr);
+struct ar_header *get_ar_header(void *ptr);
 /*
 ** File: format_information.c
 ** Description: Get the information from the right file type
