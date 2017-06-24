@@ -195,6 +195,20 @@ void	handle_fat(s_format *format, void *ptr, bool is_64)
 	}
 }
 
+void *handle_ar_object(void *ptr, void *ranlib_arr, size_t i)
+{
+	void *ar_object;
+	struct ranlib *ranlib_elem;
+	struct ar_header *ar_header_elem;
+	size_t size_name;
+
+	ranlib_elem = get_ranlib_element(ranlib_arr, i);
+	// string_elem = get_ar_string_element(string_table, ranlib_elem);
+	ar_header_elem = get_ar_header_element(ptr, ranlib_elem);
+	size_name = get_size_from_identifier((char*)ar_header_elem->file_identifier);
+	ar_object = get_ar_object(ptr, ranlib_elem, size_name);
+	return (ar_object);
+}
 
 /*
 ** Handle archive file
@@ -208,11 +222,12 @@ void	handle_ar(s_format *format, void *ptr, bool is_64)
 	uint32_t nranlibs;
 	void *ranlib_arr;
 	size_t i;
-	struct ranlib *ranlib_elem;
 	void *string_table;
 	char *string_elem;
-	struct ar_header *ar_header_elem;
-	void *ar_object;
+	void *ar_element;
+
+	// struct ranlib *ranlib_elem;
+	// struct ar_header *ar_header_elem;
 
 	ar_magic = get_ar_magic(ptr);
 	ar_header = get_ar_header(ptr);
@@ -225,17 +240,19 @@ void	handle_ar(s_format *format, void *ptr, bool is_64)
 	i = 0;
 	while (i < nranlibs)
 	{
-		ranlib_elem = get_ranlib_element(ranlib_arr, i);
-		string_elem = get_ar_string_element(string_table, ranlib_elem);
-		ar_header_elem = get_ar_header_element(ptr, ranlib_elem);
-		size_name = get_size_from_identifier((char*)ar_header_elem->file_identifier);
-		ar_object = get_ar_object(ptr, ranlib_elem, size_name);
+		ar_element = handle_ar_object(ptr, ranlib_arr, i);
+		handle_format(ar_element);
 
-		ft_putstr(string_elem);
-		ft_putstr(" ");
-		ft_putendl(get_ar_header_name(ar_header_elem, size_name));
+		// ranlib_elem = get_ranlib_element(ranlib_arr, i);
+		// string_elem = get_ar_string_element(string_table, ranlib_elem);
+		// ar_header_elem = get_ar_header_element(ptr, ranlib_elem);
+		// size_name = get_size_from_identifier((char*)ar_header_elem->file_identifier);
+		// ar_object = get_ar_object(ptr, ranlib_elem, size_name);
 
-		handle_format(ar_object);
+		// ft_putstr(string_elem);
+		// ft_putstr(" ");
+		// ft_putendl(get_ar_header_name(ar_header_elem, size_name));
+
 		i++;
 	}
 }
