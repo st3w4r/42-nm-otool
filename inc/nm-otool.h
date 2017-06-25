@@ -170,7 +170,7 @@ s_section_list *init_section_list(s_format *format, void *sec, bool is_64);
 // s_symbol_list *add_symbol_list(s_format *format, struct nlist_64 *symbol);
 // s_symbol_list *init_symbol_list(s_format *format, struct nlist_64 *symbol);
 s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64);
-s_symbol_list *init_symbol_list(s_format *format, void *symbol, bool is_64);
+// s_symbol_list *init_symbol_list(s_format *format, void *symbol, bool is_64);
 
 /*
 ** File: init_format.c

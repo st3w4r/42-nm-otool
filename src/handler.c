@@ -15,9 +15,9 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	i = 0;
 	while (i < sym->nsyms)
 	{
-			if (format->symbol_list == NULL)
-				init_symbol_list(format, symbol_table, is_64);
-			else
+			// if (format->symbol_list == NULL)
+			// 	init_symbol_list(format, symbol_table, is_64);
+			// else
 				add_symbol_list(format, symbol_table, is_64);
 		if (is_64 == TRUE)
 			symbol_table = symbol_table + sizeof(struct nlist_64);

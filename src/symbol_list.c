@@ -1,56 +1,97 @@
 #include "nm-otool.h"
 
 /*
-** Add symbol to the symbol_list
+** Sort by insertion
 */
-s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64)
+
+void insert_before(s_symbol_list *s1, s_symbol_list *s2)
+{
+	s2->next = s1;
+	s2->prev = s1->prev;
+	s1->prev = s2;
+	if (s2->prev)
+	{
+		s2->prev->next = s2;
+	}
+}
+
+void insert_after(s_symbol_list *s1, s_symbol_list *s2)
+{
+	s2->next = s1->next;
+	s2->prev = s1;
+	s1->next = s2;
+	if (s2->next)
+	{
+		s2->next->prev = s2;
+	}
+}
+
+void	set_format_symbol_list(s_format *format, s_symbol_list *symbol)
+{
+	while (symbol->prev != NULL)
+	{
+		symbol = symbol->prev;
+	}
+	format->symbol_list = symbol;
+}
+
+s_symbol_list *add_symbol(s_format *format, s_symbol_list *symbol_elem, bool is_64)
 {
 	s_symbol_list *symbol_list;
+	s_symbol_list *symbol_prev;
+	void *string_table;
+	char *string_symbol_list;
+	char *string_symbol_elem;
 
 	symbol_list = format->symbol_list;
-	while (symbol_list->next != NULL)
+	string_table = format->string_table;
+
+	string_symbol_elem = get_symbol_string(symbol_elem, string_table, is_64);
+
+	while (symbol_list != NULL)
 	{
+		string_symbol_list = get_symbol_string(symbol_list, string_table, is_64);
+		if (ft_strcmp(string_symbol_elem, string_symbol_list) < 0)
+		{
+			insert_before(symbol_list, symbol_elem);
+			set_format_symbol_list(format, symbol_elem);
+			return (symbol_elem);
+		}
+		symbol_prev = symbol_list;
 		symbol_list = symbol_list->next;
 	}
-	if ((symbol_list->next = malloc(sizeof(s_symbol_list))) == NULL)
-		ft_malloc_error();
-
-	if (is_64 == TRUE)
-	{
-		symbol_list->next->symbol_64 = symbol;
-		symbol_list->next->symbol_32 = NULL;
-	}
-	else
-	{
-		symbol_list->next->symbol_32 = symbol;
-		symbol_list->next->symbol_64 = NULL;
-	}
-	symbol_list->next->prev = symbol_list;
-	symbol_list->next->next = NULL;
-	return symbol_list->next;
+	insert_after(symbol_prev, symbol_elem);
+	set_format_symbol_list(format, symbol_elem);
+	return (symbol_elem);
 }
 
 /*
-** Init the first symbol of the symbol_list
+** Add symbol to the symbol_list
+** Send a struct nlist and receive a struct symbol_list
+** Init if the format symbol_list is null
 */
-s_symbol_list *init_symbol_list(s_format *format, void *symbol, bool is_64)
-{
-	s_symbol_list *symbol_list;
 
-	if ((symbol_list = malloc(sizeof(s_symbol_list))) == NULL)
+s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64)
+{
+	s_symbol_list *symbol_elem;
+
+	if ((symbol_elem = malloc(sizeof(s_symbol_list))) == NULL)
 		ft_malloc_error();
 	if (is_64 == TRUE)
 	{
-		symbol_list->symbol_64 = symbol;
-		symbol_list->symbol_32 = NULL;
+		symbol_elem->symbol_64 = symbol;
+		symbol_elem->symbol_32 = NULL;
 	}
 	else
 	{
-		symbol_list->symbol_32 = symbol;
-		symbol_list->symbol_64 = NULL;
+		symbol_elem->symbol_32 = symbol;
+		symbol_elem->symbol_64 = NULL;
 	}
-	symbol_list->prev = NULL;
-	symbol_list->next = NULL;
-	format->symbol_list = symbol_list;
- return format->symbol_list;
+	symbol_elem->next = NULL;
+	symbol_elem->prev = NULL;
+	if (format->symbol_list == NULL)
+		set_format_symbol_list(format, symbol_elem);
+	else
+		add_symbol(format, symbol_elem, is_64);
+	return (symbol_elem);
 }
