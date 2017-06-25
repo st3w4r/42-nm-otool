@@ -56,11 +56,6 @@ void display_section_list(s_section_list *section_list, bool is_64)
 	}
 }
 
-void display_symbol_short(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
-{
-
-}
-
 void display_symbol_hexa(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
 {
 	uint8_t n_type;
@@ -92,6 +87,97 @@ void display_symbol_hexa(void *string_table, s_section_list *section_list, s_sym
 		ft_putstr("\n");
 	}
 }
+
+
+void display_symbol_short_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+{
+	uint8_t n_type;
+	uint8_t n_sect;
+	uint8_t type;
+	uint16_t n_desc;
+	uint64_t n_value;
+	s_section_list *section_elem;
+	char *symbol_string;
+	char *segname;
+	char *sectname;
+
+	n_type = symbol_elem->symbol_64->n_type;
+	n_sect = symbol_elem->symbol_64->n_sect;
+	n_value = symbol_elem->symbol_64->n_value;
+	n_desc = symbol_elem->symbol_64->n_desc;
+	type = get_symbol_type(n_type);
+	symbol_string = get_symbol_string(symbol_elem, string_table, IS_64);
+	section_elem = get_section_index(section_list, n_sect);
+	segname = section_elem->section_64->segname;
+	sectname = section_elem->section_64->sectname;
+
+	uint32_t secattr = get_section_attributes(section_elem, IS_64);
+
+	bool is_external;
+
+	if ((n_type & N_EXT) == N_EXT)
+		is_external = TRUE;
+	else
+		is_external = FALSE;
+
+
+	if (type != N_UNDF)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else
+		ft_putstr("                ");
+	ft_putstr(" ");
+
+	int c;
+
+	c = '?';
+	if (type == N_UNDF)
+		c = 'u';
+	else if (type == N_ABS)
+		c = 'a';
+	else if (type == N_SECT)
+	{
+		// ft_putstr("");
+		if (ft_strcmp(segname, SEG_TEXT) == 0 &&
+				ft_strcmp(sectname, SECT_TEXT) == 0)
+		{
+			c = 't';
+		}
+		else if (ft_strcmp(segname, SEG_DATA) == 0 &&
+						ft_strcmp(sectname, SECT_DATA) == 0)
+		{
+			c = 'd';
+		}
+		else if (ft_strcmp(segname, SEG_DATA) == 0 &&
+						ft_strcmp(sectname, SECT_BSS) == 0)
+		{
+			c = 'b';
+		}
+		else
+		{
+			c = 's';
+		}
+
+	}
+	else if (type == N_PBUD)
+		c = 'u';
+	else if (type == N_INDR)
+		c = 'i';
+	else if (type == N_UNDF && n_value != 0)
+		c = 'c';
+
+	if (is_external)
+		c -= 32;
+	ft_putchar(c);
+	ft_putstr(" ");
+	ft_putstr(symbol_string);
+	ft_putstr("\n");
+
+
+
+	// uint16_t desc_reference;
+	// desc_reference = n_desc & REFERENCE_TYPE;
+}
+
 
 void display_symbol_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
 {
@@ -335,11 +421,16 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 	while (symbol_list)
 	{
 		if (is_64 == TRUE)
-			display_symbol_64(string_table, section_list, symbol_list);
+		{
+			// display_symbol_64(string_table, section_list, symbol_list);
+			display_symbol_short_64(string_table, section_list, symbol_list);
+		}
 		else
+		{
 			display_symbol_32(string_table, section_list, symbol_list);
-		// display_symbol_hexa(string_table, section_list, symbol_list);
-		// display_section_command(section_list);
+			// display_symbol_hexa(string_table, section_list, symbol_list);
+			// display_section_command(section_list);
+		}
 		symbol_list = symbol_list->next;
 	}
 }
