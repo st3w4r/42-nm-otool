@@ -132,7 +132,7 @@ void display_symbol_64(void *string_table, s_section_list *section_list, s_symbo
 	// if ((section_elem->section_64->flags & SECTION_TYPE)== S_ATTR_DEBUG)
 	// 	ft_putstr("S_ATTR_DEBUG");
 
-	if (n_value)
+	if (type != N_UNDF)
 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
 	else
 		ft_putstr("                ");
@@ -253,7 +253,7 @@ void display_symbol_32(void *string_table, s_section_list *section_list, s_symbo
 	// if ((section_elem->section_64->flags & SECTION_TYPE)== S_ATTR_DEBUG)
 	// 	ft_putstr("S_ATTR_DEBUG");
 
-	if (n_value)
+	if (type != N_UNDF)
 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
 	else
 		ft_putstr("        ");
