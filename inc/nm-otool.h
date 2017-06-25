@@ -152,6 +152,15 @@ typedef struct fromat
 	s_symbol_list *symbol_list;
 }	 						s_format;
 
+typedef struct file s_file;
+struct file
+{
+	e_file_format file_format;
+	bool is_displayed;
+	int nfat_arch;
+};
+
+s_file g_file;
 
 /*
 ** File: section_list.c

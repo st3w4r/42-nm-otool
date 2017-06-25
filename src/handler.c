@@ -186,6 +186,7 @@ void	handle_fat(s_format *format, void *ptr, bool is_64)
 	nfat_arch = swap_uint32(nfat_arch);
 	ft_putnbr(nfat_arch);
 	ft_putstr("\n");
+	// g_file.nfat_arch = nfat_arch;
 	i = 0;
 	while (i < nfat_arch)
 	{
@@ -252,6 +253,8 @@ void	handle_format(void *ptr)
 	// file_format = get_file_format(ptr);
 	if (format->file_format == MACHO_64)
 	{
+		// if (sizeof(void *) == 4 && g_file.nfat_arch > 1)
+		// 	return ;
 		ft_putstr("File macho 64\n");
 		format->is_64 = TRUE;
 		handle_macho(format, ptr, format->is_64);
@@ -259,6 +262,8 @@ void	handle_format(void *ptr)
 	}
 	else if (format->file_format == MACHO_32)
 	{
+		// if (sizeof(void *) == 8 && g_file.nfat_arch > 1)
+		// 	return ;
 		format->is_64 = FALSE;
 		ft_putstr("File macho 32\n");
 		handle_macho(format, ptr, format->is_64);
