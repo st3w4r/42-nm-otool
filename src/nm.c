@@ -8,7 +8,7 @@ void process_file(char *file_name)
 	fd = open_file(file_name);
 	if (is_file(fd) == FALSE)
 	{
-		ft_error_str("Is a directory\n");
+		ft_error_str("Is a directory.\n");
 		return ;
 	}
 	ptr = map_file_into_memory(fd);

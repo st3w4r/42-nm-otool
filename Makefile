@@ -46,6 +46,7 @@ SRC =	nm.c \
 			section_list.c \
 			symbol_list.c \
 			ft_puthexa_size.c \
+			ft_print_mem.c \
 			swap.c
 
 

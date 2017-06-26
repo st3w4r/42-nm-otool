@@ -25,8 +25,33 @@ void display_file_format(e_file_format file_format)
 // }
 //
 
+void display_section_text(void *ptr, s_section_list *section_elem, char *segname, char *sectname, bool is_64)
+{
+	uint64_t size;
+	uint64_t addr;
 
+	ft_putstr("Contents of (");
+	ft_putstr(segname);
+	ft_putstr(",");
+	ft_putstr(sectname);
+	ft_putstr(") section");
+	ft_putstr("\n");
+	if (is_64)
+	{
+		// ft_puthexa_size(section_elem->section_64->addr, sizeof(addr) * 2);
+		// ft_putstr("\t");
+		// print_mem((void*)section_elem->section_64->addr + section_elem->section_64->offset, section_elem->section_64->size);
+		ft_print_mem(ptr + section_elem->section_64->offset, section_elem->section_64->size);
+		// printf("%02x ", section_elem->section_64->addr);
+		ft_putstr("\n");
+	}
+	else
+	{
 
+	}
+}
+
+/*
 void display_section(s_section_list *section_list, bool is_64)
 {
 	if (is_64 == TRUE)
@@ -45,13 +70,35 @@ void display_section(s_section_list *section_list, bool is_64)
 		ft_putstr(section_list->section_32->sectname);
 		ft_putstr("\n");
 	}
+}*/
+
+void display_section(void *ptr, s_section_list *section_list, bool is_64)
+{
+	char *segname;
+	char *sectname;
+
+	if (is_64 == TRUE)
+	{
+		segname = section_list->section_64->segname;
+		sectname = section_list->section_64->sectname;
+	}
+	else
+	{
+		segname = section_list->section_32->segname;
+		sectname = section_list->section_32->sectname;
+	}
+	if (ft_strcmp(segname, SEG_TEXT) == 0 &&
+			ft_strcmp(sectname, SECT_TEXT) == 0)
+	{
+		display_section_text(ptr, section_list, segname, sectname, is_64);
+	}
 }
 
-void display_section_list(s_section_list *section_list, bool is_64)
+void display_section_list(void *ptr, s_section_list *section_list, bool is_64)
 {
 	while (section_list)
 	{
-		display_section(section_list, is_64);
+		display_section(ptr, section_list, is_64);
 		section_list = section_list->next;
 	}
 }
@@ -548,14 +595,14 @@ void display_format(s_format *format)
 	{
 		// display_lc_list(format.lc_list);
 		// display_section(get_section_index(format->section_list, 8));
-		// display_mach_header_64(format->ptr_header);
-		// display_section_list(format->section_list, format->is_64);
+		display_mach_header_64(format->ptr_header);
+		display_section_list(format->ptr_header, format->section_list, format->is_64);
 		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 	}
 	else
 	{
-		// display_mach_header_32(format->ptr_header);
-		// display_section_list(format->section_list, format->is_64);
+		display_mach_header_32(format->ptr_header);
+		display_section_list(format->ptr_header, format->section_list, format->is_64);
 		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 	}
 
