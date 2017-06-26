@@ -67,6 +67,17 @@ struct symdef
 // struct load_command typedef s_load_command;
 
 
+typedef enum	flags
+{
+	FLAG_a = 1 << 0,
+	FLAG_g = 1 << 1,
+	FLAG_m = 1 << 2,
+	FLAG_p = 1 << 3,
+	FLAG_u = 1 << 4,
+	FLAG_U = 1 << 5,
+	FLAG_x = 1 << 6
+}	 						e_flag;
+
 /*
 ** All file format supported by the program
 */
@@ -160,13 +171,13 @@ struct file
 	int nfat_arch;
 };
 
-typedef struct files s_files;
-struct files
+typedef struct prog s_prog;
+struct prog
 {
 	char **files;
 	uint32_t flags;
 };
-// s_file g_file;
+s_prog g_prog;
 
 /*
 ** File: section_list.c
