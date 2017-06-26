@@ -126,6 +126,8 @@ void display_symbol_short_64(void *string_table, s_section_list *section_list, s
 
 	if (type != N_UNDF)
 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else if (type == N_UNDF && n_value != 0)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
 	else
 		ft_putstr("                ");
 	ft_putstr(" ");
@@ -133,8 +135,14 @@ void display_symbol_short_64(void *string_table, s_section_list *section_list, s
 	int c;
 
 	c = '?';
-	if (type == N_UNDF)
-		c = 'u';
+	if (n_type & N_STAB)
+		c = '-';
+	else if (type == N_UNDF)
+	{
+			c = 'u';
+			if (n_value != 0)
+				c = 'c';
+	}
 	else if (type == N_ABS)
 		c = 'a';
 	else if (type == N_SECT)
@@ -213,6 +221,8 @@ void display_symbol_short_32(void *string_table, s_section_list *section_list, s
 
 	if (type != N_UNDF)
 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else if (type == N_UNDF && n_value != 0)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
 	else
 		ft_putstr("        ");
 	ft_putstr(" ");
@@ -220,8 +230,14 @@ void display_symbol_short_32(void *string_table, s_section_list *section_list, s
 	int c;
 
 	c = '?';
-	if (type == N_UNDF)
-		c = 'u';
+	if (n_type & N_STAB)
+		c = '-';
+	else if (type == N_UNDF)
+	{
+			c = 'u';
+			if (n_value != 0)
+				c = 'c';
+	}
 	else if (type == N_ABS)
 		c = 'a';
 	else if (type == N_SECT)
@@ -530,18 +546,18 @@ void display_format(s_format *format)
 {
 	if (format->is_64 == TRUE)
 	{
-		display_mach_header_64(format->ptr_header);
 		// display_lc_list(format.lc_list);
-		display_section_list(format->section_list, format->is_64);
 		// display_section(get_section_index(format->section_list, 8));
+		// display_mach_header_64(format->ptr_header);
+		// display_section_list(format->section_list, format->is_64);
 		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 	}
 	else
 	{
-		display_mach_header_32(format->ptr_header);
-		display_section_list(format->section_list, format->is_64);
+		// display_mach_header_32(format->ptr_header);
+		// display_section_list(format->section_list, format->is_64);
+		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 	}
-	// display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 
 }
 

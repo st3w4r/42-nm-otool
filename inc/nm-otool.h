@@ -203,6 +203,7 @@ void			release_memory(void *ptr, int fd);
 size_t			get_size_of_file(int fd);
 struct stat	get_stat_of_file(int fd);
 int					open_file(char *name);
+void				close_file(int fd);
 
 /*
 ** File: display.c

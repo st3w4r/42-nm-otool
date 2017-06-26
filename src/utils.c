@@ -73,3 +73,17 @@ int open_file(char *name)
 	}
 	return fd;
 }
+
+/*
+** Close file, exit if error trhogt up
+*/
+void close_file(int fd)
+{
+	int result;
+
+	result = close(fd);
+	if (result < 0)
+	{
+		ft_error_str_exit("close error\n");
+	}
+}
