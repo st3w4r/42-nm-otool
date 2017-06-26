@@ -6,6 +6,11 @@ void process_file(char *file_name)
 	void *ptr;
 
 	fd = open_file(file_name);
+	if (is_file(fd) == FALSE)
+	{
+		ft_error_str("Is a directory\n");
+		return ;
+	}
 	ptr = map_file_into_memory(fd);
 	handle_format(ptr);
 	release_memory(ptr, fd);
@@ -38,6 +43,7 @@ void parse_args(int argc, char **argv)
 	if (argc < 2)
 	{
 		ft_error_str_exit("At least one argument is required\n");
+		// process_file("a.out");
 	}
 	parse_file_args(argc -1, ++argv);
 }

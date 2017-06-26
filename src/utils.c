@@ -59,6 +59,20 @@ struct stat get_stat_of_file(int fd)
 	return buf;
 }
 
+bool is_file(int fd)
+{
+	struct stat buf;
+
+	if (fstat(fd, &buf) < 0)
+	{
+		ft_error_str_exit("fstat error\n");
+	}
+	if (S_ISREG(buf.st_mode))
+		return TRUE;
+	else
+		return FALSE;
+}
+
 /*
 ** Open file and return a file descriptor
 */

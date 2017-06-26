@@ -287,6 +287,6 @@ void	handle_format(void *ptr)
 	}
 	else
 	{
-		ft_error_str_exit("The file is not supported\n");
+		ft_error_str("The file is not supported\n");
 	}
 }

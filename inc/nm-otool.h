@@ -160,7 +160,13 @@ struct file
 	int nfat_arch;
 };
 
-s_file g_file;
+typedef struct files s_files;
+struct files
+{
+	char **files;
+	uint32_t flags;
+};
+// s_file g_file;
 
 /*
 ** File: section_list.c
@@ -202,6 +208,7 @@ void			*map_file_into_memory(int fd);
 void			release_memory(void *ptr, int fd);
 size_t			get_size_of_file(int fd);
 struct stat	get_stat_of_file(int fd);
+bool				is_file(int fd);
 int					open_file(char *name);
 void				close_file(int fd);
 
