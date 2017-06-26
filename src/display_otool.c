@@ -38,17 +38,22 @@ void display_section_text(void *ptr, s_section_list *section_elem, char *segname
 	ft_putstr("\n");
 	if (is_64)
 	{
+		addr = 0;
+		addr = section_elem->section_64->addr;
 		// ft_puthexa_size(section_elem->section_64->addr, sizeof(addr) * 2);
 		// ft_putstr("\t");
 		// print_mem((void*)section_elem->section_64->addr + section_elem->section_64->offset, section_elem->section_64->size);
-		ft_print_mem(ptr + section_elem->section_64->offset, section_elem->section_64->size);
+		ft_print_mem(ptr + section_elem->section_64->offset, (void*)addr, section_elem->section_64->size, is_64);
 		// printf("%02x ", section_elem->section_64->addr);
-		ft_putstr("\n");
 	}
 	else
 	{
+		addr = 0;
+		addr = section_elem->section_32->addr;
+		ft_print_mem(ptr + section_elem->section_32->offset, (void*)addr, section_elem->section_32->size, is_64);
 
 	}
+	ft_putstr("\n");
 }
 
 /*
@@ -591,20 +596,22 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 
 void display_format(s_format *format)
 {
-	if (format->is_64 == TRUE)
-	{
-		// display_lc_list(format.lc_list);
-		// display_section(get_section_index(format->section_list, 8));
-		display_mach_header_64(format->ptr_header);
-		display_section_list(format->ptr_header, format->section_list, format->is_64);
-		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
-	}
-	else
-	{
-		display_mach_header_32(format->ptr_header);
-		display_section_list(format->ptr_header, format->section_list, format->is_64);
-		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
-	}
+	// if (format->is_64 == TRUE)
+	// {
+	// 	// display_lc_list(format.lc_list);
+	// 	// display_section(get_section_index(format->section_list, 8));
+	// 	display_mach_header_64(format->ptr_header);
+	// 	display_section_list(format->ptr_header, format->section_list, format->is_64);
+	// 	display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
+	// }
+	// else
+	// {
+	// 	display_mach_header_32(format->ptr_header);
+	// 	display_section_list(format->ptr_header, format->section_list, format->is_64);
+	// 	display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
+	// }
+	display_section_list(format->ptr_header, format->section_list, format->is_64);
+
 
 }
 

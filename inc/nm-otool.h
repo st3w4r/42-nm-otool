@@ -291,7 +291,7 @@ void	ft_puthexa_size(uint64_t nb, size_t size);
 /*
 ** File: ft_print_mem.c
 */
-void	ft_print_mem(void *addr, int len);
+void	ft_print_mem(void *addr, void *memory_addr, int len, bool is_64);
 
 /*
 ** File: swap.c

@@ -37,9 +37,21 @@ LIBS = -L libft/ -lft -lm
 
 #____________FILES____________#
 
-SRC =	nm.c \
+SRC_NM =	nm.c \
 			utils.c \
-			display.c \
+			display_nm.c \
+			format_information.c \
+			handler.c \
+			init_format.c \
+			section_list.c \
+			symbol_list.c \
+			ft_puthexa_size.c \
+			ft_print_mem.c \
+			swap.c
+
+SRC_OTOOL =	otool.c \
+			utils.c \
+			display_otool.c \
 			format_information.c \
 			handler.c \
 			init_format.c \
@@ -50,28 +62,35 @@ SRC =	nm.c \
 			swap.c
 
 
-OBJ = $(addprefix $(PATH_SRC), $(SRC:.c=.o))
+OBJ_NM = $(addprefix $(PATH_SRC), $(SRC_NM:.c=.o))
+OBJ_OTOOL = $(addprefix $(PATH_SRC), $(SRC_OTOOL:.c=.o))
 
 #____________RULES____________#
 
 .PHONY: clean fclean re
 
-all: $(NAME_NM)
+all: $(NAME_NM) $(NAME_OTOOL)
 
-$(NAME_NM): $(OBJ)
+$(NAME_NM): $(OBJ_NM)
 	make -C libft/
-	$(CC) $(OBJ) -o $(NAME_NM) $(LIBS)
+	$(CC) $(OBJ_NM) -o $(NAME_NM) $(LIBS)
+
+$(NAME_OTOOL): $(OBJ_OTOOL)
+	make -C libft/
+	$(CC) $(OBJ_OTOOL) -o $(NAME_OTOOL) $(LIBS)
 
 
 #___CLEAN___#
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ_NM)
+	rm -f $(OBJ_OTOOL)
 
 #___FCLEAN___#
 
 fclean: clean
 	rm -f $(NAME_NM)
+	rm -f $(NAME_OTOOL)
 
 #___RE___#
 
