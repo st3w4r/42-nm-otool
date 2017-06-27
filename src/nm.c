@@ -48,6 +48,8 @@ int parse_flags_args(int argc, char **argv)
 				g_prog.flags |= FLAG_U;
 			else if (argv[i][1] == 'x')
 				g_prog.flags |= FLAG_x;
+			else if (argv[i][1] == 'j')
+				g_prog.flags |= FLAG_j;
 			nb_flags++;
 		}
 		i++;
@@ -79,6 +81,10 @@ void	parse_file_args(int nb_files, char **args_file, int nb_flags)
 	// 	ft_malloc_error();
 
 	g_prog.nbfiles = (nb_files - nb_flags);
+	if (g_prog.nbfiles == 0)
+	{
+		ft_error_str_exit("At least one file is required\n");
+	}
 	i = 0;
 	while (i < nb_files)
 	{
@@ -98,7 +104,7 @@ void parse_args(int argc, char **argv)
 
 	if (argc < 2)
 	{
-		ft_error_str_exit("At least one argument is required\n");
+		ft_error_str_exit("ft_nm [-guUjx] file\n");
 		// process_file("a.out");
 	}
 	nb_flags = parse_flags_args(argc, argv);

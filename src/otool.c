@@ -64,6 +64,10 @@ void	parse_file_args(int nb_files, char **args_file, int nb_flags)
 	// 	ft_malloc_error();
 
 	g_prog.nbfiles = (nb_files - nb_flags);
+	if (g_prog.nbfiles == 0)
+	{
+		ft_error_str_exit("At least one file is required\n");
+	}
 	i = 0;
 	while (i < nb_files)
 	{

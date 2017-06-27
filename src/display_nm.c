@@ -108,7 +108,7 @@ void display_section_list(void *ptr, s_section_list *section_list, bool is_64)
 	}
 }
 
-void display_symbol_hexa(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+void display_symbol_hexa_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
 {
 	uint8_t n_type;
 	uint8_t type;
@@ -128,16 +128,48 @@ void display_symbol_hexa(void *string_table, s_section_list *section_list, s_sym
 	type = get_symbol_type(n_type);
 	symbol_string = get_symbol_string(symbol_elem, string_table, IS_64);
 
-	if ((type == N_SECT || type == N_UNDF) && ft_strcmp(symbol_string, ""))
-	{
-		ft_puthexa_size(n_value, sizeof(n_value) * 2); ft_putstr(" ");
-		ft_puthexa_size(n_type, sizeof(n_type) * 2); ft_putstr(" ");
-		ft_puthexa_size(n_sect, sizeof(n_sect) * 2); ft_putstr(" ");
-		ft_puthexa_size(n_desc, sizeof(n_desc) * 2); ft_putstr(" ");
-		ft_puthexa_size(n_strx, sizeof(n_strx) * 2); ft_putstr(" ");
-		ft_putstr(symbol_string);
-		ft_putstr("\n");
-	}
+	if (n_type & N_STAB)
+		return ;
+	// if ((type == N_SECT || type == N_UNDF) && ft_strcmp(symbol_string, ""))
+	ft_puthexa_size(n_value, sizeof(n_value) * 2); ft_putstr(" ");
+	ft_puthexa_size(n_type, sizeof(n_type) * 2); ft_putstr(" ");
+	ft_puthexa_size(n_sect, sizeof(n_sect) * 2); ft_putstr(" ");
+	ft_puthexa_size(n_desc, sizeof(n_desc) * 2); ft_putstr(" ");
+	ft_puthexa_size(n_strx, sizeof(n_strx) * 2); ft_putstr(" ");
+	ft_putstr(symbol_string);
+	ft_putstr("\n");
+}
+
+void display_symbol_hexa_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+{
+	uint8_t n_type;
+	uint8_t type;
+	uint8_t n_sect;
+	// uint8_t type;
+	uint16_t n_desc;
+	uint32_t n_value;
+	uint32_t n_strx;
+	// s_section_list *section_elem;
+	char *symbol_string;
+
+	n_type = symbol_elem->symbol_32->n_type;
+	n_sect = symbol_elem->symbol_32->n_sect;
+	n_value = symbol_elem->symbol_32->n_value;
+	n_desc = symbol_elem->symbol_32->n_desc;
+	n_strx = symbol_elem->symbol_32->n_un.n_strx;
+	type = get_symbol_type(n_type);
+	symbol_string = get_symbol_string(symbol_elem, string_table, IS_32);
+
+	if (n_type & N_STAB)
+		return ;
+	// if ((type == N_SECT || type == N_UNDF) && ft_strcmp(symbol_string, ""))
+	ft_puthexa_size(n_value, sizeof(n_value) * 2); ft_putstr(" ");
+	ft_puthexa_size(n_type, sizeof(n_type) * 2); ft_putstr(" ");
+	ft_puthexa_size(n_sect, sizeof(n_sect) * 2); ft_putstr(" ");
+	ft_puthexa_size(n_desc, sizeof(n_desc) * 2); ft_putstr(" ");
+	ft_puthexa_size(n_strx, sizeof(n_strx) * 2); ft_putstr(" ");
+	ft_putstr(symbol_string);
+	ft_putstr("\n");
 }
 
 
@@ -175,14 +207,6 @@ void display_symbol_short_64(void *string_table, s_section_list *section_list, s
 	else
 		is_external = FALSE;
 
-
-	if (type != N_UNDF)
-		ft_puthexa_size(n_value, sizeof(n_value) * 2);
-	else if (type == N_UNDF && n_value != 0)
-		ft_puthexa_size(n_value, sizeof(n_value) * 2);
-	else
-		ft_putstr("                ");
-	ft_putstr(" ");
 
 	int c;
 
@@ -230,6 +254,45 @@ void display_symbol_short_64(void *string_table, s_section_list *section_list, s
 
 	if (is_external)
 		c -= 32;
+
+	// __Display__
+	// Flag u
+	if (g_prog.flags & FLAG_g)
+	{
+		if (!(n_type & N_EXT))
+			return ;
+	}
+
+	if (g_prog.flags & FLAG_u)
+	{
+		if (type != N_UNDF)
+			return ;
+		else
+			ft_putendl(symbol_string);
+		return ;
+	}
+
+	// Flag U
+	if (g_prog.flags & FLAG_U)
+	{
+		if (type == N_UNDF)
+			return ;
+	}
+
+	// Flag j
+	if (g_prog.flags & FLAG_j)
+	{
+		ft_putendl(symbol_string);
+		return ;
+	}
+	// Default
+	if (type != N_UNDF)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else if (type == N_UNDF && n_value != 0)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else
+		ft_putstr("                ");
+	ft_putstr(" ");
 	ft_putchar(c);
 	ft_putstr(" ");
 	ft_putstr(symbol_string);
@@ -270,15 +333,6 @@ void display_symbol_short_32(void *string_table, s_section_list *section_list, s
 	else
 		is_external = FALSE;
 
-
-	if (type != N_UNDF)
-		ft_puthexa_size(n_value, sizeof(n_value) * 2);
-	else if (type == N_UNDF && n_value != 0)
-		ft_puthexa_size(n_value, sizeof(n_value) * 2);
-	else
-		ft_putstr("        ");
-	ft_putstr(" ");
-
 	int c;
 
 	c = '?';
@@ -325,6 +379,45 @@ void display_symbol_short_32(void *string_table, s_section_list *section_list, s
 
 	if (is_external)
 		c -= 32;
+
+	// __Display__
+	// Flag u
+	if (g_prog.flags & FLAG_g)
+	{
+		if (!(n_type & N_EXT))
+			return ;
+	}
+
+	if (g_prog.flags & FLAG_u)
+	{
+		if (type != N_UNDF)
+			return ;
+		else
+			ft_putendl(symbol_string);
+		return ;
+	}
+
+	// Flag U
+	if (g_prog.flags & FLAG_U)
+	{
+		if (type == N_UNDF)
+			return ;
+	}
+
+	// Flag j
+	if (g_prog.flags & FLAG_j)
+	{
+		ft_putendl(symbol_string);
+		return ;
+	}
+	// Default
+	if (type != N_UNDF)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else if (type == N_UNDF && n_value != 0)
+		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+	else
+		ft_putstr("        ");
+	ft_putstr(" ");
 	ft_putchar(c);
 	ft_putstr(" ");
 	ft_putstr(symbol_string);
@@ -581,12 +674,19 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 		if (is_64 == TRUE)
 		{
 			// display_symbol_64(string_table, section_list, symbol_list);
-			display_symbol_short_64(string_table, section_list, symbol_list);
+			if (g_prog.flags & FLAG_x)
+				display_symbol_hexa_64(string_table, section_list, symbol_list);
+			else
+				display_symbol_short_64(string_table, section_list, symbol_list);
 		}
 		else
 		{
+			if (g_prog.flags & FLAG_x)
+				display_symbol_hexa_32(string_table, section_list, symbol_list);
+			else
+				display_symbol_short_32(string_table, section_list, symbol_list);
+
 			// display_symbol_32(string_table, section_list, symbol_list);
-			display_symbol_short_32(string_table, section_list, symbol_list);
 			// display_symbol_hexa(string_table, section_list, symbol_list);
 			// display_section_command(section_list);
 		}
@@ -602,21 +702,23 @@ void display_format(s_format *format)
 		ft_putstr(format->filename);
 		ft_putstr(":\n");
 	}
-	if (format->is_64 == TRUE)
-	{
-		// display_lc_list(format.lc_list);
-		// display_section(get_section_index(format->section_list, 8));
-		// display_mach_header_64(format->ptr_header);
-		// display_section_list(format->ptr_header, format->section_list, format->is_64);
-		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
-	}
-	else
-	{
-		// display_mach_header_32(format->ptr_header);
+	display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 
-		// display_section_list(format->ptr_header, format->section_list, format->is_64);
-		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
-	}
+	// if (format->is_64 == TRUE)
+	// {
+	// 	// display_lc_list(format.lc_list);
+	// 	// display_section(get_section_index(format->section_list, 8));
+	// 	// display_mach_header_64(format->ptr_header);
+	// 	// display_section_list(format->ptr_header, format->section_list, format->is_64);
+	// 	display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
+	// }
+	// else
+	// {
+	// 	// display_mach_header_32(format->ptr_header);
+	//
+	// 	// display_section_list(format->ptr_header, format->section_list, format->is_64);
+	// 	display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
+	// }
 
 }
 

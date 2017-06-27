@@ -75,7 +75,8 @@ typedef enum	flags
 	FLAG_p = 1 << 3,
 	FLAG_u = 1 << 4,
 	FLAG_U = 1 << 5,
-	FLAG_x = 1 << 6
+	FLAG_x = 1 << 6,
+	FLAG_j = 1 << 7
 }	 						e_flag;
 
 /*
