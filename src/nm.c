@@ -6,8 +6,6 @@ void process_file(char *file_name)
 	void *ptr;
 	s_file *file;
 
-
-
 	fd = open_file(file_name);
 	if (is_file(fd) == FALSE)
 	{

@@ -215,6 +215,9 @@ void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
 	char *string_elem;
 	struct ar_header *ar_header_elem;
 	void *ar_object;
+	char *name;
+	// s_archive_file_list **file_list;
+
 
 	ar_magic = get_ar_magic(ptr);
 	ar_header = get_ar_header(ptr);
@@ -224,6 +227,10 @@ void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
 	nranlibs = get_nranlibs(symdef);
 	ranlib_arr = get_ranlib_array(symdef);
 	string_table = get_ar_string_table(ranlib_arr, nranlibs);
+
+	// if ((file_list = malloc(sizeof(s_archive_file_list) * nranlibs)) == NULL)
+	// 	ft_malloc_error();
+
 	i = 0;
 	while (i < nranlibs)
 	{
@@ -233,12 +240,31 @@ void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
 		size_name = get_size_from_identifier((char*)ar_header_elem->file_identifier);
 		ar_object = get_ar_object(ptr, ranlib_elem, size_name);
 
+		// ft_putstr(string_elem);
+		// ft_putstr(" ");
+		// ft_putstr("\n");
+		// ft_putstr(file->filename);
+		// ft_putstr("(");
+		// ft_putstr(get_ar_header_name(ar_header_elem, size_name));
+		// ft_putstr("):\n");
 		ft_putstr(string_elem);
-		ft_putstr(" ");
-		ft_putendl(get_ar_header_name(ar_header_elem, size_name));
+		name = get_ar_header_name(ar_header_elem, size_name);
+		add_archive_list(format, ar_object, name);
 
-		handle_format(ar_object, file);
+		// handle_format(ar_object, file);
 		i++;
+	}
+	s_archive_list * archive_list;
+	archive_list = format->archive_list;
+	while (archive_list != NULL)
+	{
+		ft_putstr("\n");
+		ft_putstr(file->filename);
+		ft_putstr("(");
+		ft_putstr(archive_list->name);
+		ft_putstr("):\n");
+		handle_format(archive_list->ar_object, file);
+		archive_list = archive_list->next;
 	}
 }
 

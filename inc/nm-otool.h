@@ -131,6 +131,14 @@ typedef enum	file_format
 // 	// s_segment_list	*segment_list; // ptr on linked list of segment_list
 // }							s_lc_list;
 //
+typedef struct archive_list s_archive_list;
+struct archive_list
+{
+	void *ar_object;
+	void *name;
+	s_archive_list *prev;
+	s_archive_list *next;
+};
 
 typedef struct section_list s_section_list;
 struct section_list
@@ -162,6 +170,7 @@ typedef struct fromat
 	// s_lc_list				*lc_list; //ptr on linked list of lc_list
 	s_section_list *section_list;
 	s_symbol_list *symbol_list;
+	s_archive_list *archive_list;
 }	 						s_format;
 
 typedef struct file s_file;
@@ -176,11 +185,16 @@ struct file
 typedef struct prog s_prog;
 struct prog
 {
-	char **files;
 	uint32_t nbfiles;
 	uint32_t flags;
 };
 s_prog g_prog;
+
+/*
+** File: archive_list.c
+** Description: Function to deal with archive_list
+*/
+s_archive_list *add_archive_list(s_format *format, void *ar_object, char *name);
 
 /*
 ** File: section_list.c

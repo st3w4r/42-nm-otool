@@ -48,7 +48,8 @@ SRC_NM =	nm.c \
 			ft_puthexa_size.c \
 			ft_print_mem.c \
 			swap.c \
-			init_file.c
+			init_file.c \
+			archive_list.c
 
 SRC_OTOOL =	otool.c \
 			utils.c \
@@ -61,7 +62,8 @@ SRC_OTOOL =	otool.c \
 			ft_puthexa_size.c \
 			ft_print_mem.c \
 			swap.c \
-			init_file.c
+			init_file.c \
+			archive_list.c
 
 
 OBJ_NM = $(addprefix $(PATH_SRC), $(SRC_NM:.c=.o))

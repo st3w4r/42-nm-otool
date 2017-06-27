@@ -52,5 +52,6 @@
 	format->string_table = NULL;
 	format->section_list = NULL;
 	format->symbol_list = NULL;
+	format->archive_list = NULL;
 	return format;
  }
