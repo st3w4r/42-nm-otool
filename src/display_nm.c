@@ -694,9 +694,19 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 	}
 }
 
-void display_format(s_format *format)
+void display_ar_header(char *filename, char *name)
 {
-	if (g_prog.nbfiles > 1)
+	ft_putstr(filename);
+	ft_putstr("(");
+	ft_putstr(name);
+	ft_putstr("):\n");
+}
+
+void display_format(s_file *file, s_format *format)
+{
+	if (g_prog.nbfiles > 1 &&
+			file->file_format != ARCHIVE &&
+			file->file_format != FAT)
 	{
 		ft_putstr("\n");
 		ft_putstr(format->filename);

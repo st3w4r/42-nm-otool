@@ -239,33 +239,34 @@ void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
 		ar_header_elem = get_ar_header_element(ptr, ranlib_elem);
 		size_name = get_size_from_identifier((char*)ar_header_elem->file_identifier);
 		ar_object = get_ar_object(ptr, ranlib_elem, size_name);
+		name = get_ar_header_name(ar_header_elem, size_name);
 
 		// ft_putstr(string_elem);
 		// ft_putstr(" ");
 		// ft_putstr("\n");
 		// ft_putstr(file->filename);
 		// ft_putstr("(");
-		// ft_putstr(get_ar_header_name(ar_header_elem, size_name));
+		// ft_putstr(name);
 		// ft_putstr("):\n");
-		ft_putstr(string_elem);
-		name = get_ar_header_name(ar_header_elem, size_name);
-		add_archive_list(format, ar_object, name);
-
-		// handle_format(ar_object, file);
+		// display_ar_header(file->filename, name);
+		// ft_putstr(string_elem);
+		// add_archive_list(format, ar_object, name);
+		file->sub_filename = name;
+		handle_format(ar_object, file);
 		i++;
 	}
-	s_archive_list * archive_list;
-	archive_list = format->archive_list;
-	while (archive_list != NULL)
-	{
-		ft_putstr("\n");
-		ft_putstr(file->filename);
-		ft_putstr("(");
-		ft_putstr(archive_list->name);
-		ft_putstr("):\n");
-		handle_format(archive_list->ar_object, file);
-		archive_list = archive_list->next;
-	}
+	// s_archive_list * archive_list;
+	// archive_list = format->archive_list;
+	// while (archive_list != NULL)
+	// {
+	// 	ft_putstr("\n");
+	// 	ft_putstr(file->filename);
+	// 	ft_putstr("(");
+	// 	ft_putstr(archive_list->name);
+	// 	ft_putstr("):\n");
+	// 	handle_format(archive_list->ar_object, file);
+	// 	archive_list = archive_list->next;
+	// }
 }
 
 /*
@@ -287,7 +288,7 @@ void	handle_format(void *ptr, s_file *file)
 		// ft_putstr("File macho 64\n");
 		format->is_64 = TRUE;
 		handle_macho(format, ptr, format->is_64);
-		display_format(format);
+		display_format(file, format);
 	}
 	else if (format->file_format == MACHO_32)
 	{
@@ -297,7 +298,7 @@ void	handle_format(void *ptr, s_file *file)
 		// ft_putstr("File macho 32\n");
 		handle_macho(format, ptr, format->is_64);
 		if (file->nb_archs == 1)
-			display_format(format);
+			display_format(file, format);
 	}
 	else if (format->file_format == FAT)
 	{

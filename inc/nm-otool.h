@@ -179,6 +179,7 @@ struct file
 {
 	e_file_format	file_format;
 	char					*filename;
+	char					*sub_filename;
 	uint32_t			nb_archs;
 	bool					is_displayed;
 };
@@ -251,8 +252,9 @@ void				close_file(int fd);
 ** File: display.c
 ** Description: Functions to display on the standard output
 */
+void	display_ar_header(char *filename, char *name);
 void	display_file_format(e_file_format file_format);
-void	display_format(s_format *format);
+void	display_format(s_file *file, s_format *format);
 // void	display_symbol(char *str);
 void	display_mach_header_32(struct mach_header *header);
 void	display_mach_header_64(struct mach_header_64 *header);

@@ -625,12 +625,36 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 	}
 }
 
-void display_format(s_format *format)
+void display_ar_header(char *filename, char *name)
+{
+	ft_putstr(filename);
+	ft_putstr("(");
+	ft_putstr(name);
+	ft_putstr("):\n");
+}
+
+void display_format(s_file *file, s_format *format)
 {
 	// if (g_prog.nbfiles > 1)
 	// {
-	ft_putstr(format->filename);
-	ft_putstr(":\n");
+	if (file->file_format == ARCHIVE && file->is_displayed == FALSE)
+	{
+		ft_putstr("Archive : ");
+		ft_putstr(file->filename);
+		ft_putstr("\n");
+		file->is_displayed = TRUE;
+	}
+	if (file->file_format == ARCHIVE)
+	{
+		display_ar_header(file->filename, file->sub_filename);
+	}
+	if (file->file_format != ARCHIVE)
+	{
+		ft_putstr(format->filename);
+		ft_putstr(":\n");
+	}
+
+
 	// }
 	// if (format->is_64 == TRUE)
 	// {
