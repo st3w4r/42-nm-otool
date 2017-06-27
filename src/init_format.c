@@ -38,8 +38,9 @@
 	 s_symbol_list		s_symbol_list;
 
 	 if ((format = malloc(sizeof(s_format))) == NULL)
-	 	ft_malloc_error();
+		ft_malloc_error();
 
+	format->filename = NULL;
 	format->file_format = get_file_format(ptr);
 	//  format.is_64 =
 	// format.is_big_endian =

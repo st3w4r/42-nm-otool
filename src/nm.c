@@ -4,6 +4,9 @@ void process_file(char *file_name)
 {
 	int fd;
 	void *ptr;
+	s_file *file;
+
+
 
 	fd = open_file(file_name);
 	if (is_file(fd) == FALSE)
@@ -12,7 +15,9 @@ void process_file(char *file_name)
 		return ;
 	}
 	ptr = map_file_into_memory(fd);
-	handle_format(ptr);
+	file = init_file(ptr);
+	file->filename = file_name;
+	handle_format(ptr, file);
 	release_memory(ptr, fd);
 	close_file(fd);
 	// handle_macho_64(ptr);
@@ -69,20 +74,20 @@ int parse_flags_args(int argc, char **argv)
 
 void	parse_file_args(int nb_files, char **args_file, int nb_flags)
 {
-	int file_index;
+	// int file_index;
 	int i;
 
-	if ((g_prog.files = malloc(sizeof(char*) * (nb_files - nb_flags))) == NULL)
-		ft_malloc_error();
+	// if ((g_prog.files = malloc(sizeof(char*) * (nb_files - nb_flags))) == NULL)
+	// 	ft_malloc_error();
 
-	file_index = 0;
+	g_prog.nbfiles = (nb_files - nb_flags);
 	i = 0;
 	while (i < nb_files)
 	{
 		if (args_file[i][0] != '-')
 		{
-			g_prog.files[file_index++] = args_file[i];
-			ft_putendl(args_file[i]);
+			// g_prog.files[file_index++] = args_file[i];
+			// ft_putendl(args_file[i]);
 			process_file(args_file[i]);
 		}
 		i++;

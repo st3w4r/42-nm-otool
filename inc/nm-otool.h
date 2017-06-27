@@ -152,6 +152,7 @@ struct symbol_list
 
 typedef struct fromat
 {
+	char	*filename;
 	e_file_format	file_format;
 	bool	is_64;
 	bool	is_big_endian;
@@ -166,15 +167,17 @@ typedef struct fromat
 typedef struct file s_file;
 struct file
 {
-	e_file_format file_format;
-	bool is_displayed;
-	int nfat_arch;
+	e_file_format	file_format;
+	char					*filename;
+	uint32_t			nb_archs;
+	bool					is_displayed;
 };
 
 typedef struct prog s_prog;
 struct prog
 {
 	char **files;
+	uint32_t nbfiles;
 	uint32_t flags;
 };
 s_prog g_prog;
@@ -209,6 +212,12 @@ s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64);
 // s_section_list *add_section_list(s_format *format, struct section_64 *sec);
 // s_section_list *init_section_list(s_format *format, struct section_64 *sec);
 s_format				*init_format(void *ptr);
+
+/*
+** File: init_file.c
+** Description: Create structure with all information
+*/
+s_file		*init_file(void *ptr);
 
 /*
 ** File: utils.c
@@ -292,7 +301,7 @@ void	handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64);
 // void	handle_load_command(s_format *format, struct load_command *lc, void *ptr);
 void	handle_load_command(s_format *format, struct load_command *lc, void *ptr, bool is_64);
 void	handle_macho(s_format *format, void *ptr, bool is_64);
-void	handle_format(void *ptr);
+void	handle_format(void *ptr, s_file *file);
 
 /*
 ** File: ft_puthexa_size.c

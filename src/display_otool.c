@@ -596,6 +596,11 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 
 void display_format(s_format *format)
 {
+	// if (g_prog.nbfiles > 1)
+	// {
+	ft_putstr(format->filename);
+	ft_putstr(":\n");
+	// }
 	// if (format->is_64 == TRUE)
 	// {
 	// 	// display_lc_list(format.lc_list);

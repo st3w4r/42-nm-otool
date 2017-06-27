@@ -46,11 +46,11 @@ void handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64)
 		nsects = ((struct segment_command*)seg)->nsects;
 		segname = ((struct segment_command*)seg)->segname;
 	}
-	ft_putstr("Segment name: ");
-	ft_putstr(segname);
-	ft_putstr(" number of section: ");
-	ft_putnbr(nsects);
-	ft_putstr("\n");
+	// ft_putstr("Segment name: ");
+	// ft_putstr(segname);
+	// ft_putstr(" number of section: ");
+	// ft_putnbr(nsects);
+	// ft_putstr("\n");
 	i = 0;
 	while (i < nsects)
 	{
@@ -151,7 +151,7 @@ void	handle_macho(s_format *format, void *ptr, bool is_64)
 /*
 ** Handle fat architecture
 */
-void	handle_fat_arch(s_format *format, void *ptr, void *fat_arch, bool is_64)
+void	handle_fat_arch(s_file *file, s_format *format, void *ptr, void *fat_arch, bool is_64)
 {
 	cpu_type_t cpu_type;
 	cpu_subtype_t cpu_subtype;
@@ -162,18 +162,18 @@ void	handle_fat_arch(s_format *format, void *ptr, void *fat_arch, bool is_64)
 	cpu_subtype = swap_uint32(((struct fat_arch *)fat_arch)->cpusubtype);
 	offset = swap_uint32(((struct fat_arch *)fat_arch)->offset);
 
-	display_cpu_type(cpu_type, cpu_subtype);
-
-	ft_putnbr(offset);
-	ft_putstr("\n");
+	// display_cpu_type(cpu_type, cpu_subtype);
+	//
+	// ft_putnbr(offset);
+	// ft_putstr("\n");
 	object_file = get_object_file(ptr, offset);
-	handle_format(object_file);
+	handle_format(object_file, file);
 }
 
 /*
 ** Handle the fat file
 */
-void	handle_fat(s_format *format, void *ptr, bool is_64)
+void	handle_fat(s_file *file, s_format *format, void *ptr, bool is_64)
 {
 	uint64_t nfat_arch;
 	uint64_t i;
@@ -184,14 +184,15 @@ void	handle_fat(s_format *format, void *ptr, bool is_64)
 	else
 		nfat_arch = ((struct fat_header*)ptr)->nfat_arch;
 	nfat_arch = swap_uint32(nfat_arch);
-	ft_putnbr(nfat_arch);
-	ft_putstr("\n");
+	file->nb_archs = nfat_arch;
+	// ft_putnbr(nfat_arch);
+	// ft_putstr("\n");
 	// g_file.nfat_arch = nfat_arch;
 	i = 0;
 	while (i < nfat_arch)
 	{
 		fat_arch = get_fat_ach(ptr, i, is_64);
-		handle_fat_arch(format, ptr, fat_arch, is_64);
+		handle_fat_arch(file, format, ptr, fat_arch, is_64);
 		i++;
 	}
 }
@@ -200,7 +201,7 @@ void	handle_fat(s_format *format, void *ptr, bool is_64)
 /*
 ** Handle archive file
 */
-void	handle_ar(s_format *format, void *ptr, bool is_64)
+void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
 {
 	struct ar_header *ar_header;
 	struct ar_magic *ar_magic;
@@ -236,7 +237,7 @@ void	handle_ar(s_format *format, void *ptr, bool is_64)
 		ft_putstr(" ");
 		ft_putendl(get_ar_header_name(ar_header_elem, size_name));
 
-		handle_format(ar_object);
+		handle_format(ar_object, file);
 		i++;
 	}
 }
@@ -244,18 +245,20 @@ void	handle_ar(s_format *format, void *ptr, bool is_64)
 /*
 ** Handle file and redirect to the correct file type
 */
-void	handle_format(void *ptr)
+void	handle_format(void *ptr, s_file *file)
 {
 	// e_file_format file_format;
 	s_format *format;
 
 	format = init_format(ptr);
+	format->filename = file->filename;
+
 	// file_format = get_file_format(ptr);
 	if (format->file_format == MACHO_64)
 	{
 		// if (sizeof(void *) == 4 && g_file.nfat_arch > 1)
 		// 	return ;
-		ft_putstr("File macho 64\n");
+		// ft_putstr("File macho 64\n");
 		format->is_64 = TRUE;
 		handle_macho(format, ptr, format->is_64);
 		display_format(format);
@@ -265,25 +268,27 @@ void	handle_format(void *ptr)
 		// if (sizeof(void *) == 8 && g_file.nfat_arch > 1)
 		// 	return ;
 		format->is_64 = FALSE;
-		ft_putstr("File macho 32\n");
+		// ft_putstr("File macho 32\n");
 		handle_macho(format, ptr, format->is_64);
-		display_format(format);
+		if (file->nb_archs == 1)
+			display_format(format);
 	}
 	else if (format->file_format == FAT)
 	{
 		format->is_64 = FALSE;
-		ft_putstr("File FAT\n");
-		handle_fat(format, ptr, format->is_64);
+		// ft_putstr("File FAT\n");
+
+		handle_fat(file, format, ptr, format->is_64);
 	}
 	else if (format->file_format == FAT_64)
 	{
-		ft_putstr("File FAT 64\n");
+		// ft_putstr("File FAT 64\n");
 	}
 	else if (format->file_format == ARCHIVE)
 	{
-		ft_putstr("File archive\n");
+		// ft_putstr("File archive\n");
 		format->is_64 = FALSE;
-		handle_ar(format, ptr, format->is_64);
+		handle_ar(file, format, ptr, format->is_64);
 	}
 	else
 	{

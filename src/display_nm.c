@@ -596,17 +596,24 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 
 void display_format(s_format *format)
 {
+	if (g_prog.nbfiles > 1)
+	{
+		ft_putstr("\n");
+		ft_putstr(format->filename);
+		ft_putstr(":\n");
+	}
 	if (format->is_64 == TRUE)
 	{
 		// display_lc_list(format.lc_list);
 		// display_section(get_section_index(format->section_list, 8));
-		display_mach_header_64(format->ptr_header);
+		// display_mach_header_64(format->ptr_header);
 		// display_section_list(format->ptr_header, format->section_list, format->is_64);
 		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 	}
 	else
 	{
-		display_mach_header_32(format->ptr_header);
+		// display_mach_header_32(format->ptr_header);
+
 		// display_section_list(format->ptr_header, format->section_list, format->is_64);
 		display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 	}
