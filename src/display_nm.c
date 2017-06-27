@@ -696,6 +696,7 @@ void display_symbol_list(void *string_table, s_section_list *section_list, s_sym
 
 void display_ar_header(char *filename, char *name)
 {
+	ft_putstr("\n");
 	ft_putstr(filename);
 	ft_putstr("(");
 	ft_putstr(name);
@@ -711,6 +712,10 @@ void display_format(s_file *file, s_format *format)
 		ft_putstr("\n");
 		ft_putstr(format->filename);
 		ft_putstr(":\n");
+	}
+	if (file->file_format == ARCHIVE)
+	{
+		display_ar_header(file->filename, file->sub_filename);
 	}
 	display_symbol_list(format->string_table, format->section_list, format->symbol_list, format->is_64);
 
