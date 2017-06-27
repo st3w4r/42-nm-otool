@@ -241,7 +241,7 @@ void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
 		ar_object = get_ar_object(ptr, ranlib_elem, size_name);
 		name = get_ar_header_name(ar_header_elem, size_name);
 
-		// ft_putstr(string_elem);
+		// ft_putendl(string_elem);
 		// ft_putstr(" ");
 		// ft_putstr("\n");
 		// ft_putstr(file->filename);
@@ -252,6 +252,8 @@ void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
 		// ft_putstr(string_elem);
 		// add_archive_list(format, ar_object, name);
 		file->sub_filename = name;
+		file->file_format = ARCHIVE;
+		file->is_displayed = FALSE;
 		handle_format(ar_object, file);
 		i++;
 	}
@@ -285,10 +287,17 @@ void	handle_format(void *ptr, s_file *file)
 	{
 		// if (sizeof(void *) == 4 && g_file.nfat_arch > 1)
 		// 	return ;
-		// ft_putstr("File macho 64\n");
-		format->is_64 = TRUE;
-		handle_macho(format, ptr, format->is_64);
-		display_format(file, format);
+		if (file->is_displayed == FALSE)
+			// file->file_format == ARCHIVE)
+		{
+			// ft_putstr("File macho 64\n");
+			// if (format->file_format == ARCHIVE)
+			// 	ft_putendl("ARCHIVE");
+			format->is_64 = TRUE;
+			handle_macho(format, ptr, format->is_64);
+			display_format(file, format);
+			file->is_displayed = TRUE;
+		}
 	}
 	else if (format->file_format == MACHO_32)
 	{
