@@ -93,7 +93,7 @@ void display_symbol_hexa_32(void *string_table, s_section_list *section_list, s_
 	struct nlist *symbol;
 
 	symbol = symbol_elem->symbol_32;
-	n_type = symbol_elem->symbol_32->n_type;
+	n_type = symbol->n_type;
 	symbol_string = get_symbol_string(symbol_elem, string_table, IS_32);
 	if (n_type & N_STAB)
 		return ;
@@ -111,45 +111,39 @@ void display_symbol_hexa_32(void *string_table, s_section_list *section_list, s_
 	ft_putstr("\n");
 }
 
-
-void display_symbol_short_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+char	get_symbol_type_char_section(char *segname, char *sectname)
 {
-	uint8_t n_type;
-	uint8_t n_sect;
-	uint8_t type;
-	uint16_t n_desc;
-	uint64_t n_value;
-	s_section_list *section_elem;
-	char *symbol_string;
-	char *segname;
-	char *sectname;
-	bool is_external;
+	int c;
 
-	n_type = symbol_elem->symbol_64->n_type;
-	n_sect = symbol_elem->symbol_64->n_sect;
-	n_value = symbol_elem->symbol_64->n_value;
-	n_desc = symbol_elem->symbol_64->n_desc;
-	type = get_symbol_type(n_type);
-	symbol_string = get_symbol_string(symbol_elem, string_table, IS_64);
-	section_elem = get_section_index(section_list, n_sect);
-	segname = section_elem->section_64->segname;
-	sectname = section_elem->section_64->sectname;
-
-
-	if (n_type & N_STAB)
-		return ;
-
-
-	if (n_type & N_EXT)
-		is_external = TRUE;
+	if (ft_strcmp(segname, SEG_TEXT) == 0 &&
+			ft_strcmp(sectname, SECT_TEXT) == 0)
+	{
+		c = 't';
+	}
+	else if (ft_strcmp(segname, SEG_DATA) == 0 &&
+					ft_strcmp(sectname, SECT_DATA) == 0)
+	{
+		c = 'd';
+	}
+	else if (ft_strcmp(segname, SEG_DATA) == 0 &&
+					ft_strcmp(sectname, SECT_BSS) == 0)
+	{
+		c = 'b';
+	}
 	else
-		is_external = FALSE;
+	{
+		c = 's';
+	}
+	return (c);
+}
 
-
+char	get_symbol_type_char(uint8_t type, uint64_t n_value, char *segname,
+													char *sectname, bool is_external)
+{
 	int c;
 
 	c = '?';
-	if (n_type & N_STAB)
+	if (type & N_STAB)
 		c = '-';
 	else if (type == N_UNDF)
 	{
@@ -160,70 +154,52 @@ void display_symbol_short_64(void *string_table, s_section_list *section_list, s
 	else if (type == N_ABS)
 		c = 'a';
 	else if (type == N_SECT)
-	{
-		// ft_putstr("");
-		if (ft_strcmp(segname, SEG_TEXT) == 0 &&
-				ft_strcmp(sectname, SECT_TEXT) == 0)
-		{
-			c = 't';
-		}
-		else if (ft_strcmp(segname, SEG_DATA) == 0 &&
-						ft_strcmp(sectname, SECT_DATA) == 0)
-		{
-			c = 'd';
-		}
-		else if (ft_strcmp(segname, SEG_DATA) == 0 &&
-						ft_strcmp(sectname, SECT_BSS) == 0)
-		{
-			c = 'b';
-		}
-		else
-		{
-			c = 's';
-		}
-
-	}
+		c = get_symbol_type_char_section(segname, sectname);
 	else if (type == N_PBUD)
 		c = 'u';
 	else if (type == N_INDR)
 		c = 'i';
 	else if (type == N_UNDF && n_value != 0)
 		c = 'c';
-
 	if (is_external)
 		c -= 32;
+	return (c);
+}
 
-	// __Display__
-	// Flag u
+bool select_diplay_symbol(uint8_t n_type)
+{
+	bool display;
+	uint8_t type;
+
+	type = get_symbol_type(n_type);
+	display = TRUE;
 	if (g_prog.flags & FLAG_g)
 	{
 		if (!(n_type & N_EXT))
-			return ;
+			display = FALSE;
 	}
-
 	if (g_prog.flags & FLAG_u)
 	{
 		if (type != N_UNDF)
-			return ;
-		else
-			ft_putendl(symbol_string);
-		return ;
+			display = FALSE;
 	}
-
-	// Flag U
 	if (g_prog.flags & FLAG_U)
 	{
 		if (type == N_UNDF)
-			return ;
+			display = FALSE;
 	}
+	return (display);
+}
 
-	// Flag j
-	if (g_prog.flags & FLAG_j)
+void display_symbol_64(uint8_t type, uint64_t n_value,
+									char *symbol_string, int type_char)
+{
+	if ((g_prog.flags & FLAG_u) || g_prog.flags & FLAG_j)
 	{
-		ft_putendl(symbol_string);
+		ft_putstr(symbol_string);
+		ft_putstr("\n");
 		return ;
 	}
-	// Default
 	if (type != N_UNDF)
 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
 	else if (type == N_UNDF && n_value != 0)
@@ -231,122 +207,48 @@ void display_symbol_short_64(void *string_table, s_section_list *section_list, s
 	else
 		ft_putstr("                ");
 	ft_putstr(" ");
-	ft_putchar(c);
+	ft_putchar(type_char);
 	ft_putstr(" ");
 	ft_putstr(symbol_string);
 	ft_putstr("\n");
 }
 
-
-void display_symbol_short_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+void display_symbol_short_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
 {
-	uint8_t n_type;
 	uint8_t n_sect;
-	uint8_t type;
-	uint16_t n_desc;
-	uint32_t n_value;
+	uint8_t n_type;
+	uint64_t n_value;
 	s_section_list *section_elem;
 	char *symbol_string;
-	char *segname;
-	char *sectname;
-	bool is_external;
 
-	n_type = symbol_elem->symbol_32->n_type;
-	n_sect = symbol_elem->symbol_32->n_sect;
-	n_value = symbol_elem->symbol_32->n_value;
-	n_desc = symbol_elem->symbol_32->n_desc;
-	type = get_symbol_type(n_type);
-	symbol_string = get_symbol_string(symbol_elem, string_table, IS_32);
+	n_sect = symbol_elem->symbol_64->n_sect;
+	n_value = symbol_elem->symbol_64->n_value;
+	n_type = symbol_elem->symbol_64->n_type;
+	symbol_string = get_symbol_string(symbol_elem, string_table, IS_64);
 	section_elem = get_section_index(section_list, n_sect);
-	segname = section_elem->section_32->segname;
-	sectname = section_elem->section_32->sectname;
-
 	if (n_type & N_STAB)
 		return ;
+	if (select_diplay_symbol(n_type) == FALSE)
+		return ;
+	display_symbol_64(
+		get_symbol_type(n_type),
+		n_value,
+		get_symbol_string(symbol_elem, string_table, IS_64),
+		get_symbol_type_char(get_symbol_type(n_type), n_value,
+			section_elem->section_64->segname, section_elem->section_64->sectname,
+			(n_type & N_EXT)? TRUE : FALSE)
+	);
+}
 
-	if ((n_type & N_EXT) == N_EXT)
-		is_external = TRUE;
-	else
-		is_external = FALSE;
-
-	int c;
-
-	c = '?';
-	if (n_type & N_STAB)
-		c = '-';
-	else if (type == N_UNDF)
+void display_symbol_32(uint8_t type, uint32_t n_value,
+									char *symbol_string, int type_char)
+{
+	if ((g_prog.flags & FLAG_u) || g_prog.flags & FLAG_j)
 	{
-			c = 'u';
-			if (n_value != 0)
-				c = 'c';
-	}
-	else if (type == N_ABS)
-		c = 'a';
-	else if (type == N_SECT)
-	{
-		// ft_putstr("");
-		if (ft_strcmp(segname, SEG_TEXT) == 0 &&
-				ft_strcmp(sectname, SECT_TEXT) == 0)
-		{
-			c = 't';
-		}
-		else if (ft_strcmp(segname, SEG_DATA) == 0 &&
-						ft_strcmp(sectname, SECT_DATA) == 0)
-		{
-			c = 'd';
-		}
-		else if (ft_strcmp(segname, SEG_DATA) == 0 &&
-						ft_strcmp(sectname, SECT_BSS) == 0)
-		{
-			c = 'b';
-		}
-		else
-		{
-			c = 's';
-		}
-
-	}
-	else if (type == N_PBUD)
-		c = 'u';
-	else if (type == N_INDR)
-		c = 'i';
-	else if (type == N_UNDF && n_value != 0)
-		c = 'c';
-
-	if (is_external)
-		c -= 32;
-
-	// __Display__
-	// Flag u
-	if (g_prog.flags & FLAG_g)
-	{
-		if (!(n_type & N_EXT))
-			return ;
-	}
-
-	if (g_prog.flags & FLAG_u)
-	{
-		if (type != N_UNDF)
-			return ;
-		else
-			ft_putendl(symbol_string);
+		ft_putstr(symbol_string);
+		ft_putstr("\n");
 		return ;
 	}
-
-	// Flag U
-	if (g_prog.flags & FLAG_U)
-	{
-		if (type == N_UNDF)
-			return ;
-	}
-
-	// Flag j
-	if (g_prog.flags & FLAG_j)
-	{
-		ft_putendl(symbol_string);
-		return ;
-	}
-	// Default
 	if (type != N_UNDF)
 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
 	else if (type == N_UNDF && n_value != 0)
@@ -354,8 +256,157 @@ void display_symbol_short_32(void *string_table, s_section_list *section_list, s
 	else
 		ft_putstr("        ");
 	ft_putstr(" ");
-	ft_putchar(c);
+	ft_putchar(type_char);
 	ft_putstr(" ");
 	ft_putstr(symbol_string);
 	ft_putstr("\n");
 }
+
+void display_symbol_short_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+{
+	uint8_t n_sect;
+	uint8_t n_type;
+	uint32_t n_value;
+	s_section_list *section_elem;
+	char *symbol_string;
+
+	n_sect = symbol_elem->symbol_32->n_sect;
+	n_value = symbol_elem->symbol_32->n_value;
+	n_type = symbol_elem->symbol_32->n_type;
+	symbol_string = get_symbol_string(symbol_elem, string_table, IS_32);
+	section_elem = get_section_index(section_list, n_sect);
+	if (n_type & N_STAB)
+		return ;
+	if (select_diplay_symbol(n_type) == FALSE)
+		return ;
+	display_symbol_32(
+		get_symbol_type(n_type),
+		n_value,
+		get_symbol_string(symbol_elem, string_table, IS_32),
+		get_symbol_type_char(get_symbol_type(n_type), n_value,
+			section_elem->section_32->segname, section_elem->section_32->sectname,
+			(n_type & N_EXT)? TRUE : FALSE)
+	);
+}
+//
+// void display_symbol_short_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+// {
+// 	uint8_t n_type;
+// 	uint8_t n_sect;
+// 	uint8_t type;
+// 	uint16_t n_desc;
+// 	uint32_t n_value;
+// 	s_section_list *section_elem;
+// 	char *symbol_string;
+// 	char *segname;
+// 	char *sectname;
+// 	bool is_external;
+//
+// 	n_type = symbol_elem->symbol_32->n_type;
+// 	n_sect = symbol_elem->symbol_32->n_sect;
+// 	n_value = symbol_elem->symbol_32->n_value;
+// 	n_desc = symbol_elem->symbol_32->n_desc;
+// 	type = get_symbol_type(n_type);
+// 	symbol_string = get_symbol_string(symbol_elem, string_table, IS_32);
+// 	section_elem = get_section_index(section_list, n_sect);
+// 	segname = section_elem->section_32->segname;
+// 	sectname = section_elem->section_32->sectname;
+//
+// 	if (n_type & N_STAB)
+// 		return ;
+//
+// 	if ((n_type & N_EXT) == N_EXT)
+// 		is_external = TRUE;
+// 	else
+// 		is_external = FALSE;
+//
+// 	int c;
+//
+// 	c = '?';
+// 	if (n_type & N_STAB)
+// 		c = '-';
+// 	else if (type == N_UNDF)
+// 	{
+// 			c = 'u';
+// 			if (n_value != 0)
+// 				c = 'c';
+// 	}
+// 	else if (type == N_ABS)
+// 		c = 'a';
+// 	else if (type == N_SECT)
+// 	{
+// 		// ft_putstr("");
+// 		if (ft_strcmp(segname, SEG_TEXT) == 0 &&
+// 				ft_strcmp(sectname, SECT_TEXT) == 0)
+// 		{
+// 			c = 't';
+// 		}
+// 		else if (ft_strcmp(segname, SEG_DATA) == 0 &&
+// 						ft_strcmp(sectname, SECT_DATA) == 0)
+// 		{
+// 			c = 'd';
+// 		}
+// 		else if (ft_strcmp(segname, SEG_DATA) == 0 &&
+// 						ft_strcmp(sectname, SECT_BSS) == 0)
+// 		{
+// 			c = 'b';
+// 		}
+// 		else
+// 		{
+// 			c = 's';
+// 		}
+//
+// 	}
+// 	else if (type == N_PBUD)
+// 		c = 'u';
+// 	else if (type == N_INDR)
+// 		c = 'i';
+// 	else if (type == N_UNDF && n_value != 0)
+// 		c = 'c';
+//
+// 	if (is_external)
+// 		c -= 32;
+//
+// 	// __Display__
+// 	// Flag u
+// 	if (g_prog.flags & FLAG_g)
+// 	{
+// 		if (!(n_type & N_EXT))
+// 			return ;
+// 	}
+//
+// 	if (g_prog.flags & FLAG_u)
+// 	{
+// 		if (type != N_UNDF)
+// 			return ;
+// 		else
+// 			ft_putendl(symbol_string);
+// 		return ;
+// 	}
+//
+// 	// Flag U
+// 	if (g_prog.flags & FLAG_U)
+// 	{
+// 		if (type == N_UNDF)
+// 			return ;
+// 	}
+//
+// 	// Flag j
+// 	if (g_prog.flags & FLAG_j)
+// 	{
+// 		ft_putendl(symbol_string);
+// 		return ;
+// 	}
+// 	// Default
+// 	if (type != N_UNDF)
+// 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+// 	else if (type == N_UNDF && n_value != 0)
+// 		ft_puthexa_size(n_value, sizeof(n_value) * 2);
+// 	else
+// 		ft_putstr("        ");
+// 	ft_putstr(" ");
+// 	ft_putchar(c);
+// 	ft_putstr(" ");
+// 	ft_putstr(symbol_string);
+// 	ft_putstr("\n");
+// }
