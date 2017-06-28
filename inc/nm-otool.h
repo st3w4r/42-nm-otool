@@ -294,11 +294,29 @@ bool	select_diplay_symbol(uint8_t n_type);
 ** File: handler.c
 ** Description: Function to handle each kind files with load command
 */
+
+/*
+** File: handler_format.c
+*/
+void	handle_format(void *ptr, s_file *file);
+
+/*
+** File: handler_macho.c
+*/
 void	handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr, bool is_64);
 void	handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64);
 void	handle_load_command(s_format *format, struct load_command *lc, void *ptr, bool is_64);
 void	handle_macho(s_format *format, void *ptr, bool is_64);
-void	handle_format(void *ptr, s_file *file);
+
+/*
+** File: handler_ar.c
+*/
+void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64);
+
+/*
+** File: handler_fat.c
+*/
+void	handle_fat(s_file *file, s_format *format, void *ptr, bool is_64);
 
 /*
 ** File: ft_puthexa_size.c

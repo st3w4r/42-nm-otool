@@ -51,7 +51,10 @@ SRC_NM =	nm.c \
 			format_information_ar_2.c \
 			format_information_ar_3.c \
 			format_information_symbol.c \
-			handler.c \
+			handler_format.c \
+			handler_macho.c \
+			handler_fat.c \
+			handler_ar.c \
 			init_format.c \
 			section_list.c \
 			symbol_list.c \
@@ -76,7 +79,10 @@ SRC_OTOOL =	otool.c \
 			format_information_ar_2.c \
 			format_information_ar_3.c \
 			format_information_symbol.c \
-			handler.c \
+			handler_format.c \
+			handler_macho.c \
+			handler_fat.c \
+			handler_ar.c \
 			init_format.c \
 			section_list.c \
 			symbol_list.c \
