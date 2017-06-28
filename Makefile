@@ -39,6 +39,7 @@ LIBS = -L libft/ -lft -lm
 
 SRC_NM =	nm.c \
 			utils.c \
+			display_common.c \
 			display_nm.c \
 			format_information.c \
 			handler.c \
@@ -54,6 +55,7 @@ SRC_NM =	nm.c \
 
 SRC_OTOOL =	otool.c \
 			utils.c \
+			display_common.c \
 			display_otool.c \
 			format_information.c \
 			handler.c \

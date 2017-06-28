@@ -63,7 +63,6 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr, b
 	struct symtab_command *sym;
 	void *seg;
 
-
 	if (lc->cmd == LC_SYMTAB)
 	{
 		sym = (struct symtab_command *)lc;

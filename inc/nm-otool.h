@@ -207,18 +207,29 @@ void				close_file(int fd);
 ** Description: Functions to display on the standard output
 */
 void	display_ar_header(char *filename, char *name);
-void	display_file_format(e_file_format file_format);
 void	display_format(s_file *file, s_format *format);
-void	display_mach_header_32(struct mach_header *header);
-void	display_mach_header_64(struct mach_header_64 *header);
 
-void display_load_command_type(uint32_t cmd);
-void display_section_command(s_section_list *section_elem);
-void display_cpu_type(cpu_type_t cputype, cpu_subtype_t cpusubtype);
-void display_file_type(uint32_t filetype);
-void display_nlist_64(s_section_list *section_list,
-											uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
-											uint16_t n_desc, uint64_t n_value);
+/*
+** File display_common.c
+** Description: All display function used by both programme
+*/
+void display_symbol_hexa_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
+void display_symbol_hexa_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
+void display_symbol_short_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
+void display_symbol_short_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
+void display_section_list(void *ptr, s_section_list *section_list, bool is_64);
+
+// void	display_file_format(e_file_format file_format);
+// void	display_mach_header_32(struct mach_header *header);
+// void	display_mach_header_64(struct mach_header_64 *header);
+
+// void display_load_command_type(uint32_t cmd);
+// void display_section_command(s_section_list *section_elem);
+// void display_cpu_type(cpu_type_t cputype, cpu_subtype_t cpusubtype);
+// void display_file_type(uint32_t filetype);
+// void display_nlist_64(s_section_list *section_list,
+											// uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
+											// uint16_t n_desc, uint64_t n_value);
 
 
 /*
