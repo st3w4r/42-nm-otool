@@ -12,6 +12,9 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	format->symbol_table = symbol_table;
 	format->string_table = string_table;
 
+	check_memory_out(ptr + sym->stroff + sym->strsize);
+	check_memory_out(ptr + sym->symoff + (sym->nsyms * sym->cmdsize));
+
 	i = 0;
 	while (i < sym->nsyms)
 	{
@@ -19,10 +22,11 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 			// 	init_symbol_list(format, symbol_table, is_64);
 			// else
 				add_symbol_list(format, symbol_table, is_64);
-		if (is_64 == TRUE)
-			symbol_table = symbol_table + sizeof(struct nlist_64);
-		else
-			symbol_table = symbol_table + sizeof(struct nlist);
+				symbol_table = get_next_symbol(symbol_table, is_64);
+		// if (is_64 == TRUE)
+		// 	symbol_table = symbol_table + sizeof(struct nlist_64);
+		// else
+		// 	symbol_table = symbol_table + sizeof(struct nlist);
 		i++;
 	}
 }
@@ -40,11 +44,15 @@ void handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64)
 	{
 		nsects = ((struct segment_command_64*)seg)->nsects;
 		segname = ((struct segment_command_64*)seg)->segname;
+		check_memory_out(ptr + ((struct segment_command_64*)seg)->fileoff);
+		check_memory_out(ptr + ((struct segment_command_64*)seg)->fileoff + ((struct segment_command_64*)seg)->filesize);
 	}
 	else
 	{
 		nsects = ((struct segment_command*)seg)->nsects;
 		segname = ((struct segment_command*)seg)->segname;
+		check_memory_out(ptr + ((struct segment_command*)seg)->fileoff);
+		check_memory_out(ptr + ((struct segment_command*)seg)->fileoff + ((struct segment_command*)seg)->filesize);
 	}
 	// ft_putstr("Segment name: ");
 	// ft_putstr(segname);
@@ -124,15 +132,24 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr, b
 void	handle_macho(s_format *format, void *ptr, bool is_64)
 {
 	void *header;
+	uint32_t sizeofcmds;
 	uint32_t ncmds;
 	uint32_t i;
 	struct load_command *lc;
 
 	header = ptr;
 	if (is_64 == TRUE)
+	{
 		ncmds = ((struct mach_header_64*)header)->ncmds;
+		sizeofcmds = ((struct mach_header_64*)header)->sizeofcmds;
+		check_memory_out(header + sizeof(struct mach_header_64) + sizeofcmds);
+	}
 	else
-	 	ncmds = ((struct mach_header*)header)->ncmds;
+	{
+		ncmds = ((struct mach_header*)header)->ncmds;
+		sizeofcmds = ((struct mach_header*)header)->sizeofcmds;
+		check_memory_out(header + sizeof(struct mach_header) + sizeofcmds);
+	}
 	// display_mach_header_64(header);
 	// display_file_type(header->filetype);
 	// display_cpu_type(header->cputype, header->cpusubtype);

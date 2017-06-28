@@ -302,6 +302,7 @@ void	*get_fat_ach(void *header, int index, bool is_64);
 // struct load_command	*get_first_load_command(struct mach_header_64 *header);
 struct load_command *get_first_load_command(void *header, bool is_64);
 struct load_command	*get_next_load_command(struct load_command *lc);
+void	*get_next_symbol(void *symbol_table, bool is_64);
 void	*get_symbol_table(struct symtab_command *sym, void *ptr);
 void	*get_string_table(struct symtab_command *sym, void *ptr);
 // char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol);

@@ -194,6 +194,22 @@ struct load_command *get_next_load_command(struct load_command *lc)
 }
 
 /*
+** Get the next symbol from the symbol_table
+** Use with get_symbol_table and iterate on nsyms
+*/
+void *get_next_symbol(void *symbol_table, bool is_64)
+{
+	void *next_symbol;
+
+	if (is_64 == TRUE)
+		next_symbol = symbol_table + sizeof(struct nlist_64);
+	else
+		next_symbol = symbol_table + sizeof(struct nlist);
+	check_memory_out(next_symbol);
+	return (next_symbol);
+}
+
+/*
 ** Get the symbol table from a command and the ptr on the beginning of the
 ** mapped file. And return the ptr on the symbol tble (strcut nlist_64)
 */
