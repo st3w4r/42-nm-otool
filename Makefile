@@ -40,9 +40,17 @@ LIBS = -L libft/ -lft -lm
 SRC_NM =	nm.c \
 			utils_file.c \
 			utils_memory.c \
-			display_common.c \
+			display_common_symbol.c \
+			display_common_section.c \
+			display_common_hexa.c \
 			display_nm.c \
-			format_information.c \
+			format_information_1.c \
+			format_information_2.c \
+			format_information_3.c \
+			format_information_ar_1.c \
+			format_information_ar_2.c \
+			format_information_ar_3.c \
+			format_information_symbol.c \
 			handler.c \
 			init_format.c \
 			section_list.c \
@@ -57,9 +65,17 @@ SRC_NM =	nm.c \
 SRC_OTOOL =	otool.c \
 			utils_file.c \
 			utils_memory.c \
-			display_common.c \
+			display_common_symbol.c \
+			display_common_section.c \
+			display_common_hexa.c \
 			display_otool.c \
-			format_information.c \
+			format_information_1.c \
+			format_information_2.c \
+			format_information_3.c \
+			format_information_ar_1.c \
+			format_information_ar_2.c \
+			format_information_ar_3.c \
+			format_information_symbol.c \
 			handler.c \
 			init_format.c \
 			section_list.c \

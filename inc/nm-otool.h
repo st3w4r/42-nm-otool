@@ -210,30 +210,27 @@ void	display_ar_header(char *filename, char *name);
 void	display_format(s_file *file, s_format *format);
 
 /*
-** File display_common.c
-** Description: All display function used by both programme
+** File display_common_section.c
+** Description: All function to display the text section
+*/
+void display_section_list(void *ptr, s_section_list *section_list, bool is_64);
+
+/*
+** File display_common_hexa.c
+** Description: All function to display into hexa
 */
 void display_symbol_hexa_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
 void display_symbol_hexa_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
-void display_symbol_short_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
-void display_symbol_short_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
-void display_section_list(void *ptr, s_section_list *section_list, bool is_64);
-
-// void	display_file_format(e_file_format file_format);
-// void	display_mach_header_32(struct mach_header *header);
-// void	display_mach_header_64(struct mach_header_64 *header);
-
-// void display_load_command_type(uint32_t cmd);
-// void display_section_command(s_section_list *section_elem);
-// void display_cpu_type(cpu_type_t cputype, cpu_subtype_t cpusubtype);
-// void display_file_type(uint32_t filetype);
-// void display_nlist_64(s_section_list *section_list,
-											// uint32_t n_strx, uint8_t n_type, uint8_t n_sect,
-											// uint16_t n_desc, uint64_t n_value);
-
 
 /*
-** File: format_information.c
+** File display_common.c
+** Description: All display function used by both programme
+*/
+void display_symbol_short_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
+void display_symbol_short_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
+
+/*
+** File: format_information_ar_1.c
 ** Description: Get the information for archive file
 */
 void *get_ar_object(void *ptr, struct ranlib *ranlib, size_t size_name);
@@ -241,15 +238,24 @@ void *get_ar_string_table(void *ranlib_arr, size_t nranlibs);
 char *get_ar_string_element(void *string_table, struct ranlib *ranlib);
 struct ar_header *get_ar_header_element(void *ptr, struct ranlib *ranlib);
 struct ranlib *get_ranlib_element(void *ranlib_arr, size_t index);
+
+/*
+** File: format_information_ar_2.c
+*/
 void *get_ranlib_array(void *symdef);
 uint32_t get_nranlibs(void *symdef);
 void *get_symdef(struct ar_header *ar_header, size_t size_name);
 char	*get_ar_header_name(struct ar_header *ar_header, size_t size_name);
 size_t	get_size_from_identifier(char *file_identifier);
+
+/*
+** File: format_information_ar_3.c
+*/
 struct ar_magic *get_ar_magic(void *ptr);
 struct ar_header *get_ar_header(void *ptr);
+
 /*
-** File: format_information.c
+** File: format_information_1.c
 ** Description: Get the information from the right file type
 */
 void	*get_object_file(void *ptr, uint32_t offset);
@@ -257,14 +263,32 @@ e_file_format	get_file_format(void *ptr);
 void	*get_fat_ach(void *header, int index, bool is_64);
 struct load_command *get_first_load_command(void *header, bool is_64);
 struct load_command	*get_next_load_command(struct load_command *lc);
+
+/*
+** File: format_information_2.c
+*/
 void	*get_next_symbol(void *symbol_table, bool is_64);
 void	*get_symbol_table(struct symtab_command *sym, void *ptr);
 void	*get_string_table(struct symtab_command *sym, void *ptr);
 char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table, bool is_64);
 void *get_section_command(void *seg, uint32_t index_section, bool is_64);
+
+/*
+** File: format_information_3.c
+*/
 uint32_t	get_section_type(s_section_list *section_elem, bool is_64);
 uint32_t	get_section_attributes(s_section_list *section_elem, bool is_64);
 uint8_t		get_symbol_type(uint8_t n_type);
+
+
+/*
+** File: format_information_symbol.c
+** Description: Functions to get the displayable information
+*/
+char	get_symbol_type_char_section(char *segname, char *sectname);
+char	get_symbol_type_char(uint8_t type, uint64_t n_value, char *segname,
+													char *sectname, bool is_external);
+bool	select_diplay_symbol(uint8_t n_type);
 
 /*
 ** File: handler.c
