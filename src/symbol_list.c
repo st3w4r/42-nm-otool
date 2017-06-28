@@ -45,9 +45,7 @@ s_symbol_list *add_symbol(s_format *format, s_symbol_list *symbol_elem, bool is_
 
 	symbol_list = format->symbol_list;
 	string_table = format->string_table;
-
 	string_symbol_elem = get_symbol_string(symbol_elem, string_table, is_64);
-
 	while (symbol_list != NULL)
 	{
 		string_symbol_list = get_symbol_string(symbol_list, string_table, is_64);

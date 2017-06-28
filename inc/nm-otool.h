@@ -55,12 +55,6 @@ struct ar_header
 	byte			end_char[2];
 };
 
-struct symdef
-{
-	byte			name[20];
-	uint32_t			nranlibs;
-};
-
 /*
 ** All typedef to simplify function prototype and variable declaration
 */
@@ -95,43 +89,7 @@ typedef enum	file_format
 /*
 ** Structure to store all data use by the program
 */
-// typedef struct symbol_list
-// {
-// 	void	*address;
-// 	char	*name;
-// 	char	*segment_name;
-// 	char	*section_name;
-// 	bool	is_external;
-// 	void	*prev;
-// 	void	*next;
-// }								s_symbol_list;
-//
-// typedef struct section_lsit
-// {
-// 	void *ptr_section;
-// 	void *prev;
-// 	void *next;
-// 	struct nlist *symbol_table;
-// 	struct nlist_64 *symbol_table_64;
-// 	s_symbol_list *symbol_list; // ptr on linked list of synbol_list
-// }							s_section_list;
-//
-// typedef struct segment_list
-// {
-// 	void *segment;
-// 	void *prev;
-// 	void *next;
-// 	s_section_list	*section_list; // ptr on linked list of section_list
-// }							 s_segment_list;
-//
-// typedef struct lc_list
-// {
-// 	struct load_command *lc;
-// 	void *prev;
-// 	void *next;
-// 	// s_segment_list	*segment_list; // ptr on linked list of segment_list
-// }							s_lc_list;
-//
+
 typedef struct archive_list s_archive_list;
 struct archive_list
 {
@@ -168,7 +126,6 @@ typedef struct fromat
 	void *ptr_header;
 	void *symbol_table;
 	void *string_table;
-	// s_lc_list				*lc_list; //ptr on linked list of lc_list
 	s_section_list *section_list;
 	s_symbol_list *symbol_list;
 	s_archive_list *archive_list;
@@ -211,8 +168,6 @@ s_archive_list *add_archive_list(s_format *format, void *ar_object, char *name);
 ** Description: All functions to deal with the section_list
 */
 s_section_list *get_section_index(s_section_list *section_list, uint8_t index_section);
-// s_section_list *add_section_list(s_format *format, struct section_64 *sec);
-// s_section_list *init_section_list(s_format *format, struct section_64 *sec);
 s_section_list *add_section_list(s_format *format, void *sec, bool is_64);
 s_section_list *init_section_list(s_format *format, void *sec, bool is_64);
 
@@ -220,21 +175,12 @@ s_section_list *init_section_list(s_format *format, void *sec, bool is_64);
 ** File: symbol_list.c
 ** Description: All functions to deal with the section_list
 */
-// s_symbol_list *add_symbol_list(s_format *format, struct nlist_64 *symbol);
-// s_symbol_list *init_symbol_list(s_format *format, struct nlist_64 *symbol);
 s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64);
-// s_symbol_list *init_symbol_list(s_format *format, void *symbol, bool is_64);
 
 /*
 ** File: init_format.c
 ** Description: Create structure with all information
 */
-// s_symbol_list		init_symbol_list();
-// s_section_list	init_section_list();
-// s_segment_list	init_segment_list();
-// s_lc_list				*init_lc_list(struct mach_header_64 *header);
-// s_section_list *add_section_list(s_format *format, struct section_64 *sec);
-// s_section_list *init_section_list(s_format *format, struct section_64 *sec);
 s_format				*init_format(void *ptr);
 
 /*
@@ -263,7 +209,6 @@ void				close_file(int fd);
 void	display_ar_header(char *filename, char *name);
 void	display_file_format(e_file_format file_format);
 void	display_format(s_file *file, s_format *format);
-// void	display_symbol(char *str);
 void	display_mach_header_32(struct mach_header *header);
 void	display_mach_header_64(struct mach_header_64 *header);
 
@@ -299,19 +244,13 @@ struct ar_header *get_ar_header(void *ptr);
 void	*get_object_file(void *ptr, uint32_t offset);
 e_file_format	get_file_format(void *ptr);
 void	*get_fat_ach(void *header, int index, bool is_64);
-// struct load_command	*get_first_load_command(struct mach_header_64 *header);
 struct load_command *get_first_load_command(void *header, bool is_64);
 struct load_command	*get_next_load_command(struct load_command *lc);
 void	*get_next_symbol(void *symbol_table, bool is_64);
 void	*get_symbol_table(struct symtab_command *sym, void *ptr);
 void	*get_string_table(struct symtab_command *sym, void *ptr);
-// char	*get_symbol_string(struct nlist_64 *symbol_table, void *string_table, uint32_t num_symbol);
-// char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table);
 char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table, bool is_64);
-// struct section_64	*get_section_command(struct segment_command_64 *seg, uint32_t index_section);
 void *get_section_command(void *seg, uint32_t index_section, bool is_64);
-// uint32_t	get_section_type(s_section_list *section_elem);
-// uint32_t	get_section_attributes(s_section_list *section_elem);
 uint32_t	get_section_type(s_section_list *section_elem, bool is_64);
 uint32_t	get_section_attributes(s_section_list *section_elem, bool is_64);
 uint8_t		get_symbol_type(uint8_t n_type);
@@ -320,11 +259,8 @@ uint8_t		get_symbol_type(uint8_t n_type);
 ** File: handler.c
 ** Description: Function to handle each kind files with load command
 */
-// void	handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr);
 void	handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr, bool is_64);
-// void	handle_segment_command(s_format *format, struct segment_command_64 *seg, void *ptr);
 void	handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64);
-// void	handle_load_command(s_format *format, struct load_command *lc, void *ptr);
 void	handle_load_command(s_format *format, struct load_command *lc, void *ptr, bool is_64);
 void	handle_macho(s_format *format, void *ptr, bool is_64);
 void	handle_format(void *ptr, s_file *file);

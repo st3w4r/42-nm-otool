@@ -39,21 +39,10 @@ s_archive_list *add_archive(s_format *format, s_archive_list *archive_elem)
 {
 	s_archive_list *archive_list;
 	s_archive_list *archive_prev;
-	// s_archive_list *archive_list;
-	// s_archive_list *archive_prev;
-	// void *string_table;
-	// char *string_archive_list;
-	// char *string_archive_elem;
 
 	archive_list = format->archive_list;
-	// archive_list = format->archive_list;
-	// string_table = format->string_table;
-
-	// string_archive_elem = get_archive_string(archive_elem, string_table, is_64);
-	// string_archive_elem = archive_elem->name;
 	while (archive_list != NULL)
 	{
-		// string_archive_list = archive_list->name;
 		if (ft_strcmp(archive_elem->name, archive_list->name) < 0)
 		{
 			insert_archive_before(archive_list, archive_elem);
