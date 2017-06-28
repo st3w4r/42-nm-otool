@@ -16,7 +16,7 @@ s_section_list *get_section_index(s_section_list *section_list, uint8_t index_se
 		current_section = current_section->next;
 		i++;
 	}
-	return current_section;
+	return (current_section);
 }
 
 
@@ -35,7 +35,6 @@ s_section_list *add_section_list(s_format *format, void *sec, bool is_64)
 	}
 	if ((section_list->next = malloc(sizeof(s_section_list))) == NULL)
 		ft_malloc_error();
-
 	if (is_64 == TRUE)
 	{
 		section_list->next->section_64 = sec;
@@ -48,7 +47,7 @@ s_section_list *add_section_list(s_format *format, void *sec, bool is_64)
 	}
 	section_list->next->prev = section_list;
 	section_list->next->next = NULL;
-	return section_list->next;
+	return (section_list->next);
 }
 
 /*
@@ -61,7 +60,6 @@ s_section_list *init_section_list(s_format *format, void *sec, bool is_64)
 
 	if ((section_list = malloc(sizeof(s_section_list))) == NULL)
 		ft_malloc_error();
-
 	if (is_64 == TRUE)
 	{
 		section_list->section_64 = sec;
@@ -75,5 +73,5 @@ s_section_list *init_section_list(s_format *format, void *sec, bool is_64)
 	section_list->prev = NULL;
 	section_list->next = NULL;
 	format->section_list = section_list;
- return format->section_list;
+ return (format->section_list);
 }

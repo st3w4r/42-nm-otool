@@ -50,7 +50,7 @@ char *get_ar_string_element(void *string_table, struct ranlib *ranlib)
 
 	string_elem = string_table + ranlib->ran_un.ran_strx;
 	check_memory_out(string_elem);
-	return string_elem;
+	return (string_elem);
 }
 
 struct ar_header *get_ar_header_element(void *ptr, struct ranlib *ranlib)
@@ -217,7 +217,7 @@ void *get_symbol_table(struct symtab_command *sym, void *ptr)
 
 	symbol_table = (ptr + sym->symoff);
 	check_memory_out(symbol_table);
-	return symbol_table;
+	return (symbol_table);
 }
 
 void *get_string_table(struct symtab_command *sym, void *ptr)
@@ -277,20 +277,20 @@ void *get_section_command(void *seg, uint32_t index_section, bool is_64)
 uint32_t get_section_type(s_section_list *section_elem, bool is_64)
 {
 	if (is_64 == TRUE)
-		return section_elem->section_64->flags & SECTION_TYPE;
+		return (section_elem->section_64->flags & SECTION_TYPE);
 	else
-		return section_elem->section_32->flags & SECTION_TYPE;
+		return (section_elem->section_32->flags & SECTION_TYPE);
 }
 
 uint32_t get_section_attributes(s_section_list *section_elem, bool is_64)
 {
 	if (is_64 == TRUE)
-		return section_elem->section_64->flags & SECTION_ATTRIBUTES;
+		return (section_elem->section_64->flags & SECTION_ATTRIBUTES);
 	else
-		return section_elem->section_32->flags & SECTION_ATTRIBUTES;
+		return (section_elem->section_32->flags & SECTION_ATTRIBUTES);
 }
 
 uint8_t get_symbol_type(uint8_t n_type)
 {
-	return  n_type & N_TYPE;
+	return  (n_type & N_TYPE);
 }
