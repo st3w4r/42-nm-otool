@@ -11,8 +11,8 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	string_table = get_string_table(sym, ptr);
 	format->symbol_table = symbol_table;
 	format->string_table = string_table;
-	check_memory_out(ptr + sym->stroff + sym->strsize);
-	check_memory_out(ptr + sym->symoff + (sym->nsyms * sym->cmdsize));
+	// check_memory_out(ptr + sym->stroff + sym->strsize);
+	// check_memory_out(ptr + sym->symoff + (sym->nsyms * sym->cmdsize));
 	i = 0;
 	while (i < sym->nsyms)
 	{
@@ -33,15 +33,15 @@ void handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64)
 	{
 		nsects = ((struct segment_command_64*)seg)->nsects;
 		segname = ((struct segment_command_64*)seg)->segname;
-		check_memory_out(ptr + ((struct segment_command_64*)seg)->fileoff);
-		check_memory_out(ptr + ((struct segment_command_64*)seg)->fileoff + ((struct segment_command_64*)seg)->filesize);
+		// check_memory_out(ptr + ((struct segment_command_64*)seg)->fileoff);
+		// check_memory_out(ptr + ((struct segment_command_64*)seg)->fileoff + ((struct segment_command_64*)seg)->filesize);
 	}
 	else
 	{
 		nsects = ((struct segment_command*)seg)->nsects;
 		segname = ((struct segment_command*)seg)->segname;
-		check_memory_out(ptr + ((struct segment_command*)seg)->fileoff);
-		check_memory_out(ptr + ((struct segment_command*)seg)->fileoff + ((struct segment_command*)seg)->filesize);
+		// check_memory_out(ptr + ((struct segment_command*)seg)->fileoff);
+		// check_memory_out(ptr + ((struct segment_command*)seg)->fileoff + ((struct segment_command*)seg)->filesize);
 	}
 	i = 0;
 	while (i < nsects)
@@ -96,13 +96,13 @@ void	handle_macho(s_format *format, void *ptr, bool is_64)
 	{
 		ncmds = ((struct mach_header_64*)header)->ncmds;
 		sizeofcmds = ((struct mach_header_64*)header)->sizeofcmds;
-		check_memory_out(header + sizeof(struct mach_header_64) + sizeofcmds);
+		// check_memory_out(header + sizeof(struct mach_header_64) + sizeofcmds);
 	}
 	else
 	{
 		ncmds = ((struct mach_header*)header)->ncmds;
 		sizeofcmds = ((struct mach_header*)header)->sizeofcmds;
-		check_memory_out(header + sizeof(struct mach_header) + sizeofcmds);
+		// check_memory_out(header + sizeof(struct mach_header) + sizeofcmds);
 	}
 	i = 0;
 	lc = get_first_load_command(header, is_64);
@@ -198,6 +198,36 @@ void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
 	}
 }
 
+void	handle_format_macho_64(s_file *file, s_format *format, void *ptr)
+{
+	if (file->is_displayed == FALSE)
+	{
+		format->is_64 = TRUE;
+		handle_macho(format, ptr, format->is_64);
+		display_format(file, format);
+		file->is_displayed = TRUE;
+	}
+}
+
+void handle_format_macho_32(s_file *file, s_format *format, void *ptr)
+{
+	format->is_64 = FALSE;
+	handle_macho(format, ptr, format->is_64);
+	if (file->nb_archs == 1)
+		display_format(file, format);
+}
+
+void handle_format_fat(s_file *file, s_format *format, void *ptr)
+{
+	format->is_64 = FALSE;
+	handle_fat(file, format, ptr, format->is_64);
+}
+
+void handle_format_archive(s_file *file, s_format *format, void *ptr)
+{
+	format->is_64 = FALSE;
+	handle_ar(file, format, ptr, format->is_64);
+}
 /*
 ** Handle file and redirect to the correct file type
 */
@@ -207,36 +237,14 @@ void	handle_format(void *ptr, s_file *file)
 
 	format = init_format(ptr);
 	format->filename = file->filename;
-
 	if (format->file_format == MACHO_64)
-	{
-		if (file->is_displayed == FALSE)
-		{
-			format->is_64 = TRUE;
-			handle_macho(format, ptr, format->is_64);
-			display_format(file, format);
-			file->is_displayed = TRUE;
-		}
-	}
+		handle_format_macho_64(file, format, ptr);
 	else if (format->file_format == MACHO_32)
-	{
-		format->is_64 = FALSE;
-		handle_macho(format, ptr, format->is_64);
-		if (file->nb_archs == 1)
-			display_format(file, format);
-	}
+		handle_format_macho_32(file, format, ptr);
 	else if (format->file_format == FAT)
-	{
-		format->is_64 = FALSE;
-		handle_fat(file, format, ptr, format->is_64);
-	}
+		handle_format_fat(file, format, ptr);
 	else if (format->file_format == ARCHIVE)
-	{
-		format->is_64 = FALSE;
-		handle_ar(file, format, ptr, format->is_64);
-	}
+		handle_format_archive(file, format, ptr);
 	else
-	{
 		ft_error_str("The file is not supported\n");
-	}
 }
