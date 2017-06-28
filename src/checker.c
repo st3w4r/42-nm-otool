@@ -15,3 +15,14 @@ bool is_out_of_size(size_t file_size, void *ptr_header)
 		return true;
 	return false;
 }
+
+/*
+** Check is the adress is not out of memory file
+*/
+void check_memory_out(void *ptr)
+{
+	if (ptr > g_prog.current_max_addr)
+	{
+		ft_error_str_exit("malformed file\n");
+	}
+}

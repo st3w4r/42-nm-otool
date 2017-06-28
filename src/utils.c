@@ -9,13 +9,17 @@ void *map_file_into_memory(int fd)
 	size_t file_size;
 
 	file_size = get_size_of_file(fd);
+	if (file_size <= 0)
+	{
+		ft_error_str_exit("file is empty\n");
+	}
 	ptr = mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
-	// ft_putstr("File size: "); ft_putnbr(file_size); ft_putstr(" ");
+	g_prog.current_max_addr = ptr + file_size;
 	if (ptr == MAP_FAILED)
 	{
 		ft_error_str_exit("mmap error\n");
 	}
-	return ptr;
+	return (ptr);
 }
 
 /*
@@ -42,7 +46,7 @@ size_t get_size_of_file(int fd)
 	struct stat s_stat;
 
 	s_stat = get_stat_of_file(fd);
-	return s_stat.st_size;
+	return (s_stat.st_size);
 }
 
 /*
@@ -56,7 +60,7 @@ struct stat get_stat_of_file(int fd)
 	{
 		ft_error_str_exit("fstat error\n");
 	}
-	return buf;
+	return (buf);
 }
 
 bool is_file(int fd)
@@ -68,9 +72,9 @@ bool is_file(int fd)
 		ft_error_str_exit("fstat error\n");
 	}
 	if (S_ISREG(buf.st_mode))
-		return TRUE;
+		return (TRUE);
 	else
-		return FALSE;
+		return (FALSE);
 }
 
 /*
@@ -85,7 +89,7 @@ int open_file(char *name)
 	{
 		ft_error_str_exit("open error\n");
 	}
-	return fd;
+	return (fd);
 }
 
 /*

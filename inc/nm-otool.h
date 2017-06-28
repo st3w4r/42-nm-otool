@@ -189,8 +189,16 @@ struct prog
 {
 	uint32_t nbfiles;
 	uint32_t flags;
+	void			*current_max_addr;
 };
 s_prog g_prog;
+
+
+/*
+** File: checker.c
+** Description: Function to check if the file is valid
+*/
+void	check_memory_out(void *ptr);
 
 /*
 ** File: archive_list.c
