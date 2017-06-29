@@ -16,16 +16,16 @@
 ** Functinos for archive
 */
 
-struct ar_magic *get_ar_magic(void *ptr)
+struct s_ar_magic *get_ar_magic(void *ptr)
 {
 	return (ptr);
 }
 
-struct ar_header *get_ar_header(void *ptr)
+struct s_ar_header *get_ar_header(void *ptr)
 {
-	struct ar_header *ar_header;
+	struct s_ar_header *ar_header;
 
-	ar_header = (ptr + sizeof(struct ar_magic));
+	ar_header = (ptr + sizeof(struct s_ar_magic));
 	check_memory_out(ar_header);
 	return (ar_header);
 }

@@ -16,7 +16,7 @@
 ** Sort by insertion
 */
 
-void insert_before(s_symbol_list *s1, s_symbol_list *s2)
+void insert_before(t_s_symbol_list *s1, t_s_symbol_list *s2)
 {
 	s2->next = s1;
 	s2->prev = s1->prev;
@@ -27,7 +27,7 @@ void insert_before(s_symbol_list *s1, s_symbol_list *s2)
 	}
 }
 
-void insert_after(s_symbol_list *s1, s_symbol_list *s2)
+void insert_after(t_s_symbol_list *s1, t_s_symbol_list *s2)
 {
 	s2->next = s1->next;
 	s2->prev = s1;
@@ -38,7 +38,7 @@ void insert_after(s_symbol_list *s1, s_symbol_list *s2)
 	}
 }
 
-void	set_format_symbol_list(s_format *format, s_symbol_list *symbol)
+void	set_format_symbol_list(s_format *format, t_s_symbol_list *symbol)
 {
 	while (symbol->prev != NULL)
 	{
@@ -47,10 +47,10 @@ void	set_format_symbol_list(s_format *format, s_symbol_list *symbol)
 	format->symbol_list = symbol;
 }
 
-s_symbol_list *add_symbol(s_format *format, s_symbol_list *symbol_elem, bool is_64)
+t_s_symbol_list *add_symbol(s_format *format, t_s_symbol_list *symbol_elem, bool is_64)
 {
-	s_symbol_list *symbol_list;
-	s_symbol_list *symbol_prev;
+	t_s_symbol_list *symbol_list;
+	t_s_symbol_list *symbol_prev;
 	void *string_table;
 	char *string_symbol_list;
 	char *string_symbol_elem;
@@ -81,11 +81,11 @@ s_symbol_list *add_symbol(s_format *format, s_symbol_list *symbol_elem, bool is_
 ** Init if the format symbol_list is null
 */
 
-s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64)
+t_s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64)
 {
-	s_symbol_list *symbol_elem;
+	t_s_symbol_list *symbol_elem;
 
-	if ((symbol_elem = malloc(sizeof(s_symbol_list))) == NULL)
+	if ((symbol_elem = malloc(sizeof(t_s_symbol_list))) == NULL)
 		ft_malloc_error();
 	if (is_64 == TRUE)
 	{

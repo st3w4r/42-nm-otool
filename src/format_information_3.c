@@ -12,7 +12,7 @@
 
 #include "nm-otool.h"
 
-uint32_t get_section_type(s_section_list *section_elem, bool is_64)
+uint32_t get_section_type(t_s_section_list *section_elem, bool is_64)
 {
 	if (is_64 == TRUE)
 		return (section_elem->section_64->flags & SECTION_TYPE);
@@ -20,7 +20,7 @@ uint32_t get_section_type(s_section_list *section_elem, bool is_64)
 		return (section_elem->section_32->flags & SECTION_TYPE);
 }
 
-uint32_t get_section_attributes(s_section_list *section_elem, bool is_64)
+uint32_t get_section_attributes(t_s_section_list *section_elem, bool is_64)
 {
 	if (is_64 == TRUE)
 		return (section_elem->section_64->flags & SECTION_ATTRIBUTES);

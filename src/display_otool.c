@@ -12,8 +12,8 @@
 
 #include "nm-otool.h"
 
-void display_symbol_list(void *string_table, s_section_list *section_list,
-												s_symbol_list *symbol_list, bool is_64)
+void display_symbol_list(void *string_table, t_s_section_list *section_list,
+												t_s_symbol_list *symbol_list, bool is_64)
 {
 	while (symbol_list)
 	{

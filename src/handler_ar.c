@@ -16,7 +16,7 @@ void *handle_ar_object(s_file *file, void *ptr, void *ranlib_arr, size_t i)
 {
 	void *ar_object;
 	struct ranlib *ranlib_elem;
-	struct ar_header *ar_header_elem;
+	struct s_ar_header *ar_header_elem;
 	size_t size_name;
 	char *name;
 
@@ -37,7 +37,7 @@ void *handle_ar_object(s_file *file, void *ptr, void *ranlib_arr, size_t i)
 */
 void	handle_ar(s_file *file, void *ptr)
 {
-	struct ar_header *ar_header;
+	struct s_ar_header *ar_header;
 	void *symdef;
 	void *ranlib_arr;
 	size_t size_name;

@@ -12,7 +12,7 @@
 
 #include "nm-otool.h"
 
-e_file_format	get_file_format(void *ptr)
+t_e_file_format	get_file_format(void *ptr)
 {
 	uint32_t magic;
 

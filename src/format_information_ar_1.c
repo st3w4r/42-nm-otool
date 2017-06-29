@@ -21,7 +21,7 @@ void *get_ar_object(void *ptr, struct ranlib *ranlib, size_t size_name)
 
 	object = ptr
 					+ ranlib->ran_off
-					+ sizeof(struct ar_header)
+					+ sizeof(struct s_ar_header)
 					+ size_name;
 	check_memory_out(object);
 	return (object);
@@ -47,9 +47,9 @@ char *get_ar_string_element(void *string_table, struct ranlib *ranlib)
 	return (string_elem);
 }
 
-struct ar_header *get_ar_header_element(void *ptr, struct ranlib *ranlib)
+struct s_ar_header *get_ar_header_element(void *ptr, struct ranlib *ranlib)
 {
-		struct ar_header *ar_header;
+		struct s_ar_header *ar_header;
 
 		ar_header = ptr + ranlib->ran_off;
 		check_memory_out(ar_header);

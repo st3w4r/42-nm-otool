@@ -50,7 +50,7 @@ void *get_string_table(struct symtab_command *sym, void *ptr)
 	return (string_table);
 }
 
-char	*get_symbol_string(s_symbol_list *symbol_elem, void *string_table, bool is_64)
+char	*get_symbol_string(t_s_symbol_list *symbol_elem, void *string_table, bool is_64)
 {
 	char *symbol_string;
 

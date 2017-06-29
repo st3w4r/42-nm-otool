@@ -34,23 +34,23 @@ uint32_t get_nranlibs(void *symdef)
 	return (nranlibs);
 }
 
-void *get_symdef(struct ar_header *ar_header, size_t size_name)
+void *get_symdef(struct s_ar_header *ar_header, size_t size_name)
 {
 	void *symdef;
 
 	symdef = (void*)ar_header
-					+ sizeof(struct ar_header)
+					+ sizeof(struct s_ar_header)
 					+ size_name;
 	check_memory_out(symdef);
 	return (symdef);
 }
 
-char	*get_ar_header_name(struct ar_header *ar_header)
+char	*get_ar_header_name(struct s_ar_header *ar_header)
 {
 	char *name;
 
 	name = (void*)ar_header
-				+ sizeof(struct ar_header);
+				+ sizeof(struct s_ar_header);
 	check_memory_out(name);
 	return (name);
 }

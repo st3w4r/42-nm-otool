@@ -16,7 +16,7 @@
 ** Sort by insertion
 */
 
-void insert_archive_before(s_archive_list *s1, s_archive_list *s2)
+void insert_archive_before(t_s_archive_list *s1, t_s_archive_list *s2)
 {
 	s2->next = s1;
 	s2->prev = s1->prev;
@@ -27,7 +27,7 @@ void insert_archive_before(s_archive_list *s1, s_archive_list *s2)
 	}
 }
 
-void insert_archive_after(s_archive_list *s1, s_archive_list *s2)
+void insert_archive_after(t_s_archive_list *s1, t_s_archive_list *s2)
 {
 	s2->next = s1->next;
 	s2->prev = s1;
@@ -38,7 +38,7 @@ void insert_archive_after(s_archive_list *s1, s_archive_list *s2)
 	}
 }
 
-void	set_format_archive_list(s_format *format, s_archive_list *archive_elem)
+void	set_format_archive_list(s_format *format, t_s_archive_list *archive_elem)
 {
 	while (archive_elem->prev != NULL)
 	{
@@ -47,10 +47,10 @@ void	set_format_archive_list(s_format *format, s_archive_list *archive_elem)
 	format->archive_list = archive_elem;
 }
 
-s_archive_list *add_archive(s_format *format, s_archive_list *archive_elem)
+t_s_archive_list *add_archive(s_format *format, t_s_archive_list *archive_elem)
 {
-	s_archive_list *archive_list;
-	s_archive_list *archive_prev;
+	t_s_archive_list *archive_list;
+	t_s_archive_list *archive_prev;
 
 	archive_list = format->archive_list;
 	while (archive_list != NULL)
@@ -75,11 +75,11 @@ s_archive_list *add_archive(s_format *format, s_archive_list *archive_elem)
 ** Init if the format archive_list is null
 */
 
-s_archive_list *add_archive_list(s_format *format, void *ar_object, char *name)
+t_s_archive_list *add_archive_list(s_format *format, void *ar_object, char *name)
 {
-	s_archive_list *archive_elem;
+	t_s_archive_list *archive_elem;
 
-	if ((archive_elem = malloc(sizeof(s_archive_list))) == NULL)
+	if ((archive_elem = malloc(sizeof(t_s_archive_list))) == NULL)
 		ft_malloc_error();
 	archive_elem->ar_object = ar_object;
 	archive_elem->name = name;

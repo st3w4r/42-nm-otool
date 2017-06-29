@@ -12,7 +12,7 @@
 
 #include "nm-otool.h"
 
-void display_section_text(void *ptr, s_section_list *section_elem,
+void display_section_text(void *ptr, t_s_section_list *section_elem,
 													char *segname, char *sectname, bool is_64)
 {
 	uint64_t addr;
@@ -40,7 +40,7 @@ void display_section_text(void *ptr, s_section_list *section_elem,
 	ft_putstr("\n");
 }
 
-void display_section(void *ptr, s_section_list *section_list, bool is_64)
+void display_section(void *ptr, t_s_section_list *section_list, bool is_64)
 {
 	char *segname;
 	char *sectname;
@@ -62,7 +62,7 @@ void display_section(void *ptr, s_section_list *section_list, bool is_64)
 	}
 }
 
-void display_section_list(void *ptr, s_section_list *section_list, bool is_64)
+void display_section_list(void *ptr, t_s_section_list *section_list, bool is_64)
 {
 	while (section_list)
 	{

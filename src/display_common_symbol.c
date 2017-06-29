@@ -34,12 +34,12 @@ void display_symbol_64(uint8_t type, uint64_t n_value,
 	ft_putstr("\n");
 }
 
-void display_symbol_short_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+void display_symbol_short_64(void *string_table, t_s_section_list *section_list, t_s_symbol_list *symbol_elem)
 {
 	uint8_t n_sect;
 	uint8_t n_type;
 	uint64_t n_value;
-	s_section_list *section_elem;
+	t_s_section_list *section_elem;
 	char *symbol_string;
 
 	n_sect = symbol_elem->symbol_64->n_sect;
@@ -83,12 +83,12 @@ void display_symbol_32(uint8_t type, uint32_t n_value,
 	ft_putstr("\n");
 }
 
-void display_symbol_short_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+void display_symbol_short_32(void *string_table, t_s_section_list *section_list, t_s_symbol_list *symbol_elem)
 {
 	uint8_t n_sect;
 	uint8_t n_type;
 	uint32_t n_value;
-	s_section_list *section_elem;
+	t_s_section_list *section_elem;
 	char *symbol_string;
 
 	n_sect = symbol_elem->symbol_32->n_sect;
