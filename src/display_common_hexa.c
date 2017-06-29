@@ -1,7 +1,6 @@
 #include "nm-otool.h"
 
-void display_symbol_hexa_64(void *string_table, s_section_list *section_list,
-														s_symbol_list *symbol_elem)
+void display_symbol_hexa_64(void *string_table, s_symbol_list *symbol_elem)
 {
 	uint8_t n_type;
 	char *symbol_string;
@@ -26,7 +25,7 @@ void display_symbol_hexa_64(void *string_table, s_section_list *section_list,
 	ft_putstr("\n");
 }
 
-void display_symbol_hexa_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem)
+void display_symbol_hexa_32(void *string_table, s_symbol_list *symbol_elem)
 {
 	uint8_t n_type;
 	char *symbol_string;

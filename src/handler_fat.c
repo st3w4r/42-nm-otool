@@ -3,7 +3,7 @@
 /*
 ** Handle fat architecture
 */
-void	handle_fat_arch(s_file *file, s_format *format, void *ptr, void *fat_arch, bool is_64)
+void	handle_fat_arch(s_file *file, void *ptr, void *fat_arch)
 {
 	cpu_type_t cpu_type;
 	cpu_subtype_t cpu_subtype;
@@ -20,7 +20,7 @@ void	handle_fat_arch(s_file *file, s_format *format, void *ptr, void *fat_arch, 
 /*
 ** Handle the fat file
 */
-void	handle_fat(s_file *file, s_format *format, void *ptr, bool is_64)
+void	handle_fat(s_file *file, void *ptr, bool is_64)
 {
 	uint64_t nfat_arch;
 	uint64_t i;
@@ -36,7 +36,7 @@ void	handle_fat(s_file *file, s_format *format, void *ptr, bool is_64)
 	while (i < nfat_arch)
 	{
 		fat_arch = get_fat_ach(ptr, i, is_64);
-		handle_fat_arch(file, format, ptr, fat_arch, is_64);
+		handle_fat_arch(file, ptr, fat_arch);
 		i++;
 	}
 }

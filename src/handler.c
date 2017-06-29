@@ -11,6 +11,8 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	string_table = get_string_table(sym, ptr);
 	format->symbol_table = symbol_table;
 	format->string_table = string_table;
+	// check_memory_out(ptr + sym->stroff + sym->strsize);
+	// check_memory_out(ptr + sym->symoff + (sym->nsyms * sym->cmdsize));
 	i = 0;
 	while (i < sym->nsyms)
 	{
@@ -31,11 +33,15 @@ void handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64)
 	{
 		nsects = ((struct segment_command_64*)seg)->nsects;
 		segname = ((struct segment_command_64*)seg)->segname;
+		// check_memory_out(ptr + ((struct segment_command_64*)seg)->fileoff);
+		// check_memory_out(ptr + ((struct segment_command_64*)seg)->fileoff + ((struct segment_command_64*)seg)->filesize);
 	}
 	else
 	{
 		nsects = ((struct segment_command*)seg)->nsects;
 		segname = ((struct segment_command*)seg)->segname;
+		// check_memory_out(ptr + ((struct segment_command*)seg)->fileoff);
+		// check_memory_out(ptr + ((struct segment_command*)seg)->fileoff + ((struct segment_command*)seg)->filesize);
 	}
 	i = 0;
 	while (i < nsects)
@@ -90,11 +96,13 @@ void	handle_macho(s_format *format, void *ptr, bool is_64)
 	{
 		ncmds = ((struct mach_header_64*)header)->ncmds;
 		sizeofcmds = ((struct mach_header_64*)header)->sizeofcmds;
+		// check_memory_out(header + sizeof(struct mach_header_64) + sizeofcmds);
 	}
 	else
 	{
 		ncmds = ((struct mach_header*)header)->ncmds;
 		sizeofcmds = ((struct mach_header*)header)->sizeofcmds;
+		// check_memory_out(header + sizeof(struct mach_header) + sizeofcmds);
 	}
 	i = 0;
 	lc = get_first_load_command(header, is_64);

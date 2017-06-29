@@ -8,14 +8,14 @@ void display_symbol_list(void *string_table, s_section_list *section_list,
 		if (is_64 == TRUE)
 		{
 			if (g_prog.flags & FLAG_x)
-				display_symbol_hexa_64(string_table, section_list, symbol_list);
+				display_symbol_hexa_64(string_table, symbol_list);
 			else
 				display_symbol_short_64(string_table, section_list, symbol_list);
 		}
 		else
 		{
 			if (g_prog.flags & FLAG_x)
-				display_symbol_hexa_32(string_table, section_list, symbol_list);
+				display_symbol_hexa_32(string_table, symbol_list);
 			else
 				display_symbol_short_32(string_table, section_list, symbol_list);
 		}

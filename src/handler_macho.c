@@ -3,7 +3,6 @@
 void handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr, bool is_64)
 {
 	uint32_t	i;
-	char			*str;
 	void			*string_table;
 	void			*symbol_table;
 
@@ -20,7 +19,7 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	}
 }
 
-void handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64)
+void handle_segment_command(s_format *format, void *seg, bool is_64)
 {
 	uint32_t i;
 	uint32_t	nsects;
@@ -65,12 +64,12 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr, b
 	else if (lc->cmd == LC_SEGMENT_64)
 	{
 		seg = (struct segment_command_64 *)lc;
-		handle_segment_command(format, seg, ptr, is_64);
+		handle_segment_command(format, seg, is_64);
 	}
 	else if (lc->cmd == LC_SEGMENT)
 	{
 		seg = (struct segment_command *)lc;
-		handle_segment_command(format, seg, ptr, is_64);
+		handle_segment_command(format, seg, is_64);
 	}
 }
 

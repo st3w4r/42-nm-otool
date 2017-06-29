@@ -219,8 +219,8 @@ void display_section_list(void *ptr, s_section_list *section_list, bool is_64);
 ** File display_common_hexa.c
 ** Description: All function to display into hexa
 */
-void display_symbol_hexa_64(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
-void display_symbol_hexa_32(void *string_table, s_section_list *section_list, s_symbol_list *symbol_elem);
+void display_symbol_hexa_64(void *string_table, s_symbol_list *symbol_elem);
+void display_symbol_hexa_32(void *string_table, s_symbol_list *symbol_elem);
 
 /*
 ** File display_common.c
@@ -245,7 +245,7 @@ struct ranlib *get_ranlib_element(void *ranlib_arr, size_t index);
 void *get_ranlib_array(void *symdef);
 uint32_t get_nranlibs(void *symdef);
 void *get_symdef(struct ar_header *ar_header, size_t size_name);
-char	*get_ar_header_name(struct ar_header *ar_header, size_t size_name);
+char	*get_ar_header_name(struct ar_header *ar_header);
 size_t	get_size_from_identifier(char *file_identifier);
 
 /*
@@ -304,19 +304,19 @@ void	handle_format(void *ptr, s_file *file);
 ** File: handler_macho.c
 */
 void	handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr, bool is_64);
-void	handle_segment_command(s_format *format, void *seg, void *ptr, bool is_64);
+void	handle_segment_command(s_format *format, void *seg, bool is_64);
 void	handle_load_command(s_format *format, struct load_command *lc, void *ptr, bool is_64);
 void	handle_macho(s_format *format, void *ptr, bool is_64);
 
 /*
 ** File: handler_ar.c
 */
-void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64);
+void	handle_ar(s_file *file, void *ptr);
 
 /*
 ** File: handler_fat.c
 */
-void	handle_fat(s_file *file, s_format *format, void *ptr, bool is_64);
+void	handle_fat(s_file *file, void *ptr, bool is_64);
 
 /*
 ** File: ft_puthexa_size.c

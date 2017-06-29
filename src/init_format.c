@@ -6,8 +6,6 @@
 s_format *init_format(void *ptr)
 {
 	s_format					*format;
-	s_section_list		s_section_list;
-	s_symbol_list		s_symbol_list;
 
 	if ((format = malloc(sizeof(s_format))) == NULL)
 		ft_malloc_error();

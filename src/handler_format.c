@@ -22,13 +22,13 @@ void handle_format_macho_32(s_file *file, s_format *format, void *ptr)
 void handle_format_fat(s_file *file, s_format *format, void *ptr)
 {
 	format->is_64 = FALSE;
-	handle_fat(file, format, ptr, format->is_64);
+	handle_fat(file, ptr, format->is_64);
 }
 
 void handle_format_archive(s_file *file, s_format *format, void *ptr)
 {
 	format->is_64 = FALSE;
-	handle_ar(file, format, ptr, format->is_64);
+	handle_ar(file, ptr);
 }
 /*
 ** Handle file and redirect to the correct file type

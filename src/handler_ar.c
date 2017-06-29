@@ -13,7 +13,7 @@ void *handle_ar_object(s_file *file, void *ptr, void *ranlib_arr, size_t i)
 	ar_header_elem = get_ar_header_element(ptr, ranlib_elem);
 	size_name = get_size_from_identifier((char*)ar_header_elem->file_identifier);
 	ar_object = get_ar_object(ptr, ranlib_elem, size_name);
-	name = get_ar_header_name(ar_header_elem, size_name);
+	name = get_ar_header_name(ar_header_elem);
 	file->sub_filename = name;
 	file->file_format = ARCHIVE;
 	file->is_displayed = FALSE;
@@ -23,7 +23,7 @@ void *handle_ar_object(s_file *file, void *ptr, void *ranlib_arr, size_t i)
 /*
 ** Handle archive file
 */
-void	handle_ar(s_file *file, s_format *format, void *ptr, bool is_64)
+void	handle_ar(s_file *file, void *ptr)
 {
 	struct ar_header *ar_header;
 	void *symdef;

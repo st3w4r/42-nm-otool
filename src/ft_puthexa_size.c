@@ -17,7 +17,7 @@ void	ft_puthexa_size(uint64_t nb, size_t size)
 {
 	char	hex_revert[16];
 	int		hex[16];
-	int		i;
+	size_t		i;
 
 	ft_bzero(hex_revert, 16);
 	ft_bzero(hex, 16);

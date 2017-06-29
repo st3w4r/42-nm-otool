@@ -3,7 +3,6 @@
 void display_section_text(void *ptr, s_section_list *section_elem,
 													char *segname, char *sectname, bool is_64)
 {
-	uint64_t size;
 	uint64_t addr;
 
 	ft_putstr("Contents of (");

@@ -33,7 +33,7 @@ void *get_symdef(struct ar_header *ar_header, size_t size_name)
 	return (symdef);
 }
 
-char	*get_ar_header_name(struct ar_header *ar_header, size_t size_name)
+char	*get_ar_header_name(struct ar_header *ar_header)
 {
 	char *name;
 
