@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:08:30 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:08:31 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:53:05 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 ** Functinos for archive
 */
 
-struct s_ar_magic *get_ar_magic(void *ptr)
+struct s_ar_magic	*get_ar_magic(void *ptr)
 {
 	return (ptr);
 }
 
-struct s_ar_header *get_ar_header(void *ptr)
+struct s_ar_header	*get_ar_header(void *ptr)
 {
 	struct s_ar_header *ar_header;
 

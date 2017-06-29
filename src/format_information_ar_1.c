@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:08:20 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:08:21 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:52:01 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 /*
 ** Functinos for archive
 */
-void *get_ar_object(void *ptr, struct ranlib *ranlib, size_t size_name)
+
+void				*get_ar_object(void *ptr,
+									struct ranlib *ranlib,
+									size_t size_name)
 {
 	void *object;
 
@@ -27,7 +30,7 @@ void *get_ar_object(void *ptr, struct ranlib *ranlib, size_t size_name)
 	return (object);
 }
 
-void *get_ar_string_table(void *ranlib_arr, size_t nranlibs)
+void				*get_ar_string_table(void *ranlib_arr, size_t nranlibs)
 {
 	void *string_table;
 
@@ -38,7 +41,8 @@ void *get_ar_string_table(void *ranlib_arr, size_t nranlibs)
 	return (string_table);
 }
 
-char *get_ar_string_element(void *string_table, struct ranlib *ranlib)
+char				*get_ar_string_element(void *string_table,
+											struct ranlib *ranlib)
 {
 	char *string_elem;
 
@@ -47,16 +51,16 @@ char *get_ar_string_element(void *string_table, struct ranlib *ranlib)
 	return (string_elem);
 }
 
-struct s_ar_header *get_ar_header_element(void *ptr, struct ranlib *ranlib)
+struct s_ar_header	*get_ar_header_element(void *ptr, struct ranlib *ranlib)
 {
-		struct s_ar_header *ar_header;
+	struct s_ar_header *ar_header;
 
-		ar_header = ptr + ranlib->ran_off;
-		check_memory_out(ar_header);
-		return (ar_header);
+	ar_header = ptr + ranlib->ran_off;
+	check_memory_out(ar_header);
+	return (ar_header);
 }
 
-struct ranlib *get_ranlib_element(void *ranlib_arr, size_t index)
+struct ranlib		*get_ranlib_element(void *ranlib_arr, size_t index)
 {
 	struct ranlib *ranlib;
 

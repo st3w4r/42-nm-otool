@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:08:27 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:08:27 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:52:50 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Functinos for archive
 */
 
-void *get_ranlib_array(void *symdef)
+void		*get_ranlib_array(void *symdef)
 {
 	void *ranlib_array;
 
@@ -25,16 +25,16 @@ void *get_ranlib_array(void *symdef)
 	return (ranlib_array);
 }
 
-uint32_t get_nranlibs(void *symdef)
+uint32_t	get_nranlibs(void *symdef)
 {
 	uint32_t nranlibs;
 
 	nranlibs = *(uint32_t *)symdef;
-	nranlibs =  nranlibs / (sizeof(struct ranlib));
+	nranlibs = nranlibs / (sizeof(struct ranlib));
 	return (nranlibs);
 }
 
-void *get_symdef(struct s_ar_header *ar_header, size_t size_name)
+void		*get_symdef(struct s_ar_header *ar_header, size_t size_name)
 {
 	void *symdef;
 
@@ -45,7 +45,7 @@ void *get_symdef(struct s_ar_header *ar_header, size_t size_name)
 	return (symdef);
 }
 
-char	*get_ar_header_name(struct s_ar_header *ar_header)
+char		*get_ar_header_name(struct s_ar_header *ar_header)
 {
 	char *name;
 
@@ -55,10 +55,10 @@ char	*get_ar_header_name(struct s_ar_header *ar_header)
 	return (name);
 }
 
-size_t	get_size_from_identifier(char *file_identifier)
+size_t		get_size_from_identifier(char *file_identifier)
 {
-	size_t size_name;
-	char *str_new;
+	size_t	size_name;
+	char	*str_new;
 
 	str_new = ft_strnew(16);
 	str_new = ft_memcpy(str_new, file_identifier, 16);

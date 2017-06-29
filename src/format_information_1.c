@@ -6,18 +6,17 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:07:55 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:07:56 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:47:18 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-t_e_file_format	get_file_format(void *ptr)
+t_e_file_format		get_file_format(void *ptr)
 {
 	uint32_t magic;
 
 	magic = *(uint32_t *)ptr;
-
 	if (magic == MH_MAGIC || magic == MH_CIGAM)
 		return (MACHO_32);
 	else if (magic == MH_MAGIC_64 || magic == MH_CIGAM_64)
@@ -33,7 +32,8 @@ t_e_file_format	get_file_format(void *ptr)
 /*
 ** Get object file for fat haeder
 */
-void *get_object_file(void *ptr, uint32_t offset)
+
+void				*get_object_file(void *ptr, uint32_t offset)
 {
 	void *object_file;
 
@@ -42,7 +42,7 @@ void *get_object_file(void *ptr, uint32_t offset)
 	return (object_file);
 }
 
-void *get_fat_ach(void *header, int index, bool is_64)
+void				*get_fat_ach(void *header, int index, bool is_64)
 {
 	void *fat_arch;
 
@@ -60,7 +60,7 @@ void *get_fat_ach(void *header, int index, bool is_64)
 	return (fat_arch);
 }
 
-struct load_command *get_first_load_command(void *header, bool is_64)
+struct load_command	*get_first_load_command(void *header, bool is_64)
 {
 	struct load_command *first_load_command;
 
@@ -76,7 +76,7 @@ struct load_command *get_first_load_command(void *header, bool is_64)
 	return (first_load_command);
 }
 
-struct load_command *get_next_load_command(struct load_command *lc)
+struct load_command	*get_next_load_command(struct load_command *lc)
 {
 	struct load_command *next_load_command;
 

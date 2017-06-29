@@ -6,12 +6,11 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:08:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:08:39 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:54:59 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
-
 
 char	get_symbol_type_char_section(char *segname, char *sectname)
 {
@@ -39,8 +38,11 @@ char	get_symbol_type_char_section(char *segname, char *sectname)
 	return (c);
 }
 
-char	get_symbol_type_char(uint8_t type, uint64_t n_value, char *segname,
-													char *sectname, bool is_external)
+char	get_symbol_type_char(uint8_t type,
+							uint64_t n_value,
+							char *segname,
+							char *sectname,
+							bool is_external)
 {
 	int c;
 
@@ -49,9 +51,9 @@ char	get_symbol_type_char(uint8_t type, uint64_t n_value, char *segname,
 		c = '-';
 	else if (type == N_UNDF)
 	{
-			c = 'u';
-			if (n_value != 0)
-				c = 'c';
+		c = 'u';
+		if (n_value != 0)
+			c = 'c';
 	}
 	else if (type == N_ABS)
 		c = 'a';
@@ -68,10 +70,10 @@ char	get_symbol_type_char(uint8_t type, uint64_t n_value, char *segname,
 	return (c);
 }
 
-bool select_diplay_symbol(uint8_t n_type)
+bool	select_diplay_symbol(uint8_t n_type)
 {
-	bool display;
-	uint8_t type;
+	bool	display;
+	uint8_t	type;
 
 	type = get_symbol_type(n_type);
 	display = TRUE;

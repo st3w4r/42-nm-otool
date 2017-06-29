@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:08:04 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:08:05 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:48:16 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 ** Get the next symbol from the symbol_table
 ** Use with get_symbol_table and iterate on nsyms
 */
-void *get_next_symbol(void *symbol_table, bool is_64)
+
+void	*get_next_symbol(void *symbol_table, bool is_64)
 {
 	void *next_symbol;
 
@@ -32,7 +33,8 @@ void *get_next_symbol(void *symbol_table, bool is_64)
 ** Get the symbol table from a command and the ptr on the beginning of the
 ** mapped file. And return the ptr on the symbol tble (strcut nlist_64)
 */
-void *get_symbol_table(struct symtab_command *sym, void *ptr)
+
+void	*get_symbol_table(struct symtab_command *sym, void *ptr)
 {
 	void *symbol_table;
 
@@ -41,7 +43,7 @@ void *get_symbol_table(struct symtab_command *sym, void *ptr)
 	return (symbol_table);
 }
 
-void *get_string_table(struct symtab_command *sym, void *ptr)
+void	*get_string_table(struct symtab_command *sym, void *ptr)
 {
 	void *string_table;
 
@@ -50,7 +52,9 @@ void *get_string_table(struct symtab_command *sym, void *ptr)
 	return (string_table);
 }
 
-char	*get_symbol_string(t_s_symbol_list *symbol_elem, void *string_table, bool is_64)
+char	*get_symbol_string(t_s_symbol_list *symbol_elem,
+							void *string_table,
+							bool is_64)
 {
 	char *symbol_string;
 
@@ -69,7 +73,8 @@ char	*get_symbol_string(t_s_symbol_list *symbol_elem, void *string_table, bool i
 /*
 ** Send a struct segment_command witht an index and return a struct section
 */
-void *get_section_command(void *seg, uint32_t index_section, bool is_64)
+
+void	*get_section_command(void *seg, uint32_t index_section, bool is_64)
 {
 	void *section_command;
 
