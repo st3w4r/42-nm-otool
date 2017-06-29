@@ -6,14 +6,16 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:07:35 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:07:36 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:44:01 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-void display_symbol_list(void *string_table, t_s_section_list *section_list,
-												t_s_symbol_list *symbol_list, bool is_64)
+void	display_symbol_list(void *string_table,
+							t_s_section_list *section_list,
+							t_s_symbol_list *symbol_list,
+							bool is_64)
 {
 	while (symbol_list)
 	{
@@ -29,7 +31,7 @@ void display_symbol_list(void *string_table, t_s_section_list *section_list,
 	}
 }
 
-void display_ar_header(char *filename, char *name)
+void	display_ar_header(char *filename, char *name)
 {
 	ft_putstr(filename);
 	ft_putstr("(");
@@ -37,7 +39,7 @@ void display_ar_header(char *filename, char *name)
 	ft_putstr("):\n");
 }
 
-void display_format(t_s_file *file, t_s_format *format)
+void	display_format(t_s_file *file, t_s_format *format)
 {
 	if (file->file_format == ARCHIVE && file->is_displayed == FALSE)
 	{
@@ -55,5 +57,7 @@ void display_format(t_s_file *file, t_s_format *format)
 		ft_putstr(format->filename);
 		ft_putstr(":\n");
 	}
-	display_section_list(format->ptr_header, format->section_list, format->is_64);
+	display_section_list(format->ptr_header,
+						format->section_list,
+						format->is_64);
 }

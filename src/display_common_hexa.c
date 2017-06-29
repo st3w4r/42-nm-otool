@@ -6,17 +6,17 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:07:05 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:07:06 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:33:44 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-void display_symbol_hexa_64(void *string_table, t_s_symbol_list *symbol_elem)
+void	display_symbol_hexa_64(void *string_table, t_s_symbol_list *symbol_elem)
 {
-	uint8_t n_type;
-	char *symbol_string;
-	struct nlist_64 *symbol;
+	uint8_t			n_type;
+	char			*symbol_string;
+	struct nlist_64	*symbol;
 
 	symbol = symbol_elem->symbol_64;
 	n_type = symbol->n_type;
@@ -37,11 +37,11 @@ void display_symbol_hexa_64(void *string_table, t_s_symbol_list *symbol_elem)
 	ft_putstr("\n");
 }
 
-void display_symbol_hexa_32(void *string_table, t_s_symbol_list *symbol_elem)
+void	display_symbol_hexa_32(void *string_table, t_s_symbol_list *symbol_elem)
 {
-	uint8_t n_type;
-	char *symbol_string;
-	struct nlist *symbol;
+	uint8_t			n_type;
+	char			*symbol_string;
+	struct nlist	*symbol;
 
 	symbol = symbol_elem->symbol_32;
 	n_type = symbol->n_type;

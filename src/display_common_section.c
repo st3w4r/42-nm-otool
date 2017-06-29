@@ -6,14 +6,14 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:07:12 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:07:14 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:37:10 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-void display_section_text(void *ptr, t_s_section_list *section_elem,
-													char *segname, char *sectname, bool is_64)
+void	display_section_text(void *ptr, t_s_section_list *section_elem,
+							char *segname, char *sectname, bool is_64)
 {
 	uint64_t addr;
 
@@ -35,15 +35,14 @@ void display_section_text(void *ptr, t_s_section_list *section_elem,
 		addr = section_elem->section_32->addr;
 		ft_print_mem(ptr + section_elem->section_32->offset,
 			(void*)addr, section_elem->section_32->size, is_64);
-
 	}
 	ft_putstr("\n");
 }
 
-void display_section(void *ptr, t_s_section_list *section_list, bool is_64)
+void	display_section(void *ptr, t_s_section_list *section_list, bool is_64)
 {
-	char *segname;
-	char *sectname;
+	char	*segname;
+	char	*sectname;
 
 	if (is_64 == TRUE)
 	{
@@ -62,7 +61,9 @@ void display_section(void *ptr, t_s_section_list *section_list, bool is_64)
 	}
 }
 
-void display_section_list(void *ptr, t_s_section_list *section_list, bool is_64)
+void	display_section_list(void *ptr,
+							t_s_section_list *section_list,
+							bool is_64)
 {
 	while (section_list)
 	{
