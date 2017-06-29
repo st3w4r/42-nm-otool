@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:10:12 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:10:13 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:13:13 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 /*
 ** Map a file into memory and retrun a pointer on the beginning
 */
-void *map_file_into_memory(int fd)
+
+void	*map_file_into_memory(int fd)
 {
-	void *ptr;
-	size_t file_size;
+	void	*ptr;
+	size_t	file_size;
 
 	file_size = get_size_of_file(fd);
 	if (file_size <= 0)
@@ -37,10 +38,11 @@ void *map_file_into_memory(int fd)
 /*
 ** Release the memory allocation
 */
-void release_memory(void *ptr, int fd)
+
+void	release_memory(void *ptr, int fd)
 {
-	int result;
-	size_t file_size;
+	int		result;
+	size_t	file_size;
 
 	file_size = get_size_of_file(fd);
 	result = munmap(ptr, file_size);

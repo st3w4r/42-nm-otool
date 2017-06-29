@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:09:21 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:09:22 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:02:51 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_format_macho_64(t_s_file *file, t_s_format *format, void *ptr)
 	}
 }
 
-void handle_format_macho_32(t_s_file *file, t_s_format *format, void *ptr)
+void	handle_format_macho_32(t_s_file *file, t_s_format *format, void *ptr)
 {
 	format->is_64 = FALSE;
 	handle_macho(format, ptr, format->is_64);
@@ -31,20 +31,22 @@ void handle_format_macho_32(t_s_file *file, t_s_format *format, void *ptr)
 		display_format(file, format);
 }
 
-void handle_format_fat(t_s_file *file, t_s_format *format, void *ptr)
+void	handle_format_fat(t_s_file *file, t_s_format *format, void *ptr)
 {
 	format->is_64 = FALSE;
 	handle_fat(file, ptr, format->is_64);
 }
 
-void handle_format_archive(t_s_file *file, t_s_format *format, void *ptr)
+void	handle_format_archive(t_s_file *file, t_s_format *format, void *ptr)
 {
 	format->is_64 = FALSE;
 	handle_ar(file, ptr);
 }
+
 /*
 ** Handle file and redirect to the correct file type
 */
+
 void	handle_format(void *ptr, t_s_file *file)
 {
 	t_s_format *format;

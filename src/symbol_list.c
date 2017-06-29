@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:10:01 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:10:02 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:11:46 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Sort by insertion
 */
 
-void insert_before(t_s_symbol_list *s1, t_s_symbol_list *s2)
+void			insert_before(t_s_symbol_list *s1, t_s_symbol_list *s2)
 {
 	s2->next = s1;
 	s2->prev = s1->prev;
@@ -27,7 +27,7 @@ void insert_before(t_s_symbol_list *s1, t_s_symbol_list *s2)
 	}
 }
 
-void insert_after(t_s_symbol_list *s1, t_s_symbol_list *s2)
+void			insert_after(t_s_symbol_list *s1, t_s_symbol_list *s2)
 {
 	s2->next = s1->next;
 	s2->prev = s1;
@@ -38,7 +38,8 @@ void insert_after(t_s_symbol_list *s1, t_s_symbol_list *s2)
 	}
 }
 
-void	set_format_symbol_list(t_s_format *format, t_s_symbol_list *symbol)
+void			set_format_symbol_list(t_s_format *format,
+									t_s_symbol_list *symbol)
 {
 	while (symbol->prev != NULL)
 	{
@@ -47,20 +48,23 @@ void	set_format_symbol_list(t_s_format *format, t_s_symbol_list *symbol)
 	format->symbol_list = symbol;
 }
 
-t_s_symbol_list *add_symbol(t_s_format *format, t_s_symbol_list *symbol_elem, bool is_64)
+t_s_symbol_list	*add_symbol(t_s_format *format,
+							t_s_symbol_list *symbol_elem,
+							bool is_64)
 {
-	t_s_symbol_list *symbol_list;
-	t_s_symbol_list *symbol_prev;
-	void *string_table;
-	char *string_symbol_list;
-	char *string_symbol_elem;
+	t_s_symbol_list	*symbol_list;
+	t_s_symbol_list	*symbol_prev;
+	void			*string_table;
+	char			*string_symbol_list;
+	char			*string_symbol_elem;
 
 	symbol_list = format->symbol_list;
 	string_table = format->string_table;
 	string_symbol_elem = get_symbol_string(symbol_elem, string_table, is_64);
 	while (symbol_list != NULL)
 	{
-		string_symbol_list = get_symbol_string(symbol_list, string_table, is_64);
+		string_symbol_list = get_symbol_string(symbol_list,
+												string_table, is_64);
 		if (ft_strcmp(string_symbol_elem, string_symbol_list) < 0)
 		{
 			insert_before(symbol_list, symbol_elem);
@@ -81,7 +85,7 @@ t_s_symbol_list *add_symbol(t_s_format *format, t_s_symbol_list *symbol_elem, bo
 ** Init if the format symbol_list is null
 */
 
-t_s_symbol_list *add_symbol_list(t_s_format *format, void *symbol, bool is_64)
+t_s_symbol_list	*add_symbol_list(t_s_format *format, void *symbol, bool is_64)
 {
 	t_s_symbol_list *symbol_elem;
 

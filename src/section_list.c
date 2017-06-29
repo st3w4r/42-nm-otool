@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:09:52 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:09:53 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:09:42 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 ** Return the section at index in the section_list
 ** If no section at this index return NULL
 */
-t_s_section_list *get_section_index(t_s_section_list *section_list, uint8_t index_section)
+
+t_s_section_list	*get_section_index(t_s_section_list *section_list,
+										uint8_t index_section)
 {
-	uint8_t i;
-	t_s_section_list *current_section;
+	uint8_t				i;
+	t_s_section_list	*current_section;
 
 	current_section = section_list;
 	i = 1;
@@ -31,12 +33,14 @@ t_s_section_list *get_section_index(t_s_section_list *section_list, uint8_t inde
 	return (current_section);
 }
 
-
 /*
 ** Add section to the section_list
 ** Send a struct section and recevice a t_s_section_list
 */
-t_s_section_list *add_section_list(t_s_format *format, void *sec, bool is_64)
+
+t_s_section_list	*add_section_list(t_s_format *format,
+										void *sec,
+										bool is_64)
 {
 	t_s_section_list *section_list;
 
@@ -66,7 +70,10 @@ t_s_section_list *add_section_list(t_s_format *format, void *sec, bool is_64)
 ** Init the first section of the section_list
 ** Send a struct section and recevice a t_s_section_list
 */
-t_s_section_list *init_section_list(t_s_format *format, void *sec, bool is_64)
+
+t_s_section_list	*init_section_list(t_s_format *format,
+										void *sec,
+										bool is_64)
 {
 	t_s_section_list *section_list;
 
@@ -85,5 +92,5 @@ t_s_section_list *init_section_list(t_s_format *format, void *sec, bool is_64)
 	section_list->prev = NULL;
 	section_list->next = NULL;
 	format->section_list = section_list;
- return (format->section_list);
+	return (format->section_list);
 }

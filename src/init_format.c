@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:09:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:09:40 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:06:00 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 /*
 ** Init the structure format and return this one
 */
-t_s_format *init_format(void *ptr)
+
+t_s_format	*init_format(void *ptr)
 {
-	t_s_format					*format;
+	t_s_format	*format;
 
 	if ((format = malloc(sizeof(t_s_format))) == NULL)
 		ft_malloc_error();
@@ -29,5 +30,5 @@ t_s_format *init_format(void *ptr)
 	format->section_list = NULL;
 	format->symbol_list = NULL;
 	format->archive_list = NULL;
-	return format;
+	return (format);
 }

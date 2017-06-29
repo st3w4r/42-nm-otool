@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/05 15:21:07 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/05 15:21:10 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:59:53 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_puthexa_size(uint64_t nb, size_t size)
 {
 	char	hex_revert[16];
 	int		hex[16];
-	size_t		i;
+	size_t	i;
 
 	ft_bzero(hex_revert, 16);
 	ft_bzero(hex, 16);

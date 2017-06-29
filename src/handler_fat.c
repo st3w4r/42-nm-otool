@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:09:14 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:09:15 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:02:18 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 /*
 ** Handle fat architecture
 */
+
 void	handle_fat_arch(t_s_file *file, void *ptr, void *fat_arch)
 {
-	cpu_type_t cpu_type;
-	cpu_subtype_t cpu_subtype;
-	uint32_t offset;
-	void *object_file;
+	cpu_type_t		cpu_type;
+	cpu_subtype_t	cpu_subtype;
+	uint32_t		offset;
+	void			*object_file;
 
 	cpu_type = swap_uint32(((struct fat_arch *)fat_arch)->cputype);
 	cpu_subtype = swap_uint32(((struct fat_arch *)fat_arch)->cpusubtype);
@@ -32,14 +33,15 @@ void	handle_fat_arch(t_s_file *file, void *ptr, void *fat_arch)
 /*
 ** Handle the fat file
 */
+
 void	handle_fat(t_s_file *file, void *ptr, bool is_64)
 {
-	uint64_t nfat_arch;
-	uint64_t i;
-	void *fat_arch;
+	uint64_t	nfat_arch;
+	uint64_t	i;
+	void		*fat_arch;
 
 	if (is_64 == TRUE)
-		nfat_arch = ((struct fat_header*)ptr)->nfat_arch; // Need cast to 64bit struct
+		nfat_arch = ((struct fat_header*)ptr)->nfat_arch;
 	else
 		nfat_arch = ((struct fat_header*)ptr)->nfat_arch;
 	nfat_arch = swap_uint32(nfat_arch);

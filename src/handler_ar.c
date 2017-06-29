@@ -6,24 +6,24 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:09:09 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:09:11 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:01:33 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-void *handle_ar_object(t_s_file *file, void *ptr, void *ranlib_arr, size_t i)
+void	*handle_ar_object(t_s_file *file, void *ptr, void *ranlib_arr, size_t i)
 {
-	void *ar_object;
-	struct ranlib *ranlib_elem;
-	struct s_ar_header *ar_header_elem;
-	size_t size_name;
-	char *name;
-
+	void				*ar_object;
+	struct ranlib		*ranlib_elem;
+	struct s_ar_header	*ar_header_elem;
+	size_t				size_name;
+	char				*name;
 
 	ranlib_elem = get_ranlib_element(ranlib_arr, i);
 	ar_header_elem = get_ar_header_element(ptr, ranlib_elem);
-	size_name = get_size_from_identifier((char*)ar_header_elem->file_identifier);
+	size_name = get_size_from_identifier(
+					(char*)ar_header_elem->file_identifier);
 	ar_object = get_ar_object(ptr, ranlib_elem, size_name);
 	name = get_ar_header_name(ar_header_elem);
 	file->sub_filename = name;
@@ -35,13 +35,14 @@ void *handle_ar_object(t_s_file *file, void *ptr, void *ranlib_arr, size_t i)
 /*
 ** Handle archive file
 */
+
 void	handle_ar(t_s_file *file, void *ptr)
 {
-	struct s_ar_header *ar_header;
-	void *symdef;
-	void *ranlib_arr;
-	size_t size_name;
-	size_t i;
+	struct s_ar_header	*ar_header;
+	void				*symdef;
+	void				*ranlib_arr;
+	size_t				size_name;
+	size_t				i;
 
 	ar_header = get_ar_header(ptr);
 	size_name = get_size_from_identifier((char*)ar_header->file_identifier);

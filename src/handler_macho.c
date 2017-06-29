@@ -6,17 +6,20 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:09:25 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:09:26 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:04:45 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-void handle_symtab_command(t_s_format *format, struct symtab_command *sym, void *ptr, bool is_64)
+void	handle_symtab_command(t_s_format *format,
+							struct symtab_command *sym,
+							void *ptr,
+							bool is_64)
 {
 	uint32_t	i;
-	void			*string_table;
-	void			*symbol_table;
+	void		*string_table;
+	void		*symbol_table;
 
 	symbol_table = get_symbol_table(sym, ptr);
 	string_table = get_string_table(sym, ptr);
@@ -31,9 +34,9 @@ void handle_symtab_command(t_s_format *format, struct symtab_command *sym, void 
 	}
 }
 
-void handle_segment_command(t_s_format *format, void *seg, bool is_64)
+void	handle_segment_command(t_s_format *format, void *seg, bool is_64)
 {
-	uint32_t i;
+	uint32_t	i;
 	uint32_t	nsects;
 	void		*sec;
 	char		*segname;
@@ -63,10 +66,14 @@ void handle_segment_command(t_s_format *format, void *seg, bool is_64)
 /*
 ** Handle a load command to extract information
 */
-void handle_load_command(t_s_format *format, struct load_command *lc, void *ptr, bool is_64)
+
+void	handle_load_command(t_s_format *format,
+							struct load_command *lc,
+							void *ptr,
+							bool is_64)
 {
-	struct symtab_command *sym;
-	void *seg;
+	struct symtab_command	*sym;
+	void					*seg;
 
 	if (lc->cmd == LC_SYMTAB)
 	{
@@ -88,13 +95,14 @@ void handle_load_command(t_s_format *format, struct load_command *lc, void *ptr,
 /*
 ** Handle the macho file format for 32 bits and 64 bits
 */
+
 void	handle_macho(t_s_format *format, void *ptr, bool is_64)
 {
-	void *header;
-	uint32_t sizeofcmds;
-	uint32_t ncmds;
-	uint32_t i;
-	struct load_command *lc;
+	void				*header;
+	uint32_t			sizeofcmds;
+	uint32_t			ncmds;
+	uint32_t			i;
+	struct load_command	*lc;
 
 	header = ptr;
 	if (is_64 == TRUE)

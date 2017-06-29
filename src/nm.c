@@ -6,17 +6,17 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:09:44 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:09:45 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:06:51 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-void process_file(char *file_name)
+void	process_file(char *file_name)
 {
-	int fd;
-	void *ptr;
-	t_s_file *file;
+	int			fd;
+	void		*ptr;
+	t_s_file	*file;
 
 	fd = open_file(file_name);
 	if (is_file(fd) == FALSE)
@@ -32,7 +32,7 @@ void process_file(char *file_name)
 	close_file(fd);
 }
 
-int parse_flags_args(int argc, char **argv)
+int		parse_flags_args(int argc, char **argv)
 {
 	int i;
 	int nb_flags;
@@ -80,7 +80,7 @@ void	parse_file_args(int nb_files, char **args_file, int nb_flags)
 	}
 }
 
-void parse_args(int argc, char **argv)
+void	parse_args(int argc, char **argv)
 {
 	int nb_flags;
 
@@ -98,7 +98,8 @@ void parse_args(int argc, char **argv)
 ** Map file into memroy
 ** Display header
 */
-int	main(int argc, char **argv)
+
+int		main(int argc, char **argv)
 {
 	parse_args(argc, argv);
 	return (0);

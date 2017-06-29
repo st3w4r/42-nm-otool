@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:10:08 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:10:09 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 17:12:38 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 ** Get the size of a file from a file descriptor
 */
-size_t get_size_of_file(int fd)
+
+size_t		get_size_of_file(int fd)
 {
 	struct stat s_stat;
 
@@ -26,7 +27,8 @@ size_t get_size_of_file(int fd)
 /*
 ** Get the stats of file from a fd
 */
-struct stat get_stat_of_file(int fd)
+
+struct stat	get_stat_of_file(int fd)
 {
 	struct stat	buf;
 
@@ -37,7 +39,7 @@ struct stat get_stat_of_file(int fd)
 	return (buf);
 }
 
-bool is_file(int fd)
+bool		is_file(int fd)
 {
 	struct stat buf;
 
@@ -54,7 +56,8 @@ bool is_file(int fd)
 /*
 ** Open file and return a file descriptor
 */
-int open_file(char *name)
+
+int			open_file(char *name)
 {
 	int fd;
 
@@ -69,7 +72,8 @@ int open_file(char *name)
 /*
 ** Close file, exit if error trhogt up
 */
-void close_file(int fd)
+
+void		close_file(int fd)
 {
 	int result;
 
