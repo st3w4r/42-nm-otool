@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:06:39 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:06:42 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:30:04 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 ** Sort by insertion
 */
 
-void insert_archive_before(t_s_archive_list *s1, t_s_archive_list *s2)
+void				insert_archive_before(t_s_archive_list *s1,
+										t_s_archive_list *s2)
 {
 	s2->next = s1;
 	s2->prev = s1->prev;
@@ -27,7 +28,8 @@ void insert_archive_before(t_s_archive_list *s1, t_s_archive_list *s2)
 	}
 }
 
-void insert_archive_after(t_s_archive_list *s1, t_s_archive_list *s2)
+void				insert_archive_after(t_s_archive_list *s1,
+										t_s_archive_list *s2)
 {
 	s2->next = s1->next;
 	s2->prev = s1;
@@ -38,7 +40,8 @@ void insert_archive_after(t_s_archive_list *s1, t_s_archive_list *s2)
 	}
 }
 
-void	set_format_archive_list(t_s_format *format, t_s_archive_list *archive_elem)
+void				set_format_archive_list(t_s_format *format,
+										t_s_archive_list *archive_elem)
 {
 	while (archive_elem->prev != NULL)
 	{
@@ -47,7 +50,8 @@ void	set_format_archive_list(t_s_format *format, t_s_archive_list *archive_elem)
 	format->archive_list = archive_elem;
 }
 
-t_s_archive_list *add_archive(t_s_format *format, t_s_archive_list *archive_elem)
+t_s_archive_list	*add_archive(t_s_format *format,
+								t_s_archive_list *archive_elem)
 {
 	t_s_archive_list *archive_list;
 	t_s_archive_list *archive_prev;
@@ -75,7 +79,9 @@ t_s_archive_list *add_archive(t_s_format *format, t_s_archive_list *archive_elem
 ** Init if the format archive_list is null
 */
 
-t_s_archive_list *add_archive_list(t_s_format *format, void *ar_object, char *name)
+t_s_archive_list	*add_archive_list(t_s_format *format,
+									void *ar_object,
+									char *name)
 {
 	t_s_archive_list *archive_elem;
 

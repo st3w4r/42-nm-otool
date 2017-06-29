@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/29 15:06:47 by ybarbier          #+#    #+#             */
-/*   Updated: 2017/06/29 15:06:48 by ybarbier         ###   ########.fr       */
+/*   Updated: 2017/06/29 16:30:41 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 ** Check is the adress is not out of memory file
 */
-void check_memory_out(void *ptr)
+
+void	check_memory_out(void *ptr)
 {
 	if (ptr > g_prog.current_max_addr)
 	{
