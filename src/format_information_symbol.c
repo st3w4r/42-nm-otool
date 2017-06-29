@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 
 char	get_symbol_type_char_section(char *segname, char *sectname)

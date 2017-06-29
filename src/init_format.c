@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 /*
 ** Init the structure format and return this one
 */
-s_format *init_format(void *ptr)
+t_s_format *init_format(void *ptr)
 {
-	s_format					*format;
+	t_s_format					*format;
 
-	if ((format = malloc(sizeof(s_format))) == NULL)
+	if ((format = malloc(sizeof(t_s_format))) == NULL)
 		ft_malloc_error();
 	format->filename = NULL;
 	format->file_format = get_file_format(ptr);

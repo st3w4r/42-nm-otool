@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
-void	handle_format_macho_64(s_file *file, s_format *format, void *ptr)
+void	handle_format_macho_64(t_s_file *file, t_s_format *format, void *ptr)
 {
 	if (file->is_displayed == FALSE)
 	{
@@ -23,7 +23,7 @@ void	handle_format_macho_64(s_file *file, s_format *format, void *ptr)
 	}
 }
 
-void handle_format_macho_32(s_file *file, s_format *format, void *ptr)
+void handle_format_macho_32(t_s_file *file, t_s_format *format, void *ptr)
 {
 	format->is_64 = FALSE;
 	handle_macho(format, ptr, format->is_64);
@@ -31,13 +31,13 @@ void handle_format_macho_32(s_file *file, s_format *format, void *ptr)
 		display_format(file, format);
 }
 
-void handle_format_fat(s_file *file, s_format *format, void *ptr)
+void handle_format_fat(t_s_file *file, t_s_format *format, void *ptr)
 {
 	format->is_64 = FALSE;
 	handle_fat(file, ptr, format->is_64);
 }
 
-void handle_format_archive(s_file *file, s_format *format, void *ptr)
+void handle_format_archive(t_s_file *file, t_s_format *format, void *ptr)
 {
 	format->is_64 = FALSE;
 	handle_ar(file, ptr);
@@ -45,9 +45,9 @@ void handle_format_archive(s_file *file, s_format *format, void *ptr)
 /*
 ** Handle file and redirect to the correct file type
 */
-void	handle_format(void *ptr, s_file *file)
+void	handle_format(void *ptr, t_s_file *file)
 {
-	s_format *format;
+	t_s_format *format;
 
 	format = init_format(ptr);
 	format->filename = file->filename;

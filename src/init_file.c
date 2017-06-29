@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 /*
 ** Init the structure file and return this one
 */
-s_file *init_file(void *ptr)
+t_s_file *init_file(void *ptr)
 {
-	s_file *file;
+	t_s_file *file;
 
-	if ((file = malloc(sizeof(s_file))) == NULL)
+	if ((file = malloc(sizeof(t_s_file))) == NULL)
 		ft_malloc_error();
 	file->nb_archs = 1;
 	file->is_displayed = FALSE;

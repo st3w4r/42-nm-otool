@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 void display_symbol_64(uint8_t type, uint64_t n_value,
 									char *symbol_string, int type_char)

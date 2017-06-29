@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 void process_file(char *file_name)
 {
 	int fd;
 	void *ptr;
-	s_file *file;
+	t_s_file *file;
 
 	fd = open_file(file_name);
 	if (is_file(fd) == FALSE)

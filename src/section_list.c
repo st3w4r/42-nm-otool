@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 /*
 ** Return the section at index in the section_list
@@ -36,7 +36,7 @@ t_s_section_list *get_section_index(t_s_section_list *section_list, uint8_t inde
 ** Add section to the section_list
 ** Send a struct section and recevice a t_s_section_list
 */
-t_s_section_list *add_section_list(s_format *format, void *sec, bool is_64)
+t_s_section_list *add_section_list(t_s_format *format, void *sec, bool is_64)
 {
 	t_s_section_list *section_list;
 
@@ -66,7 +66,7 @@ t_s_section_list *add_section_list(s_format *format, void *sec, bool is_64)
 ** Init the first section of the section_list
 ** Send a struct section and recevice a t_s_section_list
 */
-t_s_section_list *init_section_list(s_format *format, void *sec, bool is_64)
+t_s_section_list *init_section_list(t_s_format *format, void *sec, bool is_64)
 {
 	t_s_section_list *section_list;
 

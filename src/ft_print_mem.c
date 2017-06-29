@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 #include <stdint.h>
 
 void	ft_print_mem(void *addr, void *memory_addr, int len, bool is_64)

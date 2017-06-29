@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 /*
 ** Sort by insertion
@@ -38,7 +38,7 @@ void insert_after(t_s_symbol_list *s1, t_s_symbol_list *s2)
 	}
 }
 
-void	set_format_symbol_list(s_format *format, t_s_symbol_list *symbol)
+void	set_format_symbol_list(t_s_format *format, t_s_symbol_list *symbol)
 {
 	while (symbol->prev != NULL)
 	{
@@ -47,7 +47,7 @@ void	set_format_symbol_list(s_format *format, t_s_symbol_list *symbol)
 	format->symbol_list = symbol;
 }
 
-t_s_symbol_list *add_symbol(s_format *format, t_s_symbol_list *symbol_elem, bool is_64)
+t_s_symbol_list *add_symbol(t_s_format *format, t_s_symbol_list *symbol_elem, bool is_64)
 {
 	t_s_symbol_list *symbol_list;
 	t_s_symbol_list *symbol_prev;
@@ -81,7 +81,7 @@ t_s_symbol_list *add_symbol(s_format *format, t_s_symbol_list *symbol_elem, bool
 ** Init if the format symbol_list is null
 */
 
-t_s_symbol_list *add_symbol_list(s_format *format, void *symbol, bool is_64)
+t_s_symbol_list *add_symbol_list(t_s_format *format, void *symbol, bool is_64)
 {
 	t_s_symbol_list *symbol_elem;
 

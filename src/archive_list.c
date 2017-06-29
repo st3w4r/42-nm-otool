@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 /*
 ** Sort by insertion
@@ -38,7 +38,7 @@ void insert_archive_after(t_s_archive_list *s1, t_s_archive_list *s2)
 	}
 }
 
-void	set_format_archive_list(s_format *format, t_s_archive_list *archive_elem)
+void	set_format_archive_list(t_s_format *format, t_s_archive_list *archive_elem)
 {
 	while (archive_elem->prev != NULL)
 	{
@@ -47,7 +47,7 @@ void	set_format_archive_list(s_format *format, t_s_archive_list *archive_elem)
 	format->archive_list = archive_elem;
 }
 
-t_s_archive_list *add_archive(s_format *format, t_s_archive_list *archive_elem)
+t_s_archive_list *add_archive(t_s_format *format, t_s_archive_list *archive_elem)
 {
 	t_s_archive_list *archive_list;
 	t_s_archive_list *archive_prev;
@@ -75,7 +75,7 @@ t_s_archive_list *add_archive(s_format *format, t_s_archive_list *archive_elem)
 ** Init if the format archive_list is null
 */
 
-t_s_archive_list *add_archive_list(s_format *format, void *ar_object, char *name)
+t_s_archive_list *add_archive_list(t_s_format *format, void *ar_object, char *name)
 {
 	t_s_archive_list *archive_elem;
 

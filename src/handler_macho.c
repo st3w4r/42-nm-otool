@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
-void handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr, bool is_64)
+void handle_symtab_command(t_s_format *format, struct symtab_command *sym, void *ptr, bool is_64)
 {
 	uint32_t	i;
 	void			*string_table;
@@ -31,7 +31,7 @@ void handle_symtab_command(s_format *format, struct symtab_command *sym, void *p
 	}
 }
 
-void handle_segment_command(s_format *format, void *seg, bool is_64)
+void handle_segment_command(t_s_format *format, void *seg, bool is_64)
 {
 	uint32_t i;
 	uint32_t	nsects;
@@ -63,7 +63,7 @@ void handle_segment_command(s_format *format, void *seg, bool is_64)
 /*
 ** Handle a load command to extract information
 */
-void handle_load_command(s_format *format, struct load_command *lc, void *ptr, bool is_64)
+void handle_load_command(t_s_format *format, struct load_command *lc, void *ptr, bool is_64)
 {
 	struct symtab_command *sym;
 	void *seg;
@@ -88,7 +88,7 @@ void handle_load_command(s_format *format, struct load_command *lc, void *ptr, b
 /*
 ** Handle the macho file format for 32 bits and 64 bits
 */
-void	handle_macho(s_format *format, void *ptr, bool is_64)
+void	handle_macho(t_s_format *format, void *ptr, bool is_64)
 {
 	void *header;
 	uint32_t sizeofcmds;

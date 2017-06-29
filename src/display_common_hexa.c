@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 void display_symbol_hexa_64(void *string_table, t_s_symbol_list *symbol_elem)
 {

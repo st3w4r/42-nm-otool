@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 /*
 ** Handle fat architecture
 */
-void	handle_fat_arch(s_file *file, void *ptr, void *fat_arch)
+void	handle_fat_arch(t_s_file *file, void *ptr, void *fat_arch)
 {
 	cpu_type_t cpu_type;
 	cpu_subtype_t cpu_subtype;
@@ -32,7 +32,7 @@ void	handle_fat_arch(s_file *file, void *ptr, void *fat_arch)
 /*
 ** Handle the fat file
 */
-void	handle_fat(s_file *file, void *ptr, bool is_64)
+void	handle_fat(t_s_file *file, void *ptr, bool is_64)
 {
 	uint64_t nfat_arch;
 	uint64_t i;

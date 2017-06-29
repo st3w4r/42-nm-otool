@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 uint32_t get_section_type(t_s_section_list *section_elem, bool is_64)
 {

@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
-void *handle_ar_object(s_file *file, void *ptr, void *ranlib_arr, size_t i)
+void *handle_ar_object(t_s_file *file, void *ptr, void *ranlib_arr, size_t i)
 {
 	void *ar_object;
 	struct ranlib *ranlib_elem;
@@ -35,7 +35,7 @@ void *handle_ar_object(s_file *file, void *ptr, void *ranlib_arr, size_t i)
 /*
 ** Handle archive file
 */
-void	handle_ar(s_file *file, void *ptr)
+void	handle_ar(t_s_file *file, void *ptr)
 {
 	struct s_ar_header *ar_header;
 	void *symdef;

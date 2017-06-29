@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm-otool.h"
+#include "nm_otool.h"
 
 void display_section_text(void *ptr, t_s_section_list *section_elem,
 													char *segname, char *sectname, bool is_64)
