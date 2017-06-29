@@ -323,11 +323,10 @@ uint8_t							get_symbol_type(uint8_t n_type);
 */
 char							get_symbol_type_char_section(char *segname,
 															char *sectname);
-char							get_symbol_type_char(uint8_t type,
+char							get_symbol_type_char(uint8_t n_type,
 										uint64_t n_value,
 										char *segname,
-										char *sectname,
-										bool is_external);
+										char *sectname);
 bool							select_diplay_symbol(uint8_t n_type);
 
 /*

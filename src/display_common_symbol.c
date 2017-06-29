@@ -57,10 +57,9 @@ void	display_symbol_short_64(void *string_table,
 		get_symbol_type(n_type),
 		n_value,
 		get_symbol_string(symbol_elem, string_table, IS_64),
-		get_symbol_type_char(get_symbol_type(n_type), n_value,
+		get_symbol_type_char(n_type, n_value,
 			section_elem->section_64->segname,
-			section_elem->section_64->sectname,
-			(n_type & N_EXT) ? TRUE : FALSE));
+			section_elem->section_64->sectname));
 }
 
 void	display_symbol_32(uint8_t type, uint32_t n_value,
@@ -108,8 +107,7 @@ void	display_symbol_short_32(void *string_table,
 		get_symbol_type(n_type),
 		n_value,
 		get_symbol_string(symbol_elem, string_table, IS_32),
-		get_symbol_type_char(get_symbol_type(n_type), n_value,
+		get_symbol_type_char(n_type, n_value,
 			section_elem->section_32->segname,
-			section_elem->section_32->sectname,
-			(n_type & N_EXT) ? TRUE : FALSE));
+			section_elem->section_32->sectname));
 }

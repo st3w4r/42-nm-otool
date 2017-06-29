@@ -38,16 +38,17 @@ char	get_symbol_type_char_section(char *segname, char *sectname)
 	return (c);
 }
 
-char	get_symbol_type_char(uint8_t type,
+char	get_symbol_type_char(uint8_t n_type,
 							uint64_t n_value,
 							char *segname,
-							char *sectname,
-							bool is_external)
+							char *sectname)
 {
-	int c;
+	int		c;
+	uint8_t	type;
 
+	type = get_symbol_type(n_type);
 	c = '?';
-	if (type & N_STAB)
+	if (n_type & N_STAB)
 		c = '-';
 	else if (type == N_UNDF)
 	{
@@ -65,8 +66,7 @@ char	get_symbol_type_char(uint8_t type,
 		c = 'i';
 	else if (type == N_UNDF && n_value != 0)
 		c = 'c';
-	if (is_external)
-		c -= 32;
+	(n_type & N_EXT) ? (c -= 32) : (c);
 	return (c);
 }
 
