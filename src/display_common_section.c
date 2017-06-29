@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_common_section.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/29 15:07:12 by ybarbier          #+#    #+#             */
+/*   Updated: 2017/06/29 15:07:14 by ybarbier         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "nm-otool.h"
 
 void display_section_text(void *ptr, s_section_list *section_elem,

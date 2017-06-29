@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_common_hexa.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/29 15:07:05 by ybarbier          #+#    #+#             */
+/*   Updated: 2017/06/29 15:07:06 by ybarbier         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "nm-otool.h"
 
 void display_symbol_hexa_64(void *string_table, s_symbol_list *symbol_elem)

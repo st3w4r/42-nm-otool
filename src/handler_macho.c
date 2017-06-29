@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handler_macho.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/29 15:09:25 by ybarbier          #+#    #+#             */
+/*   Updated: 2017/06/29 15:09:26 by ybarbier         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "nm-otool.h"
 
 void handle_symtab_command(s_format *format, struct symtab_command *sym, void *ptr, bool is_64)
