@@ -37,7 +37,7 @@ void *get_fat_ach(void *header, int index, bool is_64)
 	if (is_64 == TRUE)
 	{
 		fat_arch = ((void*)header + sizeof(struct fat_header))
-					+ (index * sizeof(struct fat_arch_64));
+					+ (index * sizeof(struct fat_arch));
 	}
 	else
 	{
