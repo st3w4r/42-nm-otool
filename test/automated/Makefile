@@ -45,6 +45,11 @@ all:
 	cc test.c -o test_debug -g
 
 clean:
+	rm -f diff_ft_nm
+	rm -f diff_ft_otool
+	rm -f diff_nm
+	rm -f diff_otool
+
 	rm -f test.o
 	rm -f test_facile.o
 	rm -f test_moins_facile.o
