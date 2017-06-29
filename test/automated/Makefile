@@ -92,7 +92,7 @@ test-otool:
 	$(call diff_file_otool, /usr/lib/libgmalloc.dylib)
 	$(call diff_file_otool, /usr/lib/libtidy.dylib)
 # Object file
-	$(call diff_file_nm, test.o test_facile.o test_moins_facile.o)
+	$(call diff_file_otool, test.o test_facile.o test_moins_facile.o)
 # Binary
 	$(call diff_file_otool, /usr/bin/python)
 # Archive
