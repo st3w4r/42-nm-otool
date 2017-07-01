@@ -1,0 +1,6 @@
+language: c
+install: make
+compiler: clang
+script:
+    make -C test/automated clean &&  make -C test/automated && make -C test/automated test
+

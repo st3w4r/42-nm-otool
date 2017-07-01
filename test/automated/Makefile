@@ -81,7 +81,7 @@ test-nm:
 # Binary
 	$(call diff_file_nm, /usr/bin/python)
 # Archive
-	$(call diff_file_nm, /usr/lib/liby.a)
+#$(call diff_file_nm, /usr/lib/liby.a)
 
 test-otool:
 	$(call diff_file_otool, test_facile)
