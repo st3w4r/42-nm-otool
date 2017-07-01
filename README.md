@@ -1,5 +1,7 @@
 # NM OTOOL
 
+[![Build Status](https://travis-ci.org/st3w4r/42-nm-otool.svg?branch=master)](https://travis-ci.org/st3w4r/42-nm-otool)
+
 ## Project
 
 Re write the programs `nm` and `otool -t`.

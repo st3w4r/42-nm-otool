@@ -14,7 +14,6 @@ define diff_file_nm
 	@$(FT_NM) $(1) > diff_ft_nm
 	@$(NM) $(1) > diff_nm
 	@echo $(1)
-	$(if $(DISPLAY), cat diff_ft_nm diff_nm)
 	diff diff_nm diff_ft_nm
 	@echo ____________________________________
 endef
@@ -24,10 +23,10 @@ define diff_file_otool
 	@$(FT_OTOOL) $(1) > diff_ft_otool
 	@$(OTOOL) -t $(1) > diff_otool
 	@echo $(1)
-	$(if $(DISPLAY), cat diff_ft_otool diff_otool)
 	diff diff_otool diff_ft_otool
 	@echo ____________________________________
 endef
+# $(if $(DISPLAY), cat diff_ft_nm diff_nm)
 # cat diff_ft_otool
 # cat diff_otool
 
