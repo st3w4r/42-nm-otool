@@ -14,7 +14,7 @@ To build the program:
 
 	make
 
-The binary `ft_nm` and `ft_otool` will be created.
+The binaries `ft_nm` and `ft_otool` will be created.
 
 ## Test
 
@@ -23,7 +23,7 @@ To run the test you can build this one with `make` and run with `make test`
 
 ## NM
 
-To run the program: `nm [options] [file_name ...]
+To run the program: `ft_nm [options] [file_name ...]`
 	
 Some options are available for the nm program:
 
