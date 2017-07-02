@@ -51,3 +51,28 @@ void	release_memory(void *ptr, int fd)
 		ft_error_str_exit("munmap error\n");
 	}
 }
+
+void	free_symbol_list(t_s_symbol_list *list)
+{
+	void *prev;
+
+	while (list != NULL)
+	{
+		prev = list;
+		list = list->next;
+		free(prev);
+	}	
+}
+
+void	free_section_list(t_s_section_list *list)
+{
+	void *prev;
+
+	while (list != NULL)
+	{
+		prev = list;
+		list = list->next;
+		free(prev);
+	}	
+}
+

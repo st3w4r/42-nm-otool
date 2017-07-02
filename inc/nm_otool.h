@@ -206,6 +206,8 @@ struct stat						get_stat_of_file(int fd);
 bool							is_file(int fd);
 int								open_file(char *name);
 void							close_file(int fd);
+void							free_section_list(t_s_section_list *list);
+void							free_symbol_list(t_s_symbol_list *list);
 
 /*
 ** File: display.c
