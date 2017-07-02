@@ -65,4 +65,5 @@ void	handle_format(void *ptr, t_s_file *file)
 		ft_error_str("The file is not supported\n");
 	free_symbol_list(format->symbol_list);
 	free_section_list(format->section_list);
+	free(format);
 }
