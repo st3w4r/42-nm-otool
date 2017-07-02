@@ -30,6 +30,7 @@ void	process_file(char *file_name)
 	handle_format(ptr, file);
 	release_memory(ptr, fd);
 	close_file(fd);
+	free(file);
 }
 
 int		parse_flags_args(int argc, char **argv)
